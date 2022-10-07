@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Interstate Bold, Mono, BoldCn, Cn */
 @font-face {
     font-family: Interstate;
     src: url(/fonts/newfonts/Interstate-Bold3.woff) format("woff");
@@ -24,6 +25,75 @@
     font-weight: 700;
     font-style: normal;
     font-stretch: condensed;
+}
+@font-face {
+    font-family: 'Interstate Cn';
+    src: url(/fonts/newfonts/Interstate-RegularCondensed.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: condensed;
+}
+
+/* Interstate Regular */
+@font-face {
+    font-family: Interstate;
+    src: url(/fonts/newfonts/Interstate-Regular.woff) format("woff");
+    font-weight: 400 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Interstate2';
+    src: url(/fonts/newfonts/Interstate-Regular.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Miscellaneous */
+@font-face {
+    font-family: 'Zemestro Ltd';
+    src: url(/fonts/ZemestroStd.woff2) format("woff2"), url(/fonts/ZemestroStd.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'PressureArrow';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/encodesansexpanded/v8/c4m_1mF4GcnstG_Jh1QH6ac4hNLeNyeYUpolKQZidIAa.woff2) format("woff");
+    unicode-range: U+2191,U+2193;
+}
+@font-face {
+    font-family: Frutiger;
+    src: url(/fonts/newfonts/frutiger.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: Frutiger;
+    src: url(/fonts/newfonts/Frutiger_bold.woff) format("woff");
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Frutiger LT';
+    src: url(/fonts/newfonts/FrutigerLT-66BdIt.woff) format("woff");
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Frutiger 57 Condensed';
+    src: url(/fonts/newfonts/Frutiger-57Cn.woff) format("woff");
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Frutiger Bold Cn';
+    src: url(/fonts/newfonts/FrutigerBoldCn.woff) format("woff");
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Frutiger BQ';
+    src: url(/fonts/newfonts/FrutigerCondensedBQ-Black.woff) format("woff");
+    font-style: normal;
 }
 
 html,

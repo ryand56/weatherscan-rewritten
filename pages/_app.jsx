@@ -27,7 +27,7 @@ const MyApp = ({ Component, pageProps, router }) => {
             }
 
             if (mainRef.current)
-                mainRef.current.style.scale = scale;
+                mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
         });
     }, [innerWidth, innerHeight, outerWidth, outerHeight, mainRef]);
 
@@ -39,7 +39,7 @@ const MyApp = ({ Component, pageProps, router }) => {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </Head>
 
-            <div ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden transform -translate-x-1/2 -translate-y-1/2 w-[1440px] h-[1080px] will-change-transform">
+            <div ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
                 <Component {...pageProps} key={router.pathname} />
             </div>
         </>

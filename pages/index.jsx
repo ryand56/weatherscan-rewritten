@@ -1,12 +1,12 @@
 import * as React from "react";
-import Intro from "../components/Intro";
 import Display from "../components/Display";
+import Intro from "../components/Intro";
 
 const Index = () => {
     return (
         <>
-            <Intro />
             <Display />
+            <Intro />
         </>
     );
 };

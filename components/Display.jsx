@@ -3,15 +3,18 @@ import Image from "next/image";
 
 import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
 
-const resizeWindow = (mainRef) => {
-    let scale, windowAspect;
+const resizeWindow = (mainRef, winWidth, winHeight) => {
+    const mainAspect = 4/3;
+    const windowAspect = winWidth / winHeight;
+    let scale;
 
-    windowAspect = innerWidth / innerHeight;
+    const refWidth = mainRef.current.clientWidth;
+    const refHeight = mainRef.current.clientHeight;
 
-    if (windowAspect >= 4/3) {
-        scale = innerHeight / outerHeight;
+    if (windowAspect >= mainAspect) {
+        scale = winHeight / refHeight;
     } else {
-        scale = innerWidth / outerWidth;
+        scale = winWidth / refWidth;
     }
 
     mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
@@ -19,9 +22,11 @@ const resizeWindow = (mainRef) => {
 
 const Display = () => {
     const [innerWidth, innerHeight] = useWinSizeInner();
-    const [outerWidth, outerHeight] = useWinSizeOuter();
-
     const mainRef = React.useRef();
+
+    function resizeListener(e) {
+        resizeWindow(mainRef, innerWidth, innerHeight);
+    }
 
     React.useEffect(() => {
         if (typeof window === undefined) {
@@ -29,17 +34,14 @@ const Display = () => {
         }
 
         if (mainRef && mainRef.current) {
-            window.addEventListener("resize", (e) => {
-                resizeWindow(mainRef);
-            });
-
-            resizeWindow(mainRef);
+            resizeListener();
         }
-    }, [innerWidth, innerHeight, outerWidth, outerHeight, mainRef]);
+    }, [mainRef, innerWidth, innerHeight]);
 
     return (
-        <div ref={mainRef} className="relative top-2/4 left-2/4 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
+        <div id="main" ref={mainRef} className="relative top-2/4 left-2/4 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
             <Image
+                className="block max-h-full max-w-full"
                 src="/images/template-4k.png"
                 layout="fill"
             />

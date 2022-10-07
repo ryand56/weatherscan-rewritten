@@ -2,25 +2,34 @@ import * as React from "react";
 
 import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
 
-const resizeWindow = (mainRef) => {
-    let scale, windowAspect;
+const resizeWindow = (mainRef, winWidth, winHeight) => {
+    const mainAspect = 4/3;
+    const windowAspect = winWidth / winHeight;
+    let scale;
 
-    windowAspect = innerWidth / innerHeight;
+    const main = document.getElementById("main");
 
-    if (windowAspect >= 4/3) {
-        scale = innerHeight / outerHeight;
-    } else {
-        scale = innerWidth / outerWidth;
+    if (main instanceof HTMLElement) {
+        const mainWidth = main.style.outerWidth;
+        const mainHeight = main.style.outerHeight;
+
+        if (windowAspect >= mainAspect) {
+            scale = winHeight / mainHeight;
+        } else {
+            scale = winWidth / mainWidth;
+        }
+    
+        mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
     }
-
-    mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
 };
 
 const Intro = ({ display }) => {
     const [innerWidth, innerHeight] = useWinSizeInner();
-    const [outerWidth, outerHeight] = useWinSizeOuter();
-
     const mainRef = React.useRef();
+
+    function resizeListener(e) {
+        resizeWindow(mainRef, innerWidth, innerHeight);
+    }
 
     React.useEffect(() => {
         if (typeof window === undefined) {
@@ -28,16 +37,12 @@ const Intro = ({ display }) => {
         }
 
         if (mainRef && mainRef.current) {
-            window.addEventListener("resize", (e) => {
-                resizeWindow(mainRef);
-            });
-
-            resizeWindow(mainRef);
+            resizeListener();
         }
-    }, [innerWidth, innerHeight, outerWidth, outerHeight, mainRef]);
+    }, [mainRef, innerWidth, innerHeight]);
 
     return (
-        <div ref={mainRef} className={`relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform ${display ? "block" : "none"}`}>
+        <div ref={mainRef} className={`relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform ${display ? "block" : "hidden"}`}>
             <div className="h-[23.5%] w-full absolute bottom-0 bg-[#161418]">
                 <div className="absolute w-[400px] left-[8.05%] top-[4.6%] flex flex-row flex-col">
                     <div className="whitespace-nowrap relative font-['Frutiger'] font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] pt-6">headend id:</div>

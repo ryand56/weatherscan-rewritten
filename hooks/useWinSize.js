@@ -2,7 +2,7 @@ import * as React from "react";
 
 export const useWinSizeInner = () => {
     const [size, setSize] = React.useState([0, 0]);
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         const updateSize = () => {
             setSize([window.innerWidth, window.innerHeight]);
         };
@@ -17,7 +17,7 @@ export const useWinSizeInner = () => {
 
 export const useWinSizeOuter = () => {
     const [size, setSize] = React.useState([0, 0]);
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         const updateSize = () => {
             setSize([window.outerWidth, window.outerHeight]);
         };

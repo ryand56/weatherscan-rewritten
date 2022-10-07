@@ -2,7 +2,14 @@ import "../styles/global.css";
 import * as React from "react";
 import Head from "next/head";
 
+import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
+
 const MyApp = ({ Component, pageProps, router }) => {
+    const [innerWidth, innerHeight] = useWinSizeInner();
+    const [outerWidth, outerHeight] = useWinSizeOuter();
+
+    const mainRef = React.useRef();
+
     React.useEffect(() => {
         if (typeof window === undefined) {
             return;
@@ -10,21 +17,19 @@ const MyApp = ({ Component, pageProps, router }) => {
 
         window.addEventListener("resize", (e) => {
             let scale, windowAspect;
-            
-            let innerWidth = window.innerWidth;
-            let innerHeight = window.innerHeight;
 
             windowAspect = innerWidth / innerHeight;
 
             if (windowAspect >= 4/3) {
-                scale = innerHeight / window.outerHeight();
+                scale = innerHeight / outerHeight;
             } else {
-                scale = innerWidth / window.outerWidth();
+                scale = innerWidth / outerWidth;
             }
 
-            document.querySelector("#main").classList.add(`scale-[${scale}]`);
+            if (mainRef.current)
+                mainRef.current.style.scale = scale;
         });
-    }, []);
+    }, [innerWidth, innerHeight, outerWidth, outerHeight, mainRef]);
 
     return (
         <>
@@ -34,7 +39,7 @@ const MyApp = ({ Component, pageProps, router }) => {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </Head>
 
-            <div id="main" className="relative top-1/2 left-1/2 overflow-hidden transform -translate-x-1/2 -translate-y-1/2 w-[1440px] h-[1080px] will-change-transform">
+            <div ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden transform -translate-x-1/2 -translate-y-1/2 w-[1440px] h-[1080px] will-change-transform">
                 <Component {...pageProps} key={router.pathname} />
             </div>
         </>

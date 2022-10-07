@@ -20,6 +20,12 @@
   },
   "homepage": "https://github.com/elementemerald/weatherscan-rewritten#readme",
   "dependencies": {
+    "iso8601-js-period": "^0.2.1",
+    "leaflet": "^1.9.2",
+    "leaflet-timedimension": "^1.1.1",
+    "leaflet.nontiledlayer": "^1.0.9",
+    "mapbox-gl": "^2.10.0",
+    "maplibre-gl": "^2.4.0",
     "next": "^12.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

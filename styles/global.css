@@ -133,3 +133,13 @@ html, body, #__next {
     background-color: #000;
     font-size: 100%;
 }
+
+select {
+    display: block;
+    position: relative;
+    border-radius: 0px;
+    border-style: double;
+    width: 200px;
+    margin: 15px;
+    padding: 5px;
+}

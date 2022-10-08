@@ -1,10 +1,14 @@
 export const getMainLocation = (location) => {
-    if (typeof location === "string") {
-        fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.WEATHER_API_KEY}`)
-            .then(data => {
-
+    return fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(res => {
+            return res.json().then(data => {
+                return data;
+            }).catch(err => {
+                throw new Error(err);
             });
-    }
+        }).catch(err => {
+            throw new Error(err);
+        });
 };
 
 export const getClosestLocation = () => {

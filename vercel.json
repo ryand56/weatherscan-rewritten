@@ -1,5 +1,6 @@
 {
     "github": {
         "silent": true
-    }
+    },
+    "ignoreCommand": "git log -1 --pretty=oneline --abbrev-commit | grep \"[skip deploy]\" && exit 1 || exit 0"
 }

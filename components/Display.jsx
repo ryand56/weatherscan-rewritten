@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
+import { useWinSizeInner } from "../hooks/useWinSize";
 
 import SlideBg from "./Slides/SlideBg";
 import SlidesContainer from "./Slides/Containers/SlidesContainer";

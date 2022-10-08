@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="-27.753" cy="1059.845" r="223.361" id="gradient-0" gradientTransform="matrix(-1.604436, -1.223866, 2.164992, -2.838232, -1882.125629, 3354.370266)" spreadMethod="pad">
+      <stop offset="0" style="stop-color: rgb(7, 42, 176); stop-opacity: 0.1;"/>
+      <stop offset="0.51" style="stop-opacity: 0.75; stop-color: rgb(35, 80, 204);"/>
+      <stop offset="1" style="stop-opacity: 0.85; stop-color: rgb(37, 82, 206);"/>
+    </radialGradient>
+  </defs>
+  <path style="stroke: rgba(0, 0, 0, 0); fill: url(#gradient-0);" d="M 62.307 141.948 C -8.259 235.494 42.411 329.655 46.29 332.911 L 472.295 332.845 L 472.285 224.929 C 467.494 204.003 451.415 167.199 430.074 141.914 L 62.307 141.948 Z" bx:origin="0.112 0.093"/>
+</svg>

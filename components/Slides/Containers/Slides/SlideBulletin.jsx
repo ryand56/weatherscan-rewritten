@@ -5,38 +5,24 @@ const SlideBulletin = () => (
         <div id="info-slide_bulletin" className="relative bg-infoslide-color bg-bulletin-image bg-infoslide-pos bg-infoslide-size bg-no-repeat w-full min-h-infoslide max-h-infoslide overflow-hidden flex flex-col hidden">
             <div
                 id="info-subheader"
-                className="font-frutigerbold-cn flex flex-row flex-nowrap justify-between text-subhead-bulletin h-subhead drop-shadow-subhead-bulletin absolute min-w-[20%] origin-left z-subheader leading-subheader text-white w-full p-slidehead"
-                style={{ transform: "scale(102.5%, 100%)" }}
+                className="transform scale-x-102-5 scale-y-100 font-frutigerbold-cn flex flex-row flex-nowrap justify-between text-subhead-bulletin h-subhead drop-shadow-subhead-bulletin absolute min-w-[20%] origin-left z-subheader leading-subheader text-white w-full p-slidehead"
             >
                 <span
                     id="subhead-titlei"
-                    className="absolute top-2/4"
-                    style={{ transform: "translateY(-42.5%)" }}
+                    className="transform -translate-y-42-5 absolute top-2/4"
                 >WEATHER BULLETIN</span>
                 <span
                     id="subhead-noaa"
-                    className="text-subhead-noaa font-bold right-subhead-noaa-r italic font-frutiger drop-shadow-none leading-subhead-noaa origin-right absolute top-2/4"
-                    style={{
-                        fontStretch: "semi-expanded",
-                        transform: "scale(101%, 100%) translateY(-42.5%)"
-                    }}
+                    className="transform scale-x-101 scale-y-100 -translate-y-42-5 text-subhead-noaa font-bold right-subhead-noaa-r italic font-frutiger drop-shadow-none leading-subhead-noaa origin-right absolute top-2/4"
+                    style={{ fontStretch: "semi-expanded" }}
                 >FROM THE NATIONAL WEATHER SERVICE</span>
             </div>
-            <div
-                className="bg-bulletin-frost-pane bg-no-repeat z-default mt-bulletin-frost-pane text-white text-bulletin-frost-pane drop-shadow-bulletin-frost-pane max-h-bulletin-frost-pane flex-1 hidden"
-                style={{ transform: "translate(0px, 10px)" }}
-            >
-                <div
-                    className="text-bulletin-cityname absolute left-bulletin-cityname-l top-bulletin-cityname-t origin-left"
-                    style={{ transform: "scale(105%, 100%)" }}
-                >Frankfort Area</div>
+            <div className="transform translate-x-0 translate-y-2.5 bg-bulletin-frost-pane bg-no-repeat z-default mt-bulletin-frost-pane text-white text-bulletin-frost-pane drop-shadow-bulletin-frost-pane max-h-bulletin-frost-pane flex-1 hidden">
+                <div className="transform scale-x-105 scale-y-100 text-bulletin-cityname absolute left-bulletin-cityname-l top-bulletin-cityname-t origin-left">Frankfort Area</div>
                 <div
                     id="warningbulletin"
-                    className="font-frutiger57-cond origin-left text-white text-bulletin-warnings absolute left-bulletin-warnings-l top-bulletin-warnings-t leading-bulletin-warnings pr-bulletin-warnings whitespace-pre"
-                    style={{
-                        transform: "scale(112.5%, 100%)",
-                        fontStretch: "condensed"
-                    }}
+                    className="transform scale-x-112-5 scale-y-100 font-frutiger57-cond origin-left text-white text-bulletin-warnings absolute left-bulletin-warnings-l top-bulletin-warnings-t leading-bulletin-warnings pr-bulletin-warnings whitespace-pre"
+                    style={{ fontStretch: "condensed" }}
                 >
                     Flash Flood Watch in effect until 4:30 PM EST Tuesday. Monday morning.
                     <br />

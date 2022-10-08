@@ -25,13 +25,20 @@ export const useWinSizeInner = () => {
 export const useWinSizeOuter = () => {
     const [size, setSize] = React.useState([0, 0]);
     React.useEffect(() => {
+        let resizeTimer;
         const updateSize = () => {
-            setSize([window.outerWidth, window.outerHeight]);
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                setSize([window.outerWidth, window.outerHeight]);
+            }, 100);
         };
         
         window.addEventListener("resize", updateSize);
         updateSize();
-        return () => window.removeEventListener("resize", updateSize);
+        return () => {
+            window.removeEventListener("resize", updateSize);
+            clearTimeout(resizeTimer);
+        };
     }, []);
     
     return size;

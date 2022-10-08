@@ -1,6 +1,8 @@
 import * as React from "react";
-
 import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
+
+import SlideBg from "./Slides/SlideBg";
+import SlidesContainer from "./Slides/Containers/SlidesContainer";
 
 const resizeWindow = (mainRef, winWidth, winHeight) => {
     const mainAspect = 4/3;
@@ -40,6 +42,8 @@ const Display = ({ display }) => {
     return (
         <div id="main" ref={mainRef} className={`relative top-2/4 left-2/4 overflow-hidden w-[1440px] h-[1080px] will-change-transform ${display ? "block" : "hidden"}`}>
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
+            <SlideBg />
+            <SlidesContainer />
         </div>
     )
 };

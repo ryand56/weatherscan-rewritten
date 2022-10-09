@@ -1,3 +1,5 @@
+import * as React from "react";
+
 const defaults = {
     city: "",
     state: "",
@@ -7,8 +9,21 @@ const defaults = {
     longitude: 0
 };
 
+const memoAsync = (cb) => {
+    const cache = new Map();
+    return async (...args) => {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) return cache.get(key);
+        const value = await cb(...args);
+        cache.set(key, value);
+        return value;
+    };
+};
+
 export const getMainLocation = (location) => {
-    return fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    const memoizedFetch = memoAsync(fetch);
+
+    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
             return res.json().then(data => {
                 const dataLocs = data.location;

@@ -5,10 +5,12 @@ import Intro from "../components/Intro";
 import Display from "../components/Display";
 
 import { getMainLocation, getClosestLocation } from "../hooks/useWeather";
+import { useWinSizeInner } from "../hooks/useWinSize";
 
 const Index = () => {
     const router = useRouter();
     const [location, setLocation] = React.useState(null);
+    const [innerWidth, innerHeight] = useWinSizeInner();
 
     React.useEffect(() => {
         const query = router.query;
@@ -27,10 +29,12 @@ const Index = () => {
     }, [router]);
 
     return (
-        <>
-            <Intro />
-            {location && <Display display location={location} />}
-        </>
+        location && (
+            <>
+                <Intro winSize={[innerWidth, innerHeight]} />
+                <Display location={location} winSize={[innerWidth, innerHeight]} />
+            </>
+        )
     );
 };
 

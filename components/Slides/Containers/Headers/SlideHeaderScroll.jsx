@@ -3,8 +3,7 @@ import * as React from "react";
 const SlideHeaderScroll = ({ message }) => (
     <>
         <div
-            className="relative inline-block origin-left-center top-[50%] leading-hscroller font-interstate text-hscroller"
-            style={{ transform: "scale(106%, 100%) translateY(-50%)" }}
+            className="transform scale-x-106 scale-y-100 -translate-y-1/2 relative inline-block origin-left-center top-1/2 leading-hscroller font-interstate text-hscroller"
         >{message ? message : ""}</div>
     </>
 );

@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useWinSizeInner } from "../hooks/useWinSize";
+import { getMainLocation } from "../hooks/useWeather";
 
 import SlideBg from "./Slides/SlideBg";
 import SlidesContainer from "./Slides/Containers/SlidesContainer";
+import DateTime from "./DateTime";
 
 const resizeWindow = (mainRef, winWidth, winHeight) => {
     const mainAspect = 4/3;
@@ -21,14 +22,15 @@ const resizeWindow = (mainRef, winWidth, winHeight) => {
     mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
 };
 
-const Display = ({ display }) => {
-    const [innerWidth, innerHeight] = useWinSizeInner();
+const Display = ({ winSize, location }) => {
+    const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef();
 
-    function resizeListener(e) {
+    const resizeListener = (e) => {
         resizeWindow(mainRef, innerWidth, innerHeight);
-    }
+    };
 
+    // Resize handler
     React.useEffect(() => {
         if (typeof window === undefined) {
             return;
@@ -39,11 +41,29 @@ const Display = ({ display }) => {
         }
     }, [mainRef, innerWidth, innerHeight]);
 
+    const [city, setCity] = React.useState(null);
+
+    // Location handler
+    React.useEffect(() => {
+        if (location) {
+            getMainLocation(location).then(data => {
+                setCity(data.city);
+            }).catch(err => {
+                console.error(err);
+            });
+        }
+    }, [location]);
+
     return (
-        <div id="main" ref={mainRef} className={`relative top-2/4 left-2/4 overflow-hidden w-[1440px] h-[1080px] will-change-transform ${display ? "block" : "hidden"}`}>
+        <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
             <SlideBg />
             <SlidesContainer />
+            <DateTime />
+            {city && <div
+                id="city"
+                className="font-interstate font-semibold text-city pt-city-t absolute text-left ml-city-l w-city h-city top-city-t left-0 leading-city flex items-center transform scale-x-103 scale-y-100 origin-left"
+            >{city}</div>}
         </div>
     )
 };

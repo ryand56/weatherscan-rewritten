@@ -1,8 +1,27 @@
+const defaults = {
+    city: "",
+    state: "",
+    country: "",
+    countryCode: "",
+    latitude: 0,
+    longitude: 0
+};
+
 export const getMainLocation = (location) => {
     return fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
             return res.json().then(data => {
-                return data;
+                const dataLocs = data.location;
+
+                const loc = Object.assign({}, defaults);
+                loc.city = dataLocs.city[0];
+                loc.state = dataLocs.adminDistrict[0];
+                loc.country = dataLocs.country[0];
+                loc.countryCode = dataLocs.countryCode[0];
+                loc.latitude = dataLocs.latitude[0];
+                loc.longitude = dataLocs.longitude[0];
+
+                return loc;
             }).catch(err => {
                 throw new Error(err);
             });
@@ -25,5 +44,12 @@ export const getClosestLocation = () => {
             });
         }).catch(err => {
             throw new Error(err);
+        });
+};
+
+export const getExtraLocations = (lat, lon) => {
+    return fetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(res => {
+
         });
 };

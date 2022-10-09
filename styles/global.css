@@ -1,6 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+    .text-shadow {
+        text-shadow: 2px 2px 4px black;
+    }
+    .text-shadow-md {
+        text-shadow: 4px 4px 8px black;
+    }
+    .text-shadow-lg {
+        text-shadow: 15px 15px 30px black;
+    }
+    .text-shadow-none {
+        text-shadow: none;
+    }
+
+    /* Subheaders */
+    .text-shadow-subhead {
+        text-shadow: 2px 2px 3px black;
+    }
+    .text-shadow-subhead-bulletin {
+        text-shadow: 2px 2px 5px black;
+    }
+
+    /* font-stretch */
+    .font-stretch-semi-exp {
+        font-stretch: semi-expanded;
+    }
+    .font-stretch-cond {
+        font-stretch: condensed;
+    }
+}
 
 /* Interstate Bold, Mono, BoldCn, Cn */
 @font-face {

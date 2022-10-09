@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useWinSizeInner, useWinSizeOuter } from "../hooks/useWinSize";
+import perlin from "../hooks/usePerlin";
 
 const resizeWindow = (mainRef, winWidth, winHeight) => {
     const mainAspect = 4/3;
@@ -10,8 +10,8 @@ const resizeWindow = (mainRef, winWidth, winHeight) => {
     const main = document.getElementById("main");
 
     if (main instanceof HTMLElement) {
-        const mainWidth = main.style.outerWidth;
-        const mainHeight = main.style.outerHeight;
+        const mainWidth = main.clientWidth;
+        const mainHeight = main.clientHeight;
 
         if (windowAspect >= mainAspect) {
             scale = winHeight / mainHeight;
@@ -23,9 +23,11 @@ const resizeWindow = (mainRef, winWidth, winHeight) => {
     }
 };
 
-const Intro = ({ display }) => {
-    const [innerWidth, innerHeight] = useWinSizeInner();
+const Intro = ({ winSize }) => {
+    const [innerWidth, innerHeight] = winSize;
+
     const mainRef = React.useRef();
+    const intellistarRef = React.useRef();
 
     function resizeListener(e) {
         resizeWindow(mainRef, innerWidth, innerHeight);
@@ -41,8 +43,48 @@ const Intro = ({ display }) => {
         }
     }, [mainRef, innerWidth, innerHeight]);
 
+    React.useEffect(() => {
+        if (intellistarRef && intellistarRef.current) {
+            // Intro spinner
+            const startxx = Math.random()*1000;
+            const startxy = Math.random()*1000;
+            const startyx = Math.random()*1000;
+            const startyy = Math.random()*1000;
+            const startzx = Math.random()*1000;
+            const startzy = Math.random()*1000;
+
+            let rotatex = perlin.get(startxx, startxy)*2;
+            let rotatey = perlin.get(startyx, startyy)*2;
+            let rotatez = perlin.get(startzx, startzy)*2;
+
+            intellistarRef.current.style.transition = "transform 2s linear";
+            intellistarRef.current.style.transform = `rotatex(${rotatex}turn) rotatey(${rotatey}turn) rotatez(${rotatez}turn)`;
+
+            let rotInterval;
+            let time = 0;
+
+            setTimeout(() => {
+                rotInterval = setInterval(() => {
+                    time += .005;
+                    
+                    rotatex = perlin.get(startxx + time, startxy + time)*2;
+                    rotatey = perlin.get(startyx + time, startyy + time)*2;
+                    rotatez = perlin.get(startzx + time, startzy + time)*2;
+
+                    intellistarRef.current.style.transition = "transform 1s linear";
+                    intellistarRef.current.style.transform = `rotatex(${rotatex}turn) rotatey(${rotatey}turn) rotatez(${rotatez}turn)`;
+                }, 100);
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(rotInterval);
+                mainRef.current.classList.add("hidden");
+            }, 5000);
+        }
+    }, [intellistarRef]);
+
     return (
-        <div ref={mainRef} className={`relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform ${display ? "block" : "hidden"}`}>
+        <div ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] bg-white">
             <div id="blackbar" className="h-[23.5%] w-full absolute bottom-0 bg-[#161418]">
                 <div className="absolute w-[400px] left-[8.05%] top-[4.6%] flex flex-row flex-col">
                     <div className="whitespace-nowrap relative font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] pt-6">headend id:</div>
@@ -81,10 +123,10 @@ const Intro = ({ display }) => {
                 </select>
                 <button name="slide" id="slide" />
             </div>
-            <div id="locationsettingspane" className="pt-[200px]">
+            <div id="locationsettingspane" className="pt-[200px] hidden">
                 <div id="weathertitle" className="absolute w-full text-center text-[56px] top-[16px]">Location Settings</div>
             </div>
-            <img className="object-contain object-center w-[625px] h-[205px] block m-[0px] m-auto mt-[440px]" src="/images/intellistarlogo.png" />
+            <img ref={intellistarRef} className="object-contain object-center w-[625px] h-[205px] block m-[0px] m-auto mt-[440px]" src="/images/intellistarlogo.png" />
         </div>
     );
 };

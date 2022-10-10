@@ -44,6 +44,7 @@ module.exports = {
         "city-info-slide": "69% 41.5%"
       },
       backgroundSize: {
+        "conditions-icon": "100% 100%",
         "infoslide-size": "120.3% 150.9%",
         "bulletin-frost-pane": "1065px 1164px",
         "severe-city-info-size": "120.3% 150.9%",
@@ -68,12 +69,15 @@ module.exports = {
       inset: {
         "date-time-t": "101px",
         "current-t": "376px",
-        "nowwide-t": "12.5px",
+        "now-t": "12.5px",
+        "now-l": "145px",
         "nowwide-l": "146px",
         "temp-t": "88px",
         "temp-l": "12.5px",
         "info-l": "145px",
         "info-t": "177px",
+        "conditions-icon-l": "294px",
+        "conditions-icon-t": "390px",
         "current-noreport-t": "45%",
         "current-noreport-l": "32.4%",
         "city-t": "284px",
@@ -89,17 +93,9 @@ module.exports = {
         "subhead-shadow-l": "7px",
         "forecast": "10%"
       },
-      height: {
-        "current": "221px",
-        "city": "92px",
-        "slidehead": "42.5px",
-        "subhead": "60px",
-        "info-frost-pane": "446.25px",
-        "severe-frost-pane-content": "400px"
-      },
       fontSize: {
         "date": "28px",
-        "nowwide": "46px",
+        "now": "46px",
         "temp": "69px",
         "info": "31px",
         "current-noreport": "44px",
@@ -153,6 +149,7 @@ module.exports = {
         "frost-pane-content": "125%"
       },
       width: {
+        "conditions-icon": "155px",
         "current": "452px",
         "info": "62.5%",
         "current-noreport": "66%",
@@ -160,6 +157,15 @@ module.exports = {
         "date-time": "458px",
         "gradient": "125px",
         "subhead-shadow": "250%"
+      },
+      height: {
+        "conditions-icon": "155px",
+        "current": "221px",
+        "city": "92px",
+        "slidehead": "42.5px",
+        "subhead": "60px",
+        "info-frost-pane": "446.25px",
+        "severe-frost-pane-content": "400px"
       },
       zIndex: {
         "default": "1",
@@ -183,7 +189,7 @@ module.exports = {
         "bulletin-frost-pane": "60px"
       },
       letterSpacing: {
-        "nowwide": "2px",
+        "now": "2px",
         "current-noreport": "1.4px",
         "severe-frost-pane-title": ".5px",
         "severe-frost-pane-content": "1.5px"

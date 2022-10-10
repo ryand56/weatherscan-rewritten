@@ -1,13 +1,20 @@
 import * as React from "react";
 
-const defaults = {
+export const defaults = Object.freeze({
     city: "",
     state: "",
     country: "",
     countryCode: "",
-    latitude: 0,
-    longitude: 0
-};
+    latitude: null,
+    longitude: null
+});
+
+export const currentDefaults = Object.freeze({
+    temp: 0,
+    icon: 19,
+    wind: "",
+    windSpeed: 0
+});
 
 const memoAsync = (cb) => {
     const cache = new Map();
@@ -20,7 +27,7 @@ const memoAsync = (cb) => {
     };
 };
 
-export const getMainLocation = (location) => {
+export const getMainLocation = async (location) => {
     const memoizedFetch = memoAsync(fetch);
 
     return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
@@ -36,7 +43,7 @@ export const getMainLocation = (location) => {
                 loc.latitude = dataLocs.latitude[0];
                 loc.longitude = dataLocs.longitude[0];
 
-                return Object.freeze(loc);
+                return loc;
             }).catch(err => {
                 throw new Error(err);
             });
@@ -45,7 +52,7 @@ export const getMainLocation = (location) => {
         });
 };
 
-export const getClosestLocation = () => {
+export const getClosestLocation = async () => {
     return fetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
         .then(res => {
             return res.json().then(data => {
@@ -62,9 +69,30 @@ export const getClosestLocation = () => {
         });
 };
 
-export const getExtraLocations = (lat, lon) => {
+export const getExtraLocations = async (lat, lon) => {
     return fetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
 
+        });
+};
+
+export const getCurrentCond = async (lat, lon) => {
+    return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=${lat},${lon};&language=en-US&units=h&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(res => {
+            return res.json().then(data => {
+                const dataLoc = data[0]["v3-wx-observations-current"];
+
+                const current = Object.assign({}, currentDefaults);
+                current.temp = dataLoc.temperature;
+                current.icon = dataLoc.iconCode;
+                current.wind = `${(dataLoc.windDirectionCardinal === "CALM" || dataLoc.windSpeed === 0 ? "Calm" : dataLoc.windDirectionCardinal)} ${dataLoc.windSpeed === 0 ? "" : dataLoc.windSpeed}`;
+                current.windSpeed = dataLoc.windSpeed;
+
+                return current;
+            }).catch(err => {
+                throw new Error(err);
+            });
+        }).catch(err => {
+            throw new Error(err);
         });
 };

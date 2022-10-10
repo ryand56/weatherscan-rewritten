@@ -1,21 +1,23 @@
 import * as React from "react";
 
-const Current = ({ temp, info }) => (
+/*
+    <div
+        id="current-info"
+        className="font-parrow text-info absolute left-info-l top-info-t text-left w-info font-normal leading-info transform scale-x-106 scale-y-100 origin-left whitespace-normal text-shadow-none text-dark"
+    >{info}</div>
+*/
+const Current = ({ temp }) => (
     <div id="current-conditions" className="font-interstate absolute top-current-t left-0 h-current w-current text-left z-current">
-        {(typeof temp === "string" && typeof info === "string") ? <>
-            <div id="current-now" className="font-interstate font-bold text-shadow-none text-right text-dark z-now">now</div>
+        {(typeof temp === "number") ? <>
+            <div id="current-now" className="text-now absolute top-now-t left-now-l tracking-now text-left transform scale-x-105 scale-y-100 origin-left font-interstate font-bold text-shadow-none text-right text-dark z-now">now</div>
             <div
                 id="current-nowwide"
-                className="text-nowwide absolute top-nowwide-t left-nowwide-l tracking-nowwide text-left transform scale-x-105 scale-y-100 origin-left"
+                className="text-now absolute top-now-t left-nowwide-l tracking-now text-left transform scale-x-105 scale-y-100 origin-left font-interstate font-bold text-shadow-none text-dark"
             >now</div>
             <div
                 id="current-temp"
-                className="text-temp absolute top-temp-t -left-temp-l text-center w-full transform scale-x-102-5 scale-y-100 origin-left"
+                className="text-temp absolute top-temp-t -left-temp-l text-center w-full transform scale-x-102-5 scale-y-100 origin-left font-interstate font-bold text-shadow-none text-dark"
             >{temp}</div>
-            <div
-                id="current-info"
-                className="font-parrow text-info absolute left-info-l top-info-t text-left w-info font-normal leading-info transform scale-x-106 scale-y-100 origin-left whitespace-normal text-shadow-none text-dark"
-            >{info}</div>
         </> : <>
             <div
                 id="current-noreport"

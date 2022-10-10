@@ -1,5 +1,10 @@
 import * as React from "react";
-import { getMainLocation } from "../hooks/useWeather";
+import {
+    defaults,
+    currentDefaults,
+    getMainLocation,
+    getCurrentCond
+} from "../hooks/useWeather";
 
 import SlideBg from "./Slides/SlideBg";
 import SlidesContainer from "./Slides/Containers/SlidesContainer";
@@ -43,18 +48,46 @@ const Display = ({ winSize, location }) => {
         }
     }, [mainRef, innerWidth, innerHeight]);
 
-    const [city, setCity] = React.useState(null);
+    const [locInfo, setLocInfo] = React.useState(defaults);
+    const [currentInfo, setCurrentInfo] = React.useState(currentDefaults);
 
     // Location handler
     React.useEffect(() => {
         if (location) {
             getMainLocation(location).then(data => {
-                setCity(data.city);
+                setLocInfo(data);
             }).catch(err => {
                 console.error(err);
             });
         }
     }, [location]);
+
+    const fetchCurrent = (lat, lon) => {
+        getCurrentCond(lat, lon).then(data => {
+            setCurrentInfo(data);
+        }).catch(err => {
+            console.error(err);
+        });
+    };
+
+    // Current conditions handler
+    React.useEffect(() => {
+        const lat = locInfo.latitude;
+        const lon = locInfo.longitude;
+        
+        let intervalTimer;
+        if (lat && lon) {
+            fetchCurrent(lat, lon);
+            intervalTimer = setInterval(() => {
+                fetchCurrent(lat, lon)
+            }, 300000);
+        }
+
+        return () => {
+            clearInterval(intervalTimer);
+            intervalTimer = 0;
+        }
+    }, [locInfo.latitude, locInfo.longitude]);
 
     return (
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
@@ -62,12 +95,12 @@ const Display = ({ winSize, location }) => {
             <SlideBg />
             <SlidesContainer />
             <DateTime />
-            {city && <div
+            {locInfo.city !== "" && <div
                 id="city"
                 className="font-interstate font-semibold text-city pt-city-t absolute text-left ml-city-l w-city h-city top-city-t left-0 leading-city flex items-center transform scale-x-103 scale-y-100 origin-left"
-            >{city}</div>}
-            <CCIcon />
-            <Current />
+            >{locInfo.city}</div>}
+            <CCIcon iconCode={currentInfo.icon} windData={currentInfo.windSpeed} />
+            <Current temp={currentInfo.temp} />
         </div>
     )
 };

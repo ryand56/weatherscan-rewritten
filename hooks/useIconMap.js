@@ -13,9 +13,9 @@ const Icons2010 = Object.freeze({
     BLIZZARD: 11,
     HEAVY_SNOW: 12,
     HAIL: 13,
-    HAZY: 14,
+    SMOKE: 14,
     FOG: 15,
-    HAZY_ALT: 16,
+    SMOKE_ALT: 16,
     WIND: 17,
     HEAVY_WIND: 18,
     UNK: 19,
@@ -51,24 +51,41 @@ const Icons2010 = Object.freeze({
     HEAVY_WIND_ALT: 50
 });
 
-/* wip */
-const Icons2010CodeMap = Object.freeze({
-    "0": Icons2010.UNUSED,
-    "1": Icons2010.UNUSED,
-    "2": Icons2010.UNUSED,
-    "3": Icons2010.THUNDER_ALT,
-    "4": Icons2010.THUNDER,
-    "5": Icons2010.MIXED_RAIN_SNOW,
-    "6": Icons2010.HEAVY_RAIN_HAIL,
-    "7": Icons2010.MIXED_FREEZE_RAIN_SNOW,
-    "8": Icons2010.LIGHT_RAIN_ICY,
-    "9": Icons2010.LIGHT_RAIN,
-    "10": Icons2010.RAIN_ICY,
-    "11": Icons2010.RAIN,
-    "12": Icons2010.RAIN,
-    "13": Icons2010.SNOW,
-    "14": Icons2010.HEAVY_SNOW
-});
+const Icons2010CodeMap = Object.freeze([
+    Icons2010.UNUSED, // 0
+    Icons2010.UNUSED, // 1
+    Icons2010.UNUSED, // 2
+    Icons2010.THUNDER_ALT, // 3
+    Icons2010.THUNDER, // 4
+    Icons2010.MIXED_RAIN_SNOW, // 5
+    Icons2010.HEAVY_RAIN_HAIL, // 6
+    Icons2010.MIXED_FREEZE_RAIN_SNOW, // 7
+    Icons2010.LIGHT_RAIN_ICY, // 8
+    Icons2010.LIGHT_RAIN, // 9
+    Icons2010.RAIN_ICY, // 10
+    Icons2010.RAIN, // 11
+    Icons2010.RAIN, // 12
+    Icons2010.SNOW, // 13
+    Icons2010.HEAVY_SNOW, // 14
+    Icons2010.BLIZZARD, // 15
+    Icons2010.HEAVY_SNOW, // 16
+    Icons2010.HAIL_ALT, // 17
+    Icons2010.HAIL_ALT, // 18
+    Icons2010.SMOKE_ALT, // 19
+    Icons2010.FOG_ALT, // 20
+    Icons2010.SMOKE_ALT, // 21
+    Icons2010.SMOKE, // 22
+    Icons2010.UNUSED, // 23
+    Icons2010.HEAVY_WIND_ALT, // 24
+    Icons2010.HEAVY_SNOW_ALT2, // 25
+    Icons2010.CLOUDS, // 26
+    Icons2010.MOSTLY_CLOUDS_NIGHT, // 27
+    Icons2010.MOSTLY_CLOUDS, // 28
+    Icons2010.PARTLY_CLOUDS_NIGHT, // 29
+    Icons2010.PARTLY_CLOUDS, // 30
+    Icons2010.CLEAR_NIGHT, // 31
+    Icons2010.CLEAR, // 32
+]);
 
 export const getIcon = (iconCode, windData) => {
     let icon = Icons2010CodeMap[iconCode];

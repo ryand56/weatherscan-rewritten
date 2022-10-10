@@ -1,6 +1,9 @@
 import * as React from "react";
 import { useRouter } from "next/router";
 
+import { AudioPlayerProvider } from "react-use-audio-player";
+import Audio from "../components/Audio";
+
 import Intro from "../components/Intro";
 import Display from "../components/Display";
 
@@ -31,6 +34,9 @@ const Index = () => {
     return (
         location && (
             <>
+                <AudioPlayerProvider>
+                    <Audio />
+                </AudioPlayerProvider>
                 <Intro winSize={[innerWidth, innerHeight]} />
                 <Display location={location} winSize={[innerWidth, innerHeight]} />
             </>

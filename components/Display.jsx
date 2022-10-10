@@ -4,6 +4,8 @@ import { getMainLocation } from "../hooks/useWeather";
 import SlideBg from "./Slides/SlideBg";
 import SlidesContainer from "./Slides/Containers/SlidesContainer";
 import DateTime from "./DateTime";
+import CCIcon from "./CCIcon";
+import Current from "./Current";
 
 const resizeWindow = (mainRef, winWidth, winHeight) => {
     const mainAspect = 4/3;
@@ -64,6 +66,8 @@ const Display = ({ winSize, location }) => {
                 id="city"
                 className="font-interstate font-semibold text-city pt-city-t absolute text-left ml-city-l w-city h-city top-city-t left-0 leading-city flex items-center transform scale-x-103 scale-y-100 origin-left"
             >{city}</div>}
+            <CCIcon />
+            <Current />
         </div>
     )
 };

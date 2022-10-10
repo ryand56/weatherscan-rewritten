@@ -9,12 +9,14 @@ module.exports = {
       "frutiger": ["Frutiger", "ZemestroSTD", "sans-serif"],
       "interstate": ["Interstate", "ZemestroSTD", "sans-serif"],
       "interstate-mono": ["'Interstate Mono'", "ZemestroSTD", "sans-serif"],
+      "parrow": ["PressureArrow", "Interstate", "ZemestroSTD", "sans-serif"],
+      "interstate2": ["Interstate2", "ZemestroSTD", "sans-serif"],
       "frutiger57-cond": ["'Frutiger 57 Condensed'", "ZemestroSTD", "sans-serif"],
       "frutigerbold-cn": ["'Frutiger Bold Cn'", "ZemestroSTD", "sans-serif"]
     },
     extend: {
       colors: {
-        "date-time": "#171717",
+        "dark": "#171717",
         "subhead-noaa": "#f6a67a",
         "bulletin-cityname": "#d8c422",
         "frost-pane-title": "#d8c422"
@@ -65,6 +67,15 @@ module.exports = {
       },
       inset: {
         "date-time-t": "101px",
+        "current-t": "376px",
+        "nowwide-t": "12.5px",
+        "nowwide-l": "146px",
+        "temp-t": "88px",
+        "temp-l": "12.5px",
+        "info-l": "145px",
+        "info-t": "177px",
+        "current-noreport-t": "45%",
+        "current-noreport-l": "32.4%",
         "city-t": "284px",
         "slidehead": "2.5px",
         "gradient-r": "125px",
@@ -79,6 +90,7 @@ module.exports = {
         "forecast": "10%"
       },
       height: {
+        "current": "221px",
         "city": "92px",
         "slidehead": "42.5px",
         "subhead": "60px",
@@ -87,6 +99,10 @@ module.exports = {
       },
       fontSize: {
         "date": "28px",
+        "nowwide": "46px",
+        "temp": "69px",
+        "info": "31px",
+        "current-noreport": "44px",
         "city": "36.5px",
         "slidehead": "31px",
         "hscroller": "30px",
@@ -127,6 +143,7 @@ module.exports = {
         "left-center": "left center"
       },
       lineHeight: {
+        "info": "117.5%",
         "city": "110%",
         "date": "40px",
         "hscroller": "23.5px",
@@ -136,6 +153,9 @@ module.exports = {
         "frost-pane-content": "125%"
       },
       width: {
+        "current": "452px",
+        "info": "62.5%",
+        "current-noreport": "66%",
         "city": "311px",
         "date-time": "458px",
         "gradient": "125px",
@@ -143,6 +163,8 @@ module.exports = {
       },
       zIndex: {
         "default": "1",
+        "current": "4",
+        "now": "5",
         "infoslide": "5",
         "subheader": "4",
         "subheader-shadow": "6",
@@ -161,6 +183,8 @@ module.exports = {
         "bulletin-frost-pane": "60px"
       },
       letterSpacing: {
+        "nowwide": "2px",
+        "current-noreport": "1.4px",
         "severe-frost-pane-title": ".5px",
         "severe-frost-pane-content": "1.5px"
       },
@@ -177,6 +201,7 @@ module.exports = {
         "105": "1.05",
         "105-9": "1.059",
         "106": "1.06",
+        "110": "1.10",
         "112-5": "1.125",
         "114-5": "1.145",
         "115": "1.15",

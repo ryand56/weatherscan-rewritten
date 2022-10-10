@@ -23,6 +23,11 @@
         text-shadow: 2px 2px 5px black;
     }
 
+    /* No Report */
+    .text-shadow-noreport {
+        text-shadow: .5px 0 #171717;
+    }
+
     /* font-stretch */
     .font-stretch-semi-exp {
         font-stretch: semi-expanded;

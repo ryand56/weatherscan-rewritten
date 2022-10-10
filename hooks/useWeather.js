@@ -36,7 +36,7 @@ export const getMainLocation = (location) => {
                 loc.latitude = dataLocs.latitude[0];
                 loc.longitude = dataLocs.longitude[0];
 
-                return loc;
+                return Object.freeze(loc);
             }).catch(err => {
                 throw new Error(err);
             });

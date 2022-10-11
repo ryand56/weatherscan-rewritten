@@ -6,7 +6,8 @@ export const defaults = Object.freeze({
     country: "",
     countryCode: "",
     latitude: null,
-    longitude: null
+    longitude: null,
+    timezone: ""
 });
 
 export const currentDefaults = Object.freeze({
@@ -48,6 +49,7 @@ export const getMainLocation = async (location) => {
                 loc.countryCode = dataLocs.countryCode[0];
                 loc.latitude = dataLocs.latitude[0];
                 loc.longitude = dataLocs.longitude[0];
+                loc.timezone = dataLocs.ianaTimeZone[0];
 
                 return loc;
             }).catch(err => {
@@ -70,6 +72,7 @@ export const getClosestLocation = async () => {
                     loc.countryCode = data.countryCode;
                     loc.latitude = data.lat;
                     loc.longitude = data.lon;
+                    loc.timezone = data.timezone;
 
                     return loc;
                 }

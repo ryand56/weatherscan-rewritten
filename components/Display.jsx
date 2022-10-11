@@ -3,6 +3,7 @@ import {
     defaults,
     currentDefaults,
     getMainLocation,
+    getClosestLocation,
     getCurrentCond
 } from "../hooks/useWeather";
 
@@ -59,6 +60,12 @@ const Display = ({ winSize, location }) => {
             }).catch(err => {
                 console.error(err);
             });
+        } else {
+            getClosestLocation().then(data => {
+                setLocInfo(data);
+            }).catch(err => {
+                console.error(err);
+            });
         }
     }, [location]);
 
@@ -94,7 +101,7 @@ const Display = ({ winSize, location }) => {
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
             <SlideBg />
             <SlidesContainer />
-            <DateTime />
+            {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}
             {locInfo.city !== "" && <div
                 id="city"
                 className="font-interstate font-semibold text-city pt-city-t absolute text-left ml-city-l w-city h-city top-city-t left-0 leading-city flex items-center transform scale-x-103 scale-y-100 origin-left"

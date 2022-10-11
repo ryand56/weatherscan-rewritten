@@ -14,7 +14,7 @@ const randNum = (min, max) => {
 };
 
 const Audio = () => {
-    const [fileIdx, setFileIdx] = React.useState(randNum(1, 5));
+    const [fileIdx, setFileIdx] = React.useState(randNum(1, 13));
     const [file, setFile] = React.useState(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
     const [loop, setLoop] = React.useState(false);
 
@@ -28,9 +28,9 @@ const Audio = () => {
             console.log(`${file} has ended`);
             if (!loop)
             {
-                let rand = randNum(1, 5);
+                let rand = randNum(1, 13);
                 while (rand === fileIdx) {
-                    rand = randNum(1, 5);
+                    rand = randNum(1, 13);
                 }
                 setFileIdx(rand);
             }

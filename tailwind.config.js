@@ -177,7 +177,8 @@ module.exports = {
         "subheader": "4",
         "subheader-shadow": "6",
         "noreport": "2000",
-        "frost-pane": "388686"
+        "frost-pane": "388686",
+        "audio": "999999"
       },
       dropShadow: {
         "none": "0px 0px 0px #000",

@@ -1,5 +1,5 @@
 # weatherscan-rewritten
-Rewritten version of the [Weatherscan Emulator](https://github.com/buffbears/Weatherscan) in NextJs. (Basically an organized, readable version) Original credits go to [buffbears](https://github.com/buffbears).
+Rewritten version of the original [Weatherscan Emulator](https://github.com/buffbears/Weatherscan) in NextJs. (Basically an organized, readable version) Original credits go to [buffbears](https://github.com/buffbears).
 
 ## Why?
 I made this out of curiousity and it was very interesting to me. (Plus that music as well) I managed to find source code but I could barely read it. I ended up making this project in a more modern sense and deployed it as such.

@@ -15,7 +15,7 @@ const CCIcon = ({ iconCode, windData }) => {
         <div
             id="conditions-icon"
             className="absolute left-conditions-icon-l bg-conditions-icon w-conditions-icon h-conditions-icon bg-no-repeat top-conditions-icon-t z-0"
-            style={{ backgroundImage: `url(images/icons2010/${icon}.png)` }}
+            style={{ backgroundImage: `url(images/icons2010/${icon < 10 ? `0${icon}` : icon}.png)` }}
         />
     );
 };

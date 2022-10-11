@@ -149,6 +149,7 @@ module.exports = {
         "frost-pane-content": "125%"
       },
       width: {
+        "main": "1440px",
         "conditions-icon": "155px",
         "current": "452px",
         "info": "62.5%",
@@ -159,6 +160,7 @@ module.exports = {
         "subhead-shadow": "250%"
       },
       height: {
+        "main": "1080px",
         "conditions-icon": "155px",
         "current": "221px",
         "city": "92px",

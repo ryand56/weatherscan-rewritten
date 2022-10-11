@@ -90,7 +90,7 @@ const Display = ({ winSize, location }) => {
     }, [locInfo.latitude, locInfo.longitude]);
 
     return (
-        <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-[1440px] h-[1080px] will-change-transform">
+        <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
             <SlideBg />
             <SlidesContainer />
@@ -100,7 +100,19 @@ const Display = ({ winSize, location }) => {
                 className="font-interstate font-semibold text-city pt-city-t absolute text-left ml-city-l w-city h-city top-city-t left-0 leading-city flex items-center transform scale-x-103 scale-y-100 origin-left"
             >{locInfo.city}</div>}
             <CCIcon iconCode={currentInfo.icon} windData={currentInfo.windSpeed} />
-            <Current temp={currentInfo.temp} />
+            <Current
+                key={currentInfo.phrase}
+                temp={currentInfo.temp}
+                info={{
+                    visib: currentInfo.visib,
+                    uvindex: currentInfo.uvIndex,
+                    phrase: currentInfo.phrase,
+                    wind: currentInfo.wind,
+                    humidity: currentInfo.humidity,
+                    dewpt: currentInfo.dewpt,
+                    pres: currentInfo.pres
+                }}
+            />
         </div>
     )
 };

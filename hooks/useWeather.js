@@ -13,7 +13,13 @@ export const currentDefaults = Object.freeze({
     temp: 0,
     icon: 19,
     wind: "",
-    windSpeed: 0
+    windSpeed: 0,
+    visib: 0,
+    uvIndex: "",
+    phrase: "",
+    humidity: 0,
+    dewpt: 0,
+    pres: 0
 });
 
 const memoAsync = (cb) => {
@@ -57,10 +63,18 @@ export const getClosestLocation = async () => {
         .then(res => {
             return res.json().then(data => {
                 if (data.status === "success") {
-                    return `${data.city},${data.region}`;
+                    const loc = Object.assign({}, defaults);
+                    loc.city = data.city;
+                    loc.state = data.region;
+                    loc.country = data.country;
+                    loc.countryCode = data.countryCode;
+                    loc.latitude = data.lat;
+                    loc.longitude = data.lon;
+
+                    return loc;
                 }
 
-                return null;
+                return defaults;
             }).catch(err => {
                 throw new Error(err);
             });
@@ -87,6 +101,12 @@ export const getCurrentCond = async (lat, lon) => {
                 current.icon = dataLoc.iconCode;
                 current.wind = `${(dataLoc.windDirectionCardinal === "CALM" || dataLoc.windSpeed === 0 ? "Calm" : dataLoc.windDirectionCardinal)} ${dataLoc.windSpeed === 0 ? "" : dataLoc.windSpeed}`;
                 current.windSpeed = dataLoc.windSpeed;
+                current.visib = dataLoc.visibility;
+                current.uvIndex = dataLoc.uvDescription;
+                current.phrase = dataLoc.wxPhraseLong.toLowerCase();
+                current.humidity = dataLoc.relativeHumidity;
+                current.dewpt = dataLoc.temperatureDewPoint;
+                current.pres = dataLoc.pressureAltimeter.toFixed(2);
 
                 return current;
             }).catch(err => {

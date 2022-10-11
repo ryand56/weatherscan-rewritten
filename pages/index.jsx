@@ -23,11 +23,11 @@ const Index = () => {
                 setLocation(location);
             }
         } else {
-            /* getClosestLocation().then(data => {
-                setLocation(data);
+            getClosestLocation().then(data => {
+                setLocation(`${data.city},${data.state}`);
             }).catch(err => {
                 console.error(err);
-            }); */
+            });
         }
     }, [router]);
 

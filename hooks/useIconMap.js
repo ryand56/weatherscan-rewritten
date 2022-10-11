@@ -85,6 +85,21 @@ const Icons2010CodeMap = Object.freeze([
     Icons2010.PARTLY_CLOUDS, // 30
     Icons2010.CLEAR_NIGHT, // 31
     Icons2010.CLEAR, // 32
+    Icons2010.LIGHT_CLOUDS_NIGHT, // 33
+    Icons2010.LIGHT_CLOUDS, // 34
+    Icons2010.HAIL, // 35
+    Icons2010.HOT, // 36
+    Icons2010.THUNDER_SUN, // 37
+    Icons2010.THUNDER_SUN, // 38
+    Icons2010.RAIN_SUN, // 39
+    Icons2010.HEAVY_RAIN, // 40
+    Icons2010.HEAVY_SNOW_SUN, // 41
+    Icons2010.HEAVY_SNOW_ALT, // 42
+    Icons2010.HEAVY_SNOW_ALT2, // 43
+    Icons2010.UNK, // 44
+    Icons2010.RAIN_NIGHT, // 45
+    Icons2010.SNOW_NIGHT, // 46
+    Icons2010.THUNDER_NIGHT // 47
 ]);
 
 export const getIcon = (iconCode, windData) => {

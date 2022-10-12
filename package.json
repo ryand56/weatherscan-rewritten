@@ -1,7 +1,7 @@
 {
   "name": "weatherscan-rewritten",
   "version": "1.0.0",
-  "description": "",
+  "description": "Weatherscan Rewritten",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/elementemerald/weatherscan-rewritten.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "elementemerald",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/elementemerald/weatherscan-rewritten/issues"
   },

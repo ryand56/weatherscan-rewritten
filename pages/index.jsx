@@ -11,20 +11,25 @@ import { getMainLocation, getClosestLocation } from "../hooks/useWeather";
 import { useWinSizeInner } from "../hooks/useWinSize";
 
 const Index = () => {
-    const { isReady, query } = useRouter();
+    const router = useRouter(); // const { isReady, query } = useRouter();
+    const [loading, setLoading] = React.useState(true);
     const [location, setLocation] = React.useState(null);
-    const [precise, setPrecise] = React.useState(null); // Precise location
     const [innerWidth, innerHeight] = useWinSizeInner();
 
     React.useEffect(() => {
-        if (!isReady) return;
+        if (!router.isReady) return;
+        const query = router.query;
         const location = query.location;
 
         // Custom location
-        if (location) {
+        if (location !== null) {
             setLocation(location);
         }
-    }, [isReady]);
+
+        setLoading(false);
+    }, [router.isReady]);
+
+    if (loading) return <div>Loading...</div>;
 
     return (
         <>

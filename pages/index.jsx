@@ -22,7 +22,7 @@ const Index = () => {
         const location = query.location;
 
         // Custom location
-        if (location !== null) {
+        if (location !== undefined && location !== null) {
             setLocation(location);
         }
 

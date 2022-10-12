@@ -55,7 +55,7 @@ const Display = ({ winSize, location }) => {
     // Location handler
     React.useEffect(() => {
         console.log(location);
-        if (location !== null) {
+        if (location !== undefined && location !== null) {
             getMainLocation(location).then(data => {
                 setLocInfo(data);
             }).catch(err => {

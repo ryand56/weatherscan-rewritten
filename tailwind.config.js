@@ -133,6 +133,7 @@ module.exports = {
         "infoslide": "99.87%",
         "bulletin-frost-pane": "446.25px",
         "frost-pane": "446.25px",
+        "frost-pane-content": "400px",
         "severe-frost-pane-content": "400px"
       },
       transformOrigin: {
@@ -167,6 +168,7 @@ module.exports = {
         "slidehead": "42.5px",
         "subhead": "60px",
         "info-frost-pane": "446.25px",
+        "frost-pane-content": "400px",
         "severe-frost-pane-content": "400px"
       },
       zIndex: {
@@ -195,6 +197,7 @@ module.exports = {
         "now": "2px",
         "current-noreport": "1.4px",
         "severe-frost-pane-title": ".5px",
+        "frost-pane-content": "1.5px",
         "severe-frost-pane-content": "1.5px"
       },
       translate: {

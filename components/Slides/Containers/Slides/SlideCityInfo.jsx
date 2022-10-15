@@ -37,7 +37,8 @@ const SlideCityInfo = () => (
                     />
                     <div
                         id="content"
-                        className="font-frutiger57-cond"
+                        className="font-frutiger57-cond h-frost-pane-content max-h-frost-pane-content transform -translate-x-2.5 -translate-y-2.5 scale-x-115 scale-y-100 origin-left tracking-frost-pane-content"
+                        style={{ fontSize: "52px" }}
                     />
                 </FrostPane>
             </div>

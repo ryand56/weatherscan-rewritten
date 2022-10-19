@@ -1,6 +1,22 @@
 import * as React from "react";
 
-export const defaults = Object.freeze({
+export type Location = {
+    status: string // Closest location response
+    city: string
+    state: string
+    country: string
+    countryCode: string
+    latitude: number
+    longitude: number
+    timezone: string
+}
+
+type LocationResponse = {
+    location: Partial<Location>
+}
+
+export const defaults: Location = Object.freeze({
+    status: "",
     city: "",
     state: "",
     country: "",
@@ -10,8 +26,21 @@ export const defaults = Object.freeze({
     timezone: ""
 });
 
-export const currentDefaults = Object.freeze({
-    temp: 0,
+export type CurrentCond = {
+    temp: number
+    icon: number
+    wind: string
+    windSpeed: number
+    visib: number
+    uvIndex: string
+    phrase: string
+    humidity: number
+    dewpt: number
+    pres: number
+}
+
+export const currentDefaults: CurrentCond = Object.freeze({
+    temp: NaN,
     icon: 19,
     wind: "",
     windSpeed: 0,
@@ -34,24 +63,13 @@ const memoAsync = (cb) => {
     };
 };
 
-export const getMainLocation = async (location) => {
+export const getMainLocation = async (location: string | string[]) => {
     const memoizedFetch = memoAsync(fetch);
 
-    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
-        .then(res => {
-            return res.json().then(data => {
-                const dataLocs = data.location;
-
-                const loc = Object.assign({}, defaults);
-                loc.city = dataLocs.city[0];
-                loc.state = dataLocs.adminDistrict[0];
-                loc.country = dataLocs.country[0];
-                loc.countryCode = dataLocs.countryCode[0];
-                loc.latitude = dataLocs.latitude[0];
-                loc.longitude = dataLocs.longitude[0];
-                loc.timezone = dataLocs.ianaTimeZone[0];
-
-                return loc;
+    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(<string>location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then((res: Response) => {
+            return res.json().then((data: LocationResponse) => {
+                return data.location;
             }).catch(err => {
                 throw new Error(err);
             });
@@ -65,16 +83,16 @@ export const getClosestLocation = async () => {
         .then(res => {
             return res.json().then(data => {
                 if (data.status === "success") {
-                    const loc = Object.assign({}, defaults);
-                    loc.city = data.city;
-                    loc.state = data.region;
-                    loc.country = data.country;
-                    loc.countryCode = data.countryCode;
-                    loc.latitude = data.lat;
-                    loc.longitude = data.lon;
-                    loc.timezone = data.timezone;
+                    const closest = Object.assign({}, defaults);
+                    closest.city = data.city;
+                    closest.state = data.region;
+                    closest.country = data.country;
+                    closest.countryCode = data.countryCode;
+                    closest.latitude = data.lat;
+                    closest.longitude = data.lon;
+                    closest.timezone = data.timezone;
 
-                    return loc;
+                    return closest;
                 }
 
                 return defaults;
@@ -86,14 +104,14 @@ export const getClosestLocation = async () => {
         });
 };
 
-export const getExtraLocations = async (lat, lon) => {
+export const getExtraLocations = async (lat: number, lon: number) => {
     return fetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
 
         });
 };
 
-export const getCurrentCond = async (lat, lon) => {
+export const getCurrentCond = async (lat: number, lon: number) => {
     return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=${lat},${lon};&language=en-US&units=h&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
             return res.json().then(data => {

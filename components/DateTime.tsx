@@ -1,8 +1,12 @@
 import * as React from "react";
 
-const DateTime = ({ tz }) => {
-    const [date, setDate] = React.useState("Jan 01");
-    const [time, setTime] = React.useState("12:00:00pm");
+interface DateTimeProps {
+    tz: string
+}
+
+const DateTime = ({ tz }: DateTimeProps) => {
+    const [date, setDate] = React.useState<string>("Jan 01");
+    const [time, setTime] = React.useState<string>("12:00:00pm");
 
     const updateTime = () => {
         const date = new Date();
@@ -24,17 +28,14 @@ const DateTime = ({ tz }) => {
     };
 
     React.useEffect(() => {
-        let interval;
+        let interval: NodeJS.Timeout;
 
         if (tz !== "") {
             updateTime();
             interval = setInterval(updateTime, 500);
         }
 
-        return () => {
-            clearInterval(interval);
-            interval = 0;
-        };
+        return () => clearInterval(interval);
     }, [tz]);
 
     return (

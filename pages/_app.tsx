@@ -1,8 +1,9 @@
 import "../styles/global.css";
 import * as React from "react";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 
-const MyApp = ({ Component, pageProps, router }) => (
+const MyApp = ({ Component, pageProps, router }: AppProps) => (
     <>
         <Head>
             <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />

@@ -9,14 +9,14 @@ import {
     MdRepeatOneOn
 } from "react-icons/md";
 
-const randNum = (min, max) => {
+const randNum = (min: number, max: number) => {
     return Math.round(Math.random() * (max - min) + min);
 };
 
 const Audio = () => {
-    const [fileIdx, setFileIdx] = React.useState(randNum(1, 13));
-    const [file, setFile] = React.useState(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
-    const [loop, setLoop] = React.useState(false);
+    const [fileIdx, setFileIdx] = React.useState<number>(randNum(1, 13));
+    const [file, setFile] = React.useState<string>(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
+    const [loop, setLoop] = React.useState<boolean>(false);
 
     const { togglePlayPause, ready, loading, playing, load, player } = useAudioPlayer({
         src: file,

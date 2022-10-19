@@ -7,18 +7,16 @@ import Audio from "../components/Audio";
 import Intro from "../components/Intro";
 import Display from "../components/Display";
 
-import { getMainLocation, getClosestLocation } from "../hooks/useWeather";
 import { useWinSizeInner } from "../hooks/useWinSize";
 
 const Index = () => {
-    const router = useRouter(); // const { isReady, query } = useRouter();
-    const [loading, setLoading] = React.useState(true);
+    const { isReady, query } = useRouter();
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [location, setLocation] = React.useState(null);
     const [innerWidth, innerHeight] = useWinSizeInner();
 
     React.useEffect(() => {
-        if (!router.isReady) return;
-        const query = router.query;
+        if (!isReady) return;
         const location = query.location;
 
         // Custom location
@@ -27,7 +25,7 @@ const Index = () => {
         }
 
         setLoading(false);
-    }, [router.isReady]);
+    }, [isReady]);
 
     if (loading) return <div>Loading...</div>;
 

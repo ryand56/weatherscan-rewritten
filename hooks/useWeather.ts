@@ -27,6 +27,7 @@ interface WeatherAPILocResponse {
     location: Partial<WeatherAPILocation>
 }
 
+// ip-api.com
 enum IPAPIStatus {
     SUCCESS = "success",
     FAIL = "fail"

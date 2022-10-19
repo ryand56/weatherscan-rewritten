@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { Location, CurrentCond } from "../hooks/useWeather";
 import {
     defaults,
     currentDefaults,
@@ -13,10 +14,14 @@ import DateTime from "./DateTime";
 import CCIcon from "./CCIcon";
 import Current from "./Current";
 
-const resizeWindow = (mainRef, winWidth, winHeight) => {
+const resizeWindow = (
+    mainRef: React.MutableRefObject<HTMLDivElement>,
+    winWidth: number,
+    winHeight: number
+) => {
     const mainAspect = 4/3;
     const windowAspect = winWidth / winHeight;
-    let scale;
+    let scale: number;
 
     const refWidth = mainRef.current.clientWidth;
     const refHeight = mainRef.current.clientHeight;
@@ -30,11 +35,16 @@ const resizeWindow = (mainRef, winWidth, winHeight) => {
     mainRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
 };
 
-const Display = ({ winSize, location }) => {
-    const [innerWidth, innerHeight] = winSize;
-    const mainRef = React.useRef();
+interface DisplayProps {
+    winSize: number[]
+    location: string | string[]
+}
 
-    const resizeListener = (e) => {
+const Display = ({ winSize, location }: DisplayProps) => {
+    const [innerWidth, innerHeight] = winSize;
+    const mainRef = React.useRef<HTMLDivElement>();
+
+    const resize = () => {
         resizeWindow(mainRef, innerWidth, innerHeight);
     };
 
@@ -45,17 +55,17 @@ const Display = ({ winSize, location }) => {
         }
 
         if (mainRef && mainRef.current) {
-            resizeListener();
+            resize();
         }
     }, [mainRef, innerWidth, innerHeight]);
 
-    const [locInfo, setLocInfo] = React.useState(defaults);
-    const [currentInfo, setCurrentInfo] = React.useState(currentDefaults);
+    const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
+    const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
 
     // Location handler
     React.useEffect(() => {
         console.log(location);
-        if (location !== undefined && location !== null) {
+        if (location !== "") {
             getMainLocation(location).then(data => {
                 setLocInfo(data);
             }).catch(err => {
@@ -70,7 +80,7 @@ const Display = ({ winSize, location }) => {
         }
     }, [location]);
 
-    const fetchCurrent = (lat, lon) => {
+    const fetchCurrent = (lat: number, lon: number) => {
         getCurrentCond(lat, lon).then(data => {
             setCurrentInfo(data);
         }).catch(err => {
@@ -83,7 +93,7 @@ const Display = ({ winSize, location }) => {
         const lat = locInfo.latitude;
         const lon = locInfo.longitude;
         
-        let intervalTimer;
+        let intervalTimer: NodeJS.Timeout;
         if (lat && lon) {
             fetchCurrent(lat, lon);
             intervalTimer = setInterval(() => {
@@ -91,10 +101,7 @@ const Display = ({ winSize, location }) => {
             }, 300000);
         }
 
-        return () => {
-            clearInterval(intervalTimer);
-            intervalTimer = 0;
-        }
+        return () => clearInterval(intervalTimer);
     }, [locInfo.latitude, locInfo.longitude]);
 
     return (
@@ -111,15 +118,7 @@ const Display = ({ winSize, location }) => {
             <Current
                 key={currentInfo.phrase}
                 temp={currentInfo.temp}
-                info={{
-                    visib: currentInfo.visib,
-                    uvindex: currentInfo.uvIndex,
-                    phrase: currentInfo.phrase,
-                    wind: currentInfo.wind,
-                    humidity: currentInfo.humidity,
-                    dewpt: currentInfo.dewpt,
-                    pres: currentInfo.pres
-                }}
+                info={currentInfo}
             />
         </div>
     )

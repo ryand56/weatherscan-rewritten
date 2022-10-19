@@ -2,10 +2,14 @@ import * as React from "react";
 
 import perlin from "../hooks/usePerlin";
 
-const resizeWindow = (mainRef, winWidth, winHeight) => {
+const resizeWindow = (
+    mainRef: React.MutableRefObject<HTMLDivElement>,
+    winWidth: number,
+    winHeight: number
+) => {
     const mainAspect = 4/3;
     const windowAspect = winWidth / winHeight;
-    let scale;
+    let scale: number;
 
     const main = document.getElementById("main");
 
@@ -23,13 +27,17 @@ const resizeWindow = (mainRef, winWidth, winHeight) => {
     }
 };
 
-const Intro = ({ winSize }) => {
+interface IntroProps {
+    winSize: number[]
+}
+
+const Intro = ({ winSize }: IntroProps) => {
     const [innerWidth, innerHeight] = winSize;
 
-    const mainRef = React.useRef();
-    const intellistarRef = React.useRef();
+    const mainRef = React.useRef<HTMLDivElement>();
+    const intellistarRef = React.useRef<HTMLImageElement>();
 
-    function resizeListener(e) {
+    function resize() {
         resizeWindow(mainRef, innerWidth, innerHeight);
     }
 
@@ -39,7 +47,7 @@ const Intro = ({ winSize }) => {
         }
 
         if (mainRef && mainRef.current) {
-            resizeListener();
+            resize();
         }
     }, [mainRef, innerWidth, innerHeight]);
 
@@ -60,7 +68,7 @@ const Intro = ({ winSize }) => {
             intellistarRef.current.style.transition = "transform 2s linear";
             intellistarRef.current.style.transform = `rotatex(${rotatex}turn) rotatey(${rotatey}turn) rotatez(${rotatez}turn)`;
 
-            let rotInterval;
+            let rotInterval: NodeJS.Timeout;
             let time = 0;
 
             setTimeout(() => {

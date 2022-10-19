@@ -12,7 +12,7 @@ import { useWinSizeInner } from "../hooks/useWinSize";
 const Index = () => {
     const { isReady, query } = useRouter();
     const [loading, setLoading] = React.useState<boolean>(true);
-    const [location, setLocation] = React.useState(null);
+    const [location, setLocation] = React.useState<string | string[]>("");
     const [innerWidth, innerHeight] = useWinSizeInner();
 
     React.useEffect(() => {

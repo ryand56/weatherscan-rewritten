@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Location = {
+export type Location = {
     status: string // Closest location response
     city: string
     state: string
@@ -26,7 +26,7 @@ export const defaults: Location = Object.freeze({
     timezone: ""
 });
 
-type CurrentCond = {
+export type CurrentCond = {
     temp: number
     icon: number
     wind: string
@@ -40,7 +40,7 @@ type CurrentCond = {
 }
 
 export const currentDefaults: CurrentCond = Object.freeze({
-    temp: 0,
+    temp: NaN,
     icon: 19,
     wind: "",
     windSpeed: 0,
@@ -63,10 +63,10 @@ const memoAsync = (cb) => {
     };
 };
 
-export const getMainLocation = async (location: string) => {
+export const getMainLocation = async (location: string | string[]) => {
     const memoizedFetch = memoAsync(fetch);
 
-    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(<string>location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then((res: Response) => {
             return res.json().then((data: LocationResponse) => {
                 return data.location;
@@ -81,11 +81,18 @@ export const getMainLocation = async (location: string) => {
 export const getClosestLocation = async () => {
     return fetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
         .then(res => {
-            return res.json().then((data: LocationResponse) => {
-                const loc: Partial<Location> = data.location;
+            return res.json().then(data => {
+                if (data.status === "success") {
+                    const closest = Object.assign({}, defaults);
+                    closest.city = data.city;
+                    closest.state = data.region;
+                    closest.country = data.country;
+                    closest.countryCode = data.countryCode;
+                    closest.latitude = data.lat;
+                    closest.longitude = data.lon;
+                    closest.timezone = data.timezone;
 
-                if (loc.status === "success") {
-                    return loc;
+                    return closest;
                 }
 
                 return defaults;

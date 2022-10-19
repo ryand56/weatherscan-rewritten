@@ -1,17 +1,23 @@
 import * as React from "react";
+import type { CurrentCond } from "../hooks/useWeather";
 
-const Current = ({ temp, info }) => {
-    const [cycle, setCycle] = React.useState([]);
-    const [idx, setIdx] = React.useState(0);
-    const [infoMsg, setInfoMsg] = React.useState("");
+interface CurrentProps {
+    temp: number
+    info: Partial<CurrentCond>
+}
+
+const Current = ({ temp, info }: CurrentProps) => {
+    const [cycle, setCycle] = React.useState<string[]>([]);
+    const [idx, setIdx] = React.useState<number>(0);
+    const [infoMsg, setInfoMsg] = React.useState<string>("");
 
     React.useEffect(() => {
-        let intervalTimer;
+        let intervalTimer: NodeJS.Timeout;
         if (info) {
             if (info.phrase !== "") {
                 const tempCycle = [
                     `visibility ${info.visib} ${info.visib != 1 ? "miles" : "mile"}`,
-                    `UV index ${info.uvindex}`,
+                    `UV index ${info.uvIndex}`,
                     info.phrase,
                     `wind ${info.wind}`,
                     `humidity ${info.humidity}%`,
@@ -33,10 +39,7 @@ const Current = ({ temp, info }) => {
             }
         }
 
-        return () => {
-            clearInterval(intervalTimer);
-            intervalTimer = 0;
-        }
+        return () => clearInterval(intervalTimer);
     }, [info]);
 
     React.useEffect(() => {
@@ -50,7 +53,7 @@ const Current = ({ temp, info }) => {
 
     return (
         <div id="current-conditions" className="font-interstate absolute top-current-t left-0 h-current w-current text-left z-current">
-            {(typeof temp === "number") ? <>
+            {(temp !== NaN) ? <>
                 <div id="current-now" className="text-now absolute top-now-t left-now-l tracking-now text-left transform scale-x-105 scale-y-100 origin-left font-interstate font-bold text-shadow-none text-right text-dark z-now">now</div>
                 <div
                     id="current-nowwide"

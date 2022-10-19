@@ -1,9 +1,14 @@
 import * as React from "react";
 
+interface FrostPaneProps {
+    extraParent: string[]
+    children: any
+}
+
 const FrostPane = ({
     extraParent,
     children
-}) => (
+}: FrostPaneProps) => (
     <>
         <div
             id="frost-pane"

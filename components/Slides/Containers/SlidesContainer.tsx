@@ -5,14 +5,12 @@ import SlideSevereHeaderMsg from "./Headers/SlideSevereHeadMsg";
 import SlideContainer from "./SlideContainer";
 
 const SlidesContainer = () => (
-    <>
-        <div id="info-slides-container" className="flex flex-col absolute right-[75px] top-[92px] w-[887px] h-[569px] max-h-[569px] z-[1] p-slides">
-            <SlideHeader />
-            <SlideSevereHeader />
-            <SlideSevereHeaderMsg />
-            <SlideContainer />
-        </div>
-    </>
+    <div id="info-slides-container" className="flex flex-col absolute right-[75px] top-[92px] w-[887px] h-[569px] max-h-[569px] z-[1] p-slides">
+        <SlideHeader />
+        <SlideSevereHeader />
+        <SlideSevereHeaderMsg />
+        <SlideContainer />
+    </div>
 );
 
 export default SlidesContainer;

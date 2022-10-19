@@ -1,4 +1,4 @@
-enum Icons2010 {
+export enum Icons2010 {
     UNUSED,
     THUNDER,
     MIXED_RAIN_SNOW,

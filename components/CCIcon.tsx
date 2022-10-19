@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getIcon } from "../hooks/useIconMap";
+import { Icons2010, getIcon } from "../hooks/useIconMap";
 
 interface CCIconProps {
     iconCode: number
@@ -7,7 +7,7 @@ interface CCIconProps {
 }
 
 const CCIcon = ({ iconCode, windData }: CCIconProps) => {
-    const [icon, setIcon] = React.useState<number>(44); // Icons2010.UNK
+    const [icon, setIcon] = React.useState<number>(Icons2010.UNK);
 
     React.useEffect(() => {
         if (typeof iconCode === "number" && typeof windData === "number") {

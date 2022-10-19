@@ -1,9 +1,9 @@
 import * as React from "react";
 
 export const useWinSizeInner = () => {
-    const [size, setSize] = React.useState([0, 0]);
+    const [size, setSize] = React.useState<number[]>([0, 0]);
     React.useEffect(() => {
-        let resizeTimer;
+        let resizeTimer: NodeJS.Timeout;
         const updateSize = () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {

@@ -24,6 +24,7 @@ module.exports = {
       backgroundImage: {
         "slideouter": "radial-gradient(farthest-corner at 963px 569px, #000d28, #001668)",
         "slideheadgrad": "linear-gradient(to right, rgba(147, 156, 171, 0), rgba(147, 156, 171, .97))",
+        "city-intro-slide": "url(/images/newbg/city_bg.png)",
         "bulletin-image": "url(/images/newbg/weather_bulletin_bg.png)",
         "bulletin-frost-pane": "url(/images/newbg/bulletinfrostpane.svg)",
         "severe-city-info-image": "url(/images/newbg/severe_core_bg.png)",

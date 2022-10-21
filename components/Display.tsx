@@ -13,6 +13,7 @@ import SlidesContainer from "./Slides/Containers/SlidesContainer";
 import DateTime from "./DateTime";
 import CCIcon from "./CCIcon";
 import Current from "./Current";
+import InfoMarquee from "./Marquee";
 
 const resizeWindow = (
     mainRef: React.MutableRefObject<HTMLDivElement>,
@@ -120,6 +121,7 @@ const Display = ({ winSize, location }: DisplayProps) => {
                 temp={currentInfo.temp}
                 info={currentInfo}
             />
+            <InfoMarquee />
         </div>
     )
 };

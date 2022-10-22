@@ -14,6 +14,11 @@ const Index = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [location, setLocation] = React.useState<string | string[]>("");
     const [innerWidth, innerHeight] = useWinSizeInner();
+    const [introDone, setIntroDone] = React.useState<boolean>(false);
+
+    const IntroCallback = () => {
+        setIntroDone(true);
+    };
 
     React.useEffect(() => {
         if (!isReady) return;
@@ -34,8 +39,8 @@ const Index = () => {
             <AudioPlayerProvider>
                 <Audio />
             </AudioPlayerProvider>
-            <Intro winSize={[innerWidth, innerHeight]} />
-            <Display location={location} winSize={[innerWidth, innerHeight]} />
+            <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
+            <Display isReady={introDone} location={location} winSize={[innerWidth, innerHeight]} />
         </>
     );
 };

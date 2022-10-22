@@ -38,11 +38,12 @@ const resizeWindow = (
 };
 
 interface DisplayProps {
+    isReady: boolean
     winSize: number[]
     location: string | string[]
 }
 
-const Display = ({ winSize, location }: DisplayProps) => {
+const Display = ({ isReady, winSize, location }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
 
@@ -66,20 +67,22 @@ const Display = ({ winSize, location }: DisplayProps) => {
 
     // Location handler
     React.useEffect(() => {
-        if (location !== "") {
-            getMainLocation(location).then(data => {
-                setLocInfo(data);
-            }).catch(err => {
-                console.error(err);
-            });
-        } else {
-            getClosestLocation().then(data => {
-                setLocInfo(data);
-            }).catch(err => {
-                console.error(err);
-            });
+        if (isReady) {
+            if (location !== "") {
+                getMainLocation(location).then(data => {
+                    setLocInfo(data);
+                }).catch(err => {
+                    console.error(err);
+                });
+            } else {
+                getClosestLocation().then(data => {
+                    setLocInfo(data);
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
         }
-    }, [location]);
+    }, [isReady, location]);
 
     const fetchCurrent = (lat: number, lon: number) => {
         getCurrentCond(lat, lon).then(data => {
@@ -91,19 +94,21 @@ const Display = ({ winSize, location }: DisplayProps) => {
 
     // Current conditions handler
     React.useEffect(() => {
-        const lat = locInfo.latitude;
-        const lon = locInfo.longitude;
-        
-        let intervalTimer: NodeJS.Timeout;
-        if (lat && lon) {
-            fetchCurrent(lat, lon);
-            intervalTimer = setInterval(() => {
-                fetchCurrent(lat, lon)
-            }, 300000);
-        }
+        if (isReady) {
+            const lat = locInfo.latitude;
+            const lon = locInfo.longitude;
+            
+            let intervalTimer: NodeJS.Timeout;
+            if (lat && lon) {
+                fetchCurrent(lat, lon);
+                intervalTimer = setInterval(() => {
+                    fetchCurrent(lat, lon)
+                }, 300000);
+            }
 
-        return () => clearInterval(intervalTimer);
-    }, [locInfo.latitude, locInfo.longitude]);
+            return () => clearInterval(intervalTimer);
+        }
+    }, [isReady, locInfo.latitude, locInfo.longitude]);
 
     /*
         <InfoMarquee
@@ -130,7 +135,7 @@ const Display = ({ winSize, location }: DisplayProps) => {
             <LogoArea />
             <InfoMarquee
                 top="Hello World"
-                bottom="We have currently parterned with Indigo Wireless to offer great wireless service in Tioga County! Go to indigowireless.com or stop in at 100 Main in Wellsboro for more information on this promo. | Save $5.00 a month with easy, painless auto pay system. Sign up Today! | In weeks to come we will be making upgrades to our network to serve your TV experience better! You may experience brief No Signal mesages on your TV. If the message stays on your TV for more than 4 hours please reboot the TV and call us. | Remember that this is all made possible with help from the Weather Ranch Discord Server! | Help from MapGuy11, Goldblaze, and TWCJon! | To stay up to date with all the latest on the emulator join the Discord Server! https://discord.gg/4TpAsRtsAx | NextJs version inspired from https://github.com/buffbears/Weatherscan |"
+                bottom="We have currently partnered with Indigo Wireless to offer great wireless service in Tioga County! Go to indigowireless.com or stop in at 100 Main in Wellsboro for more information on this promo. | Save $5.00 a month with easy, painless auto pay system. Sign up Today! | In weeks to come we will be making upgrades to our network to serve your TV experience better! You may experience brief No Signal mesages on your TV. If the message stays on your TV for more than 4 hours please reboot the TV and call us. | Remember that this is all made possible with help from the Weather Ranch Discord Server! | Help from MapGuy11, Goldblaze, and TWCJon! | To stay up to date with all the latest on the emulator join the Discord Server! https://discord.gg/4TpAsRtsAx | NextJs version inspired from https://github.com/buffbears/Weatherscan |"
             />
         </div>
     )

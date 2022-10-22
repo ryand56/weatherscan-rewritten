@@ -29,9 +29,10 @@ const resizeWindow = (
 
 interface IntroProps {
     winSize: number[]
+    callback: () => void
 }
 
-const Intro = ({ winSize }: IntroProps) => {
+const Intro = ({ winSize, callback }: IntroProps) => {
     const [innerWidth, innerHeight] = winSize;
 
     const mainRef = React.useRef<HTMLDivElement>();
@@ -87,6 +88,7 @@ const Intro = ({ winSize }: IntroProps) => {
             setTimeout(() => {
                 clearInterval(rotInterval);
                 mainRef.current.classList.add("hidden");
+                callback();
             }, 5000);
         }
     }, [intellistarRef]);

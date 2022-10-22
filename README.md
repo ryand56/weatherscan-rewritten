@@ -10,7 +10,7 @@ I made this out of curiousity and it was very interesting to me. (Plus that musi
 - [ ] Fully working and operational
 
 ## Latest Preview
-![Preview](https://azure.ryand.ca/projects/weatherscan/e17ea7ac02b0e959e6acce2ca40a6cac9b396bdc.png)
+![Preview](https://azure.ryand.ca/projects/weatherscan/17db1c2b2242a41b150c2cb4f0dbcb34f6d74c57.png)
 
 ## License
 Copyright (C) 2022 Ryan Omasta - ryand@emeraldsys.xyz

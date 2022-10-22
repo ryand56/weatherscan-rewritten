@@ -31,13 +31,19 @@ import Marquee from "react-fast-marquee";
         filter: drop-shadow(.5px 0 0 #171717);
     }
 */
-const InfoMarquee = () => (
-    <div className="flex flex-col">
-        <Marquee>
-            Top marquee
+
+interface InfoMarqueeProps {
+    top: string
+    bottom: string
+}
+
+const InfoMarquee = ({ top, bottom }: InfoMarqueeProps) => (
+    <div className="absolute left-[31.35%] top-[82.5%] w-full flex flex-col">
+        <Marquee className="text-shadow-sm text-[#DDDDDD] text-[33px]" play={true} gradient={false} speed={400} pauseOnHover={true}>
+            {top}
         </Marquee>
-        <Marquee>
-            This is some text. | This is some other text. | Demo
+        <Marquee className="text-[41.5px] font-normal" play={true} gradient={false} speed={325} pauseOnHover={true}>
+            {bottom}
         </Marquee>
     </div>
 );

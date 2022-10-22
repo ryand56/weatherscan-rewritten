@@ -5,10 +5,7 @@ export const useWinSizeInner = () => {
     React.useEffect(() => {
         let resizeTimer: NodeJS.Timeout;
         const updateSize = () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                setSize([window.innerWidth, window.innerHeight]);
-            }, 100);
+            setSize([window.innerWidth, window.innerHeight]);
         };
         
         window.addEventListener("resize", updateSize);

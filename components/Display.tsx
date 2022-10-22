@@ -121,7 +121,10 @@ const Display = ({ winSize, location }: DisplayProps) => {
                 temp={currentInfo.temp}
                 info={currentInfo}
             />
-            <InfoMarquee />
+            <InfoMarquee
+                top="Hello World"
+                bottom="This is some text. | This is some other text. | Demo"
+            />
         </div>
     )
 };

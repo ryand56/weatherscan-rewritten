@@ -19,7 +19,8 @@ module.exports = {
         "dark": "#171717",
         "subhead-noaa": "#f6a67a",
         "bulletin-cityname": "#d8c422",
-        "frost-pane-title": "#d8c422"
+        "frost-pane-title": "#d8c422",
+        "marquee-top": "#DDDDDD"
       },
       backgroundImage: {
         "slideouter": "radial-gradient(farthest-corner at 963px 569px, #000d28, #001668)",
@@ -92,7 +93,10 @@ module.exports = {
         "subhead-city-r": "90px",
         "subhead-shadow-t": "50.8%",
         "subhead-shadow-l": "7px",
-        "forecast": "10%"
+        "forecast": "10%",
+        "logo-area-t": "83.4%",
+        "logo-area-img-t": "19%",
+        "logo-area-img-r": "5%"
       },
       fontSize: {
         "date": "28px",
@@ -115,7 +119,9 @@ module.exports = {
         "forecast": "110%",
         "frost-pane": "36px",
         "frost-pane-content": "50px",
-        "severe-frost-pane-title": "41.5px"
+        "severe-frost-pane-title": "41.5px",
+        "marquee-top": "33px",
+        "marquee-bottom": "41.5px"
       },
       minWidth: {
         "slidehead": "125%",
@@ -159,7 +165,9 @@ module.exports = {
         "city": "311px",
         "date-time": "458px",
         "gradient": "125px",
-        "subhead-shadow": "250%"
+        "subhead-shadow": "250%",
+        "logo-area": "31.528%",
+        "logo-area-img": "65%"
       },
       height: {
         "main": "1080px",
@@ -170,7 +178,8 @@ module.exports = {
         "subhead": "60px",
         "info-frost-pane": "446.25px",
         "frost-pane-content": "400px",
-        "severe-frost-pane-content": "400px"
+        "severe-frost-pane-content": "400px",
+        "logo-area": "9.398%"
       },
       zIndex: {
         "default": "1",

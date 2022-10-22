@@ -13,6 +13,7 @@ import SlidesContainer from "./Slides/Containers/SlidesContainer";
 import DateTime from "./DateTime";
 import CCIcon from "./CCIcon";
 import Current from "./Current";
+import LogoArea from "./LogoArea";
 import InfoMarquee from "./Marquee";
 
 const resizeWindow = (
@@ -65,7 +66,6 @@ const Display = ({ winSize, location }: DisplayProps) => {
 
     // Location handler
     React.useEffect(() => {
-        console.log(location);
         if (location !== "") {
             getMainLocation(location).then(data => {
                 setLocInfo(data);
@@ -105,6 +105,12 @@ const Display = ({ winSize, location }: DisplayProps) => {
         return () => clearInterval(intervalTimer);
     }, [locInfo.latitude, locInfo.longitude]);
 
+    /*
+        <InfoMarquee
+            top="Hello World"
+            bottom="This is some text. | This is some other text. | Demo"
+        />
+    */
     return (
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
@@ -121,9 +127,10 @@ const Display = ({ winSize, location }: DisplayProps) => {
                 temp={currentInfo.temp}
                 info={currentInfo}
             />
+            <LogoArea />
             <InfoMarquee
                 top="Hello World"
-                bottom="This is some text. | This is some other text. | Demo"
+                bottom="We have currently parterned with Indigo Wireless to offer great wireless service in Tioga County! Go to indigowireless.com or stop in at 100 Main in Wellsboro for more information on this promo. | Save $5.00 a month with easy, painless auto pay system. Sign up Today! | In weeks to come we will be making upgrades to our network to serve your TV experience better! You may experience brief No Signal mesages on your TV. If the message stays on your TV for more than 4 hours please reboot the TV and call us. | Remember that this is all made possible with help from the Weather Ranch Discord Server! | Help from MapGuy11, Goldblaze, and TWCJon! | To stay up to date with all the latest on the emulator join the Discord Server! https://discord.gg/4TpAsRtsAx | NextJs version inspired from https://github.com/buffbears/Weatherscan |"
             />
         </div>
     )

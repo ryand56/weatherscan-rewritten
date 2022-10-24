@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRouter } from "next/router";
 
 import { AudioPlayerProvider } from "react-use-audio-player";
-import Audio from "../components/Audio";
+import MusicAudio from "../components/MusicAudio";
 
 import Intro from "../components/Intro";
 import Display from "../components/Display";
@@ -37,7 +37,7 @@ const Index = () => {
     return (
         <>
             <AudioPlayerProvider>
-                <Audio />
+                <MusicAudio />
             </AudioPlayerProvider>
             <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
             <Display isReady={introDone} location={location} winSize={[innerWidth, innerHeight]} />

@@ -13,12 +13,16 @@ const randNum = (min: number, max: number) => {
     return Math.round(Math.random() * (max - min) + min);
 };
 
-const MusicAudio = () => {
+interface MusicAudioProps {
+    vol: number
+}
+
+const MusicAudio = ({ vol }: MusicAudioProps) => {
     const [fileIdx, setFileIdx] = React.useState<number>(randNum(1, 13));
     const [file, setFile] = React.useState<string>(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
     const [loop, setLoop] = React.useState<boolean>(false);
 
-    const { togglePlayPause, ready, loading, playing, load, player } = useAudioPlayer({
+    const { togglePlayPause, ready, loading, playing, load, player, volume } = useAudioPlayer({
         src: file,
         format: "mp3",
         autoplay: true,
@@ -41,6 +45,12 @@ const MusicAudio = () => {
         if (!player) return;
         player.loop(loop);
     }, [player, loop]);
+
+    // Update volume
+    React.useEffect(() => {
+        if (!player) return;
+        volume(vol);
+    }, [player, volume, vol]);
 
     const toggleLoop = React.useCallback(() => {
         if (!player) return;

@@ -41,9 +41,10 @@ interface DisplayProps {
     isReady: boolean
     winSize: number[]
     location: string | string[]
+    setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, winSize, location }: DisplayProps) => {
+const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
 
@@ -120,7 +121,7 @@ const Display = ({ isReady, winSize, location }: DisplayProps) => {
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
             <SlideBg />
-            {isReady && <SlidesContainer />}
+            {isReady && <SlidesContainer setMainVol={setMainVol} />}
             {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}
             {locInfo.city !== "" && <div
                 id="city"

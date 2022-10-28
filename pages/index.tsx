@@ -16,6 +16,8 @@ const Index = () => {
     const [innerWidth, innerHeight] = useWinSizeInner();
     const [introDone, setIntroDone] = React.useState<boolean>(false);
 
+    const [musicVol, setMusicVol] = React.useState<number>(1);
+
     const IntroCallback = () => {
         setIntroDone(true);
     };
@@ -37,10 +39,15 @@ const Index = () => {
     return (
         <>
             <AudioPlayerProvider>
-                <MusicAudio />
+                <MusicAudio vol={musicVol} />
             </AudioPlayerProvider>
             <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
-            <Display isReady={introDone} location={location} winSize={[innerWidth, innerHeight]} />
+            <Display
+                isReady={introDone}
+                winSize={[innerWidth, innerHeight]}
+                location={location}
+                setMainVol={setMusicVol}
+            />
         </>
     );
 };

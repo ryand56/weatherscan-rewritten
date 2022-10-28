@@ -12,16 +12,19 @@ export const enum VocalFemale {
 
 interface VocalProps {
     vocal?: VocalMale | VocalFemale
+    setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const VocalAudio = ({ vocal }: VocalProps) => {
+const VocalAudio = ({ vocal, setMainVol }: VocalProps) => {
     const { load } = useAudioPlayer();
 
     React.useEffect(() => {
         if (vocal) {
             load({
                 src: vocal,
-                autoplay: true
+                autoplay: true,
+                onplay: () => setMainVol(0.25),
+                onend: () => setMainVol(1)
             });
         }
     }, [vocal]);

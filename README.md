@@ -15,4 +15,4 @@ I made this out of curiousity and it was very interesting to me. (Plus that musi
 ## License
 Copyright (C) 2022 Ryan Omasta - ryand@emeraldsys.xyz
 All rights reserved.
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE` or https://license.ryand.ca for more information.

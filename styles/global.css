@@ -38,6 +38,13 @@
     .font-stretch-cond {
         font-stretch: condensed;
     }
+
+    /* Masking */
+    .cityaccent-mask {
+        -webkit-mask-image: url(/images/airport-curve.svg);
+        -webkit-mask-size: 200% 100%;
+        -webkit-mask-position: 100% 0;
+    }
 }
 
 /* Interstate Bold, Mono, BoldCn, Cn */

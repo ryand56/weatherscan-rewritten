@@ -26,6 +26,7 @@ module.exports = {
         "slideouter": "radial-gradient(farthest-corner at 963px 569px, #000d28, #001668)",
         "slideheadgrad": "linear-gradient(to right, rgba(147, 156, 171, 0), rgba(147, 156, 171, .97))",
         "city-intro-slide": "url(/images/newbg/city_bg.png)",
+        "copyright": "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
         "bulletin-image": "url(/images/newbg/weather_bulletin_bg.png)",
         "bulletin-frost-pane": "url(/images/newbg/bulletinfrostpane.svg)",
         "severe-city-info-image": "url(/images/newbg/severe_core_bg.png)",
@@ -34,12 +35,16 @@ module.exports = {
         "city-info-slide": "url(/images/newbg/core_mountain_bg.png)"
       },
       backgroundColor: {
+        "cityaccent-yellow": "#e5be45",
+        "cityaccent-blue": "#001782",
         "slidehead": "#2267b7",
         "infoslide-color": "transparent",
         "city-info-slide": "transparent"
       },
       backgroundPosition: {
         "infoslide-pos": "69% 41.5%",
+        "city-intro-slide": "-127px -112px",
+        "curve": "0 0",
         "bulletin-frost-pane": "-72px -329px",
         "severe-city-info-pos": "69% 41.5%",
         "frost-pane": "-72px -329px",
@@ -48,6 +53,8 @@ module.exports = {
       backgroundSize: {
         "conditions-icon": "100% 100%",
         "infoslide-size": "120.3% 150.9%",
+        "city-intro-slide": "1068px 788px",
+        "curve": "200% 200%",
         "bulletin-frost-pane": "1065px 1164px",
         "severe-city-info-size": "120.3% 150.9%",
         "frost-pane": "1065px 1164px",
@@ -58,6 +65,9 @@ module.exports = {
         "slides": "2.5px 0 2.5px 2.5px",
         "slidehead": "0 7.5px",
         "slidehead-severe-city-info-r": "10%",
+        "copyright-l": "11px",
+        "copyright-r": "10px",
+        "copyright-t": "10px",
         "subhead-city-info-r": "10%",
         "noreport-t": "23.5%",
         "noreport-l": "29.65%",
@@ -83,6 +93,9 @@ module.exports = {
         "current-noreport-t": "45%",
         "current-noreport-l": "32.4%",
         "city-t": "284px",
+        "infoslides-container-r": "75px",
+        "infoslides-container-t": "92px",
+        "infoslide-container-t": "45px",
         "slidehead": "2.5px",
         "gradient-r": "125px",
         "subhead-noaa-r": "105px",
@@ -107,6 +120,7 @@ module.exports = {
         "city": "36.5px",
         "slidehead": "31px",
         "hscroller": "30px",
+        "copyright": "28px",
         "subhead": "39px",
         "subhead-bulletin": "40.5px",
         "subhead-noaa": "22.5px",
@@ -133,11 +147,14 @@ module.exports = {
       },
       minHeight: {
         "slidehead": "42.5px",
-        "infoslide": "99.87%"
+        "infoslide": "99.87%",
+        "infoslide-px": "521px"
       },
       maxHeight: {
+        "infoslides-container": "569px",
         "slidehead": "42.5px",
         "infoslide": "99.87%",
+        "infoslide-px": "521px",
         "bulletin-frost-pane": "446.25px",
         "frost-pane": "446.25px",
         "frost-pane-content": "400px",
@@ -151,6 +168,7 @@ module.exports = {
         "city": "110%",
         "date": "40px",
         "hscroller": "23.5px",
+        "copyright": "110%",
         "subheader": "24.5px",
         "subhead-noaa": "35px",
         "bulletin-warnings": "125%",
@@ -164,6 +182,8 @@ module.exports = {
         "current-noreport": "66%",
         "city": "311px",
         "date-time": "458px",
+        "infoslides-container": "887px",
+        "infoslide-container": "884.5px",
         "gradient": "125px",
         "subhead-shadow": "250%",
         "logo-area": "31.528%",
@@ -174,7 +194,10 @@ module.exports = {
         "conditions-icon": "155px",
         "current": "221px",
         "city": "92px",
+        "infoslides-container": "569px",
+        "infoslide-container": "520.82px",
         "slidehead": "42.5px",
+        "copyright": "105px",
         "subhead": "60px",
         "info-frost-pane": "446.25px",
         "frost-pane-content": "400px",
@@ -188,6 +211,7 @@ module.exports = {
         "infoslide": "5",
         "subheader": "4",
         "subheader-shadow": "6",
+        "copyright": "101",
         "noreport": "2000",
         "frost-pane": "388686",
         "audio": "999999"
@@ -223,6 +247,7 @@ module.exports = {
         "105": "1.05",
         "105-9": "1.059",
         "106": "1.06",
+        "107": "1.07",
         "110": "1.10",
         "112-5": "1.125",
         "114-5": "1.145",
@@ -231,6 +256,20 @@ module.exports = {
         "118": "1.18"
       }
     },
+    keyframes: {
+      cityaccentmovei: {
+        "35%": { transform: "translate(-.75%, -4.5%) scaleY(1.03)" },
+        "100%": { transform: "translate(-8.75%, -12%) scale(1.15, 1.2)" }
+      },
+      cityaccentmoveii: {
+        "35%": { transform: "translate(-.75%, -4.5%) scaleY(1.03)" },
+        "100%": { transform: "translate(-8.15%, -10.15%) scale(1.15, 1.2)" }
+      }
+    },
+    animation: {
+      cityaccentmovei: "cityaccentmovei 10s linear normal forwards",
+      cityaccentmoveii: "cityaccentmoveii 10s linear normal forwards"
+    }
   },
   plugins: [],
 }

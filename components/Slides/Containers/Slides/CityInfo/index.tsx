@@ -1,8 +1,9 @@
 import * as React from "react";
+import type { SlideProps } from "../../../../../hooks/useSlides";
 import { motion } from "framer-motion";
 import Forecast from "./Forecast";
 
-const SlideCityInfo = () => {
+const SlideCityInfo = ({ next }: SlideProps) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}

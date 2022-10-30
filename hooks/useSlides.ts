@@ -3,6 +3,10 @@ export const enum Slides {
     INFO
 }
 
+export interface SlideProps {
+    next: () => void
+}
+
 export const enum ActionType {
     INCREASE = "INCREASE",
     DECREASE = "DECREASE",

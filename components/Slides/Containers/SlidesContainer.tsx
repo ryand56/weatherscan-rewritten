@@ -19,26 +19,21 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(VocalFemale.CURRENT_COND);
 
+    const SlideCallback = () => {
+        slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+    };
+
     const currentSlide = React.useMemo(() => {
         console.log("Rendering new slide");
         switch (slideState.index) {
             case Slides.INTRO:
-                return <CityIntro key="city-intro-slide" />;
+                return <CityIntro key="city-intro-slide" next={SlideCallback} />;
             case Slides.INFO:
-                return <CityInfo key="city-info-slide" />;
+                return <CityInfo key="city-info-slide" next={SlideCallback} />;
             default:
                 return null;
         }
     }, [slideState.index]);
-
-    // Test transition
-    React.useEffect(() => {
-        let interval = setInterval(() => {
-            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-        }, 12000);
-
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <div id="info-slides-container" className="flex flex-col absolute right-infoslides-container-r top-infoslides-container-t w-infoslides-container h-infoslides-container max-h-infoslides-container z-[1] p-slides">

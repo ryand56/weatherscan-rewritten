@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/elementemerald/weatherscan-rewritten#readme",
   "dependencies": {
+    "framer-motion": "^7.6.2",
     "iso8601-js-period": "^0.2.1",
     "leaflet": "^1.9.2",
     "leaflet-timedimension": "^1.1.1",

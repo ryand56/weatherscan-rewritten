@@ -5,39 +5,11 @@ import SlideSevereHeaderMsg from "./Headers/SlideSevereHeadMsg";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
+import { AnimatePresence } from "framer-motion";
 
-import { Slides } from "../../../hooks/useSlides";
+import { SlideshowReducer, Slides, ActionType } from "../../../hooks/useSlides";
 import CityIntro from "./Slides/CityIntro";
 import CityInfo from "./Slides/CityInfo";
-
-enum ActionType {
-    INCREASE = "INCREASE",
-    DECREASE = "DECREASE",
-    SET = "SET"
-}
-
-interface Action {
-    type: ActionType
-    payload: number
-}
-
-interface State {
-    index: number
-}
-
-const SlideshowReducer = (state: State, action: Action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case ActionType.INCREASE:
-            return { index: state.index + payload };
-        case ActionType.DECREASE:
-            return { index: state.index - payload };
-        case ActionType.SET:
-            return { index: payload };
-        default:
-            return state;
-    }
-};
 
 interface SlidesContainerProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
@@ -51,9 +23,9 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
         console.log("Rendering new slide");
         switch (slideState.index) {
             case Slides.INTRO:
-                return <CityIntro />;
+                return <CityIntro key="city-intro-slide" />;
             case Slides.INFO:
-                return <CityInfo />;
+                return <CityInfo key="city-info-slide" />;
             default:
                 return null;
         }
@@ -61,11 +33,11 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
 
     // Test transition
     React.useEffect(() => {
-        let timeout = setTimeout(() => {
+        let interval = setInterval(() => {
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-        }, 15000);
+        }, 12000);
 
-        return () => clearTimeout(timeout);
+        return () => clearInterval(interval);
     }, []);
 
     return (
@@ -77,7 +49,9 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />
                 </AudioPlayerProvider>
-                {currentSlide}
+                <AnimatePresence mode="wait">
+                    {currentSlide}
+                </AnimatePresence>
             </div>
         </div>
     );

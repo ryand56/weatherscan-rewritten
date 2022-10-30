@@ -67,7 +67,7 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
 
     // Location handler
-    React.useEffect(() => {
+    /* React.useEffect(() => {
         if (isReady) {
             if (location !== "") {
                 getMainLocation(location).then(data => {
@@ -91,10 +91,10 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
         }).catch(err => {
             console.error(err);
         });
-    };
+    }; */
 
     // Current conditions handler
-    React.useEffect(() => {
+    /* React.useEffect(() => {
         if (isReady) {
             const lat = locInfo.latitude;
             const lon = locInfo.longitude;
@@ -109,7 +109,7 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
 
             return () => clearInterval(intervalTimer);
         }
-    }, [isReady, locInfo.latitude, locInfo.longitude]);
+    }, [isReady, locInfo.latitude, locInfo.longitude]); */
 
     /*
         <InfoMarquee

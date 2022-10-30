@@ -45,6 +45,11 @@
         -webkit-mask-size: 200% 100%;
         -webkit-mask-position: 100% 0;
     }
+
+    .cityaccent-mask-min {
+        -webkit-mask-image: url(/images/airport-curve.svg);
+        -webkit-mask-size: 200% 100%;
+    }
 }
 
 /* Interstate Bold, Mono, BoldCn, Cn */

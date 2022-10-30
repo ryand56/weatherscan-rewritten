@@ -264,11 +264,19 @@ module.exports = {
       cityaccentmoveii: {
         "35%": { transform: "translate(-.75%, -4.5%) scaleY(1.03)" },
         "100%": { transform: "translate(-8.15%, -10.15%) scale(1.15, 1.2)" }
+      },
+      cityaccentmoveiii: {
+        "100%": { transform: "translate(1%, -4.5%)" }
+      },
+      cityaccentmoveiv: {
+        "0%": { transform: "translate(0, 0)" },
+        "100%": { transform: "translate(4.5%, 8%)" }
       }
     },
     animation: {
       cityaccentmovei: "cityaccentmovei 10s linear normal forwards",
-      cityaccentmoveii: "cityaccentmoveii 10s linear normal forwards"
+      cityaccentmoveii: "cityaccentmoveii 10s linear normal forwards",
+      cityaccentmoveiii: "cityaccentmoveiii 5s linear normal forwards"
     }
   },
   plugins: [],

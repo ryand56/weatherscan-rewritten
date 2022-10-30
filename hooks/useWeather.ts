@@ -93,11 +93,13 @@ const memoAsync = (cb) => {
     };
 };
 
-export const getMainLocation = async (location: string | string[]) => {
-    const memoizedFetch = memoAsync(fetch);
+const memoizedFetch = memoAsync(fetch);
 
-    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(<string>location)}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
-        .then((res: Response) => {
+export const getMainLocation = async (location: string, language?: string) => {
+    const apiLanguage = language || "en-US";
+
+    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(async (res: Response) => {
             return res.json().then((data: WeatherAPILocResponse) => {
                 const dataLocs = data.location;
 
@@ -120,8 +122,8 @@ export const getMainLocation = async (location: string | string[]) => {
 };
 
 export const getClosestLocation = async () => {
-    return fetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
-        .then((res: Response) => {
+    return memoizedFetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
+        .then(async (res: Response) => {
             return res.json().then((data: IPAPILocResponse) => {
                 if (data.status === IPAPIStatus.SUCCESS) {
                     const closest = Object.assign({}, defaults);
@@ -146,15 +148,16 @@ export const getClosestLocation = async () => {
 };
 
 export const getExtraLocations = async (lat: number, lon: number) => {
-    return fetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(res => {
 
         });
 };
 
-export const getCurrentCond = async (lat: number, lon: number) => {
-    return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=${lat},${lon};&language=en-US&units=h&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
-        .then((res: Response) => {
+export const getCurrentCond = async (lat: number, lon: number, language?: string) => {
+    const apiLanguage = language || "en-US";
+    return memoizedFetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=${lat},${lon};&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(async (res: Response) => {
             return res.json().then(data => {
                 const dataLoc = data[0]["v3-wx-observations-current"];
 
@@ -173,6 +176,49 @@ export const getCurrentCond = async (lat: number, lon: number) => {
                 return current;
             }).catch(err => {
                 throw new Error(err);
+            });
+        }).catch(err => {
+            throw new Error(err);
+        });
+};
+
+enum MessageType {
+    NEW = 1,
+    UPDATE,
+    CANCEL
+}
+
+interface Alert {
+    detailKey: string
+    messageTypeCode: MessageType
+    messageType: string
+    productIdentifier: string
+}
+
+interface AlertsMetadata {
+    next: any
+}
+
+interface AlertsResponse {
+    metadata?: AlertsMetadata
+    alerts: Alert[]
+}
+
+const alertsFallback: AlertsResponse = Object.freeze({
+    metadata: {
+        next: null
+    },
+    alerts: []
+});
+
+export const getAlerts = async (lat: number, lon: number, language?: string) => {
+    const apiLanguage = language || "en-US";
+    return memoizedFetch(`https://api.weather.com/v3/alerts/headlines?geocode=${lat},${lon}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(async (res: Response) => {
+            return res.json().then((data: AlertsResponse) => {
+                return data.alerts;
+            }).catch(() => {
+                return alertsFallback.alerts;
             });
         }).catch(err => {
             throw new Error(err);

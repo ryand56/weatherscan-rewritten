@@ -12,7 +12,8 @@ import { useWinSizeInner } from "../hooks/useWinSize";
 const Index = () => {
     const { isReady, query } = useRouter();
     const [loading, setLoading] = React.useState<boolean>(true);
-    const [location, setLocation] = React.useState<string | string[]>("");
+    const [location, setLocation] = React.useState<string>("");
+    const [language, setLanguage] = React.useState<string>("en-US");
     const [innerWidth, innerHeight] = useWinSizeInner();
     const [introDone, setIntroDone] = React.useState<boolean>(false);
 
@@ -24,11 +25,17 @@ const Index = () => {
 
     React.useEffect(() => {
         if (!isReady) return;
-        const location = query.location;
+        const location = query.location as string;
+        const language = query.language as string;
 
         // Custom location
         if (location !== undefined && location !== null) {
             setLocation(location);
+        }
+
+        // Custom language
+        if (language !== undefined && language !== null) {
+            setLanguage(language);
         }
 
         setLoading(false);
@@ -46,6 +53,7 @@ const Index = () => {
                 isReady={introDone}
                 winSize={[innerWidth, innerHeight]}
                 location={location}
+                language={language}
                 setMainVol={setMusicVol}
             />
         </>

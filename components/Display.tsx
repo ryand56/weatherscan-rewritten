@@ -5,7 +5,8 @@ import {
     currentDefaults,
     getMainLocation,
     getClosestLocation,
-    getCurrentCond
+    getCurrentCond,
+    getAlerts
 } from "../hooks/useWeather";
 
 import SlideBg from "./Slides/SlideBg";
@@ -40,11 +41,12 @@ const resizeWindow = (
 interface DisplayProps {
     isReady: boolean
     winSize: number[]
-    location: string | string[]
+    location: string
+    language: string
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
+const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
 
@@ -70,7 +72,7 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
     React.useEffect(() => {
         if (isReady) {
             if (location !== "") {
-                getMainLocation(location).then(data => {
+                getMainLocation(location, language).then(data => {
                     setLocInfo(data);
                 }).catch(err => {
                     console.error(err);
@@ -86,14 +88,22 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
     }, [isReady, location]);
 
     const fetchCurrent = (lat: number, lon: number) => {
-        getCurrentCond(lat, lon).then(data => {
+        getCurrentCond(lat, lon, language).then(data => {
             setCurrentInfo(data);
         }).catch(err => {
             console.error(err);
         });
     };
 
-    // Current conditions handler
+    const fetchAlerts = (lat: number, lon: number) => {
+        getAlerts(lat, lon, language).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.error(err);
+        });
+    };
+
+    // Current conditions and alerts handler
     React.useEffect(() => {
         if (isReady) {
             const lat = locInfo.latitude;
@@ -102,8 +112,10 @@ const Display = ({ isReady, winSize, location, setMainVol }: DisplayProps) => {
             let intervalTimer: NodeJS.Timeout;
             if (lat && lon) {
                 fetchCurrent(lat, lon);
+                fetchAlerts(lat, lon);
                 intervalTimer = setInterval(() => {
-                    fetchCurrent(lat, lon)
+                    fetchCurrent(lat, lon);
+                    fetchAlerts(lat, lon);
                 }, 300000);
             }
 

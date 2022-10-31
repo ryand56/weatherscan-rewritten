@@ -3,6 +3,7 @@
     Removed the duration being affected by width of the window, unnecessary for this project
 */
 import * as React from "react";
+import styles from "./styles.module.scss";
 
 interface CustomMarqueeProps {
     style?: React.CSSProperties
@@ -56,7 +57,7 @@ const CustomMarquee = ({
                         ["--pause-on-hover" as string]: !play || pauseOnHover ? "paused" : "running",
                         ["--pause-on-click" as string]: !play || (pauseOnHover && !pauseOnClick) || pauseOnClick ? "paused" : "running"
                     }}
-                    className={`marquee-container` + (className !== "" ? ` ${className}` : "")}
+                    className={styles["marquee-container"] + (className !== "" ? ` ${className}` : "")}
                 >
                     {gradient && (
                         <div
@@ -67,7 +68,7 @@ const CustomMarquee = ({
                                     ? `${gradientWidth}px`
                                     : gradientWidth,
                             }}
-                            className="overlay"
+                            className={styles.overlay}
                         />
                     )}
                     <div
@@ -79,7 +80,7 @@ const CustomMarquee = ({
                           ["--delay" as string]: `${delay}s`,
                           ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
                         }}
-                        className="marquee"
+                        className={styles.marquee}
                         onAnimationIteration={onCycleComplete}
                         onAnimationEnd={onFinish}
                     >
@@ -94,7 +95,7 @@ const CustomMarquee = ({
                         ["--delay" as string]: `${delay}s`,
                         ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
                         }}
-                        className="marquee"
+                        className={styles.marquee}
                         aria-hidden="true"
                     >
                         {children}

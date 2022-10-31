@@ -39,7 +39,7 @@ interface InfoMarqueeProps {
 
 const InfoMarquee = ({ top, bottom }: InfoMarqueeProps) => (
     <div className="absolute left-[31.35%] top-[82.5%] w-full flex flex-col">
-        <Marquee play={true} gradient={false} duration={90} pauseOnHover={true}>
+        <Marquee play={true} gradient={false} duration={5} pauseOnHover={true}>
             <span className="text-marquee-top text-shadow-sm origin-left">{top}</span>
         </Marquee>
         <Marquee play={true} gradient={false} duration={60} pauseOnHover={true}>

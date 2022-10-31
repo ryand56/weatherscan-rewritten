@@ -1,12 +1,13 @@
 import * as React from "react";
-import type { Location, CurrentCond } from "../hooks/useWeather";
+import type { Location, CurrentCond, Alert } from "../hooks/useWeather";
 import {
     defaults,
     currentDefaults,
     getMainLocation,
     getClosestLocation,
     getCurrentCond,
-    getAlerts
+    getAlerts,
+    getAlertText
 } from "../hooks/useWeather";
 
 import SlideBg from "./Slides/SlideBg";
@@ -16,6 +17,7 @@ import CCIcon from "./CCIcon";
 import Current from "./Current";
 import LogoArea from "./LogoArea";
 import InfoMarquee from "./Marquee";
+import MarqueeSevere from "./MarqueeSevere";
 
 const resizeWindow = (
     mainRef: React.MutableRefObject<HTMLDivElement>,
@@ -68,6 +70,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
 
+    const [alerts, setAlerts] = React.useState<Alert[]>([]);
+    const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
+    const [focusedAlertText, setFocusedAlertText] = React.useState<string>(null);
+
     // Location handler
     React.useEffect(() => {
         if (isReady) {
@@ -97,7 +103,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const fetchAlerts = (lat: number, lon: number) => {
         getAlerts(lat, lon, language).then(data => {
-            console.log(data);
+            setAlerts(data);
         }).catch(err => {
             console.error(err);
         });
@@ -122,6 +128,19 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             return () => clearInterval(intervalTimer);
         }
     }, [isReady, locInfo.latitude, locInfo.longitude]);
+
+    React.useEffect(() => {
+        if (alerts.length > 0) {
+            setFocusedAlert(alerts[0]);
+            getAlertText(alerts[0].detailKey, language).then(texts => {
+                if (texts.length > 0) {
+                    setFocusedAlertText(texts[0].description);
+                }
+            }).catch(err => {
+                console.error(err);
+            })
+        }
+    }, [alerts.length]);
 
     /*
         <InfoMarquee
@@ -150,8 +169,12 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
                 top="Hello World"
                 bottom="We have currently partnered with Indigo Wireless to offer great wireless service in Tioga County! Go to indigowireless.com or stop in at 100 Main in Wellsboro for more information on this promo. | Save $5.00 a month with easy, painless auto pay system. Sign up Today! | In weeks to come we will be making upgrades to our network to serve your TV experience better! You may experience brief No Signal mesages on your TV. If the message stays on your TV for more than 4 hours please reboot the TV and call us. | Remember that this is all made possible with help from the Weather Ranch Discord Server! | Help from MapGuy11, Goldblaze, and TWCJon! | To stay up to date with all the latest on the emulator join the Discord Server! https://discord.gg/4TpAsRtsAx | NextJs version inspired from https://github.com/buffbears/Weatherscan |"
             />
+            {focusedAlert && <MarqueeSevere
+                top={focusedAlert.eventDescription}
+                bottom={focusedAlertText}
+            />}
         </div>
-    )
+    );
 };
 
 export default Display;

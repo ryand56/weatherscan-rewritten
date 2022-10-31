@@ -8,6 +8,8 @@ module.exports = {
     fontFamily: {
       "frutiger": ["Frutiger", "ZemestroSTD", "sans-serif"],
       "interstate": ["Interstate", "ZemestroSTD", "sans-serif"],
+      "interstate-bold": ["'Interstate Bold'", "ZemestroSTD", "sans-serif"],
+      "interstate-cn": ["'Interstate Cn'", "ZemestroSTD", "sans-serif"],
       "interstate-mono": ["'Interstate Mono'", "ZemestroSTD", "sans-serif"],
       "parrow": ["PressureArrow", "Interstate", "ZemestroSTD", "sans-serif"],
       "interstate2": ["Interstate2", "ZemestroSTD", "sans-serif"],
@@ -20,9 +22,12 @@ module.exports = {
         "subhead-noaa": "#f6a67a",
         "bulletin-cityname": "#d8c422",
         "frost-pane-title": "#d8c422",
-        "marquee-top": "#DDDDDD"
+        "marquee-top": "#DDDDDD",
+        "marquee-severe-text": "#DDDDDD"
       },
       backgroundImage: {
+        "marquee-severe-header": "linear-gradient(to right, rgb(242, 153, 46) 0px, rgb(187, 99, 26) 100%)",
+        "marquee-severe": "linear-gradient(to right, rgb(135, 73, 1) 0px, rgb(187, 99, 26) 100%)",
         "slideouter": "radial-gradient(farthest-corner at 963px 569px, #000d28, #001668)",
         "slideheadgrad": "linear-gradient(to right, rgba(147, 156, 171, 0), rgba(147, 156, 171, .97))",
         "city-intro-slide": "url(/images/newbg/city_bg.png)",
@@ -135,7 +140,8 @@ module.exports = {
         "frost-pane-content": "50px",
         "severe-frost-pane-title": "41.5px",
         "marquee-top": "33px",
-        "marquee-bottom": "41.5px"
+        "marquee-bottom": "41.5px",
+        "marquee-severe-text": "50px"
       },
       minWidth: {
         "slidehead": "125%",
@@ -249,6 +255,7 @@ module.exports = {
         "106": "1.06",
         "107": "1.07",
         "110": "1.10",
+        "112": "1.12",
         "112-5": "1.125",
         "114-5": "1.145",
         "115": "1.15",

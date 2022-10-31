@@ -3,14 +3,14 @@ export enum Icons2010 {
     THUNDER,
     MIXED_RAIN_SNOW,
     MIXED_FREEZE_RAIN_SNOW,
-    LIGHT_RAIN_ICY,
-    LIGHT_RAIN,
-    RAIN_ICY,
+    FREEZING_DRIZZLE,
+    DRIZZLE,
+    FREEZING_RAIN,
     LIGHT_RAIN_ALT,
     RAIN,
     SNOW,
     SNOW_ALT,
-    BLIZZARD,
+    BLOWING_SNOW,
     HEAVY_SNOW,
     HAIL,
     SMOKE,
@@ -37,7 +37,7 @@ export enum Icons2010 {
     RAIN_NIGHT,
     SNOW_NIGHT,
     THUNDER_NIGHT,
-    HEAVY_RAIN_HAIL,
+    MIXED_SNOW_SLEET,
     SNOW_WIND,
     SNOW_STORM,
     HOT,
@@ -45,7 +45,7 @@ export enum Icons2010 {
     HEAVY_RAIN_SNOW_ICY,
     HEAVY_RAIN_ALT,
     LIGHT_THUNDER,
-    THUNDER_ALT,
+    STRONG_STORMS,
     HAIL_ALT,
     FOG_ALT,
     HEAVY_WIND_ALT
@@ -55,19 +55,19 @@ const Icons2010CodeMap = Object.freeze([
     Icons2010.UNUSED, // 0
     Icons2010.UNUSED, // 1
     Icons2010.UNUSED, // 2
-    Icons2010.THUNDER_ALT, // 3
+    Icons2010.STRONG_STORMS, // 3
     Icons2010.THUNDER, // 4
     Icons2010.MIXED_RAIN_SNOW, // 5
-    Icons2010.HEAVY_RAIN_HAIL, // 6
+    Icons2010.MIXED_SNOW_SLEET, // 6
     Icons2010.MIXED_FREEZE_RAIN_SNOW, // 7
-    Icons2010.LIGHT_RAIN_ICY, // 8
-    Icons2010.LIGHT_RAIN, // 9
-    Icons2010.RAIN_ICY, // 10
+    Icons2010.FREEZING_DRIZZLE, // 8
+    Icons2010.DRIZZLE, // 9
+    Icons2010.FREEZING_RAIN, // 10
     Icons2010.RAIN, // 11
     Icons2010.RAIN, // 12
     Icons2010.SNOW, // 13
     Icons2010.HEAVY_SNOW, // 14
-    Icons2010.BLIZZARD, // 15
+    Icons2010.BLOWING_SNOW, // 15
     Icons2010.HEAVY_SNOW, // 16
     Icons2010.HAIL_ALT, // 17
     Icons2010.HAIL_ALT, // 18

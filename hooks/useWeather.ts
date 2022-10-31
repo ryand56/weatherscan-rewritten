@@ -183,16 +183,156 @@ export const getCurrentCond = async (lat: number, lon: number, language?: string
 };
 
 enum MessageType {
-    NEW = 1,
-    UPDATE,
-    CANCEL
+    New = 1,
+    Update,
+    Cancel
 }
 
-interface Alert {
+enum AreaType {
+    County = "C",
+    Zone = "Z",
+    CanadaLocation = "CLC"
+}
+
+enum Certainty {
+    Observed = 1,
+    Likely,
+    Possible,
+    Unlikely,
+    Unknown
+}
+
+enum Severity {
+    Extreme = 1,
+    Severe,
+    Moderate,
+    Minor,
+    Unknown
+}
+
+enum Urgency {
+    Immediate = 1,
+    Expected,
+    Future,
+    Past,
+    Unknown
+}
+
+// Category object
+enum CategoryCode {
+    Geo = 1,
+    Met,
+    Safety,
+    Security,
+    Rescue,
+    Fire,
+    Health,
+    Env,
+    Transport,
+    Infra,
+    CBRNE,
+    Other
+}
+
+interface Category {
+    category: string
+    categoryCode: CategoryCode
+}
+
+// Flood object
+interface Flood {
+    floodCrestTimeLocal: string
+    floodCrestTimeLocalTimeZone: string
+    floodEndTimeLocal: string
+    floodEndTimeLocalTimeZone: string
+    floodImmediateCause: string
+    floodImmediateCauseCode: string
+    floodLocationId: string
+    floodLocationName: string
+    floodRecordStatus: string
+    floodRecordStatusCode: string
+    floodSeverity: string
+    floodSeverityCode: string
+    floodStartTimeLocal: string
+    floodStartTimeLocalTimeZone: string
+}
+
+// Response type object
+enum ResponseTypeCode {
+    Shelter = 1,
+    Evacuate,
+    Prepare,
+    Execute,
+    Avoid,
+    Monitor,
+    Assess,
+    AllClear,
+    None
+}
+
+interface ResponseType {
+    responseType: string
+    responseTypeCode: ResponseTypeCode
+}
+
+interface Text {
+    languageCode: string
+    description: string
+    instruction: string
+    overview: string
+}
+
+export interface Alert {
+    adminDistrict: string
+    adminDistrictCode: string
+    areaId: string
+    areaName: string
+    areaTypeCode: AreaType
+    certainty: string
+    certaintyCode: Certainty
+    countryCode: string
+    countryName: string
     detailKey: string
-    messageTypeCode: MessageType
+    disclaimer: string
+    effectiveTimeLocal: string
+    effectiveTimeLocalTimeZone: string
+    eventDescription: string
+    eventTrackingNumber: string
+    expireTimeLocal: string
+    expireTimeLocalTimeZone: string
+    expireTimeUTC: number
+    headlineText: string
+    ianaTimeZone: string
+    identifier: string
+    issueTimeLocal: string
+    issueTimeLocalTimeZone: string
+    latitude: number
+    longitude: number
     messageType: string
+    messageTypeCode: MessageType
+    officeAdminDistrict: string
+    officeAdminDistrictCode: string
+    officeCode: string
+    officeCountryCode: string
+    officeName: string
+    onsetTimeLocal: string
+    onsetTimeLocalTimeZone: string
+    phenomena: string
+    processTimeUTC: number
     productIdentifier: string
+    severity: string
+    severityCode: Severity
+    significance: string
+    source: string
+    urgency: string
+    urgencyCode: Urgency
+    endTimeLocal: string
+    endTimeLocalTimeZone: string
+    endTimeUTC: number
+    categories: Category[]
+    flood: Flood
+    responseTypes: ResponseType[]
+    texts: Text[]
 }
 
 interface AlertsMetadata {
@@ -223,4 +363,22 @@ export const getAlerts = async (lat: number, lon: number, language?: string) => 
         }).catch(err => {
             throw new Error(err);
         });
+};
+
+interface AlertDetailResponse {
+    alertDetail: Alert
+}
+
+export const getAlertText = async (alertId: string, language?: string) : Promise<Text[]> => {
+    const apiLanguage = language || "en-US";
+    return memoizedFetch(`https://api.weather.com/v3/alerts/detail?alertId=${alertId}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(async (res: Response) => {
+            return res.json().then((data: AlertDetailResponse) => {
+                return data.alertDetail.texts;
+            }).catch(() => {
+                return null;
+            });
+        }).catch(err => {
+            throw new Error(err);
+        })
 };

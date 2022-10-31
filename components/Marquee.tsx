@@ -1,5 +1,5 @@
 import * as React from "react";
-import Marquee from "react-fast-marquee";
+import Marquee from "./CustomMarquee";
 
 /*
     #marquee1 {
@@ -39,11 +39,11 @@ interface InfoMarqueeProps {
 
 const InfoMarquee = ({ top, bottom }: InfoMarqueeProps) => (
     <div className="absolute left-[31.35%] top-[82.5%] w-full flex flex-col">
-        <Marquee className="text-marquee-top text-shadow-sm origin-left" play={true} gradient={false} speed={375} pauseOnHover={true}>
-            {top}
+        <Marquee play={true} gradient={false} duration={90} pauseOnHover={true}>
+            <span className="text-marquee-top text-shadow-sm origin-left">{top}</span>
         </Marquee>
-        <Marquee className="text-marquee-bottom font-normal origin-left" play={true} gradient={false} speed={300} pauseOnHover={true}>
-            {bottom}
+        <Marquee play={true} gradient={false} duration={60} pauseOnHover={true}>
+            <span className="text-marquee-bottom font-normal origin-left">{bottom}</span>
         </Marquee>
     </div>
 );

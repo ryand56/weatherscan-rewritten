@@ -75,7 +75,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     const [focusedAlertText, setFocusedAlertText] = React.useState<string>(null);
 
     // Location handler
-    /* React.useEffect(() => {
+    React.useEffect(() => {
         if (isReady) {
             if (location !== "") {
                 getMainLocation(location, language).then(data => {
@@ -107,10 +107,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         }).catch(err => {
             console.error(err);
         });
-    }; */
+    };
 
     // Current conditions and alerts handler
-    /* React.useEffect(() => {
+    React.useEffect(() => {
         if (isReady) {
             const lat = locInfo.latitude;
             const lon = locInfo.longitude;
@@ -127,7 +127,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
             return () => clearInterval(intervalTimer);
         }
-    }, [isReady, locInfo.latitude, locInfo.longitude]); */
+    }, [isReady, locInfo.latitude, locInfo.longitude]);
 
     React.useEffect(() => {
         if (alerts.length > 0) {

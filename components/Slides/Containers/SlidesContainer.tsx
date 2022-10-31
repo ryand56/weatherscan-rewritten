@@ -16,9 +16,20 @@ interface SlidesContainerProps {
 const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(VocalFemale.CURRENT_COND);
+    const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
 
-    const SlideCallback = () => {
-        slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+    const SlideCallback = React.useCallback(() => {
+        if (slideState.index >= 1) {
+            slideDispatch({ type: ActionType.SET, payload: 0 });
+        } else {
+            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+        }
+        setHeaderUpdate(true);
+    }, [slideState.index]);
+
+    const HeaderCallback = () => {
+        console.log("Header cycle complete");
+        setHeaderUpdate(false);
     };
 
     const currentSlide = React.useMemo(() => {
@@ -36,9 +47,17 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
     return (
         <div id="info-slides-container" className="flex flex-col absolute right-infoslides-container-r top-infoslides-container-t w-infoslides-container h-infoslides-container max-h-infoslides-container z-[1] p-slides">
             <SlideHeader locations={[
+                "THIS",
+                "IS",
+                "A",
+                "TEST",
                 "HELLO",
-                "WORLD"
-            ]} />
+                "WORLD",
+                "DEMO",
+                "WEATHERSCAN",
+                "SYSTEM",
+                "TESTING"
+            ]} willUpdate={headerWillUpdate} cycleCallback={HeaderCallback} />
             <div id="info-slide-container" className="absolute top-infoslide-container-t h-infoslide-container w-infoslide-container">
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />

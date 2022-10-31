@@ -287,6 +287,7 @@ module.exports = {
       }
     },
     animation: {
+      opacity: "opacity 1s ease-in-out",
       cityaccentmovei: "cityaccentmovei 10s linear normal forwards",
       cityaccentmoveii: "cityaccentmoveii 10s linear normal forwards",
       cityaccentmoveiii: "cityaccentmoveiii 5s linear normal forwards"

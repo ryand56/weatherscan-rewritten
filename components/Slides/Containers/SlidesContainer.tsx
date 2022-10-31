@@ -1,7 +1,5 @@
 import * as React from "react";
 import SlideHeader from "./Headers/SlideHeader";
-import SlideSevereHeader from "./Headers/SlideSevereHeader";
-import SlideSevereHeaderMsg from "./Headers/SlideSevereHeadMsg";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
@@ -37,9 +35,10 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
 
     return (
         <div id="info-slides-container" className="flex flex-col absolute right-infoslides-container-r top-infoslides-container-t w-infoslides-container h-infoslides-container max-h-infoslides-container z-[1] p-slides">
-            <SlideHeader />
-            <SlideSevereHeader />
-            <SlideSevereHeaderMsg />
+            <SlideHeader locations={[
+                "HELLO",
+                "WORLD"
+            ]} />
             <div id="info-slide-container" className="absolute top-infoslide-container-t h-infoslide-container w-infoslide-container">
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />

@@ -6,15 +6,16 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      "frutiger": ["Frutiger", "ZemestroSTD", "sans-serif"],
-      "interstate": ["Interstate", "ZemestroSTD", "sans-serif"],
-      "interstate-bold": ["'Interstate Bold'", "ZemestroSTD", "sans-serif"],
-      "interstate-cn": ["'Interstate Cn'", "ZemestroSTD", "sans-serif"],
-      "interstate-mono": ["'Interstate Mono'", "ZemestroSTD", "sans-serif"],
-      "parrow": ["PressureArrow", "Interstate", "ZemestroSTD", "sans-serif"],
-      "interstate2": ["Interstate2", "ZemestroSTD", "sans-serif"],
-      "frutiger57-cond": ["'Frutiger 57 Condensed'", "ZemestroSTD", "sans-serif"],
-      "frutigerbold-cn": ["'Frutiger Bold Cn'", "ZemestroSTD", "sans-serif"]
+      "frutiger": ["Frutiger", "'Zemestro Std'", "sans-serif"],
+      "interstate": ["Interstate", "'Zemestro Std'", "sans-serif"],
+      "interstate-bold": ["'Interstate Bold'", "'Zemestro Std'", "sans-serif"],
+      "interstate-cn": ["'Interstate Cn'", "'Zemestro Std'", "sans-serif"],
+      "interstate-mono": ["'Interstate Mono'", "'Zemestro Std'", "sans-serif"],
+      "parrow": ["PressureArrow", "Interstate", "'Zemestro Std'", "sans-serif"],
+      "interstate2": ["Interstate2", "'Zemestro Std'", "sans-serif"],
+      "frutiger57-cond": ["'Frutiger 57 Condensed'", "'Zemestro Std'", "sans-serif"],
+      "frutigerbold-cn": ["'Frutiger Bold Cn'", "'Zemestro Std'", "sans-serif"],
+      "zemestro-std": ["'Zemestro Std'", "sans-serif"]
     },
     extend: {
       colors: {
@@ -125,6 +126,7 @@ module.exports = {
         "city": "36.5px",
         "slidehead": "31px",
         "hscroller": "30px",
+        "divider-arrow": "26px",
         "copyright": "28px",
         "subhead": "39px",
         "subhead-bulletin": "40.5px",
@@ -247,6 +249,7 @@ module.exports = {
         "43-5": "43.5%"
       },
       scale: {
+        "1": "1",
         "101": "1.01",
         "102-5": "1.025",
         "103": "1.03",
@@ -261,6 +264,9 @@ module.exports = {
         "115": "1.15",
         "117": "1.17",
         "118": "1.18"
+      },
+      opacity: {
+        "half": ".5"
       }
     },
     keyframes: {

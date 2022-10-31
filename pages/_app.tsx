@@ -2,6 +2,7 @@ import "../styles/global.scss";
 import * as React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => (
     <>
@@ -11,7 +12,9 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => (
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         </Head>
 
-        <Component {...pageProps} key={router.pathname} />
+        <ErrorBoundary key="error-boundary">
+            <Component {...pageProps} key={router.pathname} />
+        </ErrorBoundary>
     </>
 );
 

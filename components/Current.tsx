@@ -62,7 +62,7 @@ const Current = ({ temp, info }: CurrentProps) => {
                 <div
                     id="current-temp"
                     className="text-temp absolute top-temp-t -left-temp-l text-center w-full transform scale-x-102-5 scale-y-100 origin-left font-interstate font-bold text-shadow-none text-dark"
-                >{temp}</div>
+                >{temp.toString()}</div>
                 <div
                     id="current-info"
                     className="font-parrow text-info absolute left-info-l top-info-t text-left w-info font-normal leading-info transform scale-x-106 scale-y-100 origin-left whitespace-normal text-shadow-none text-dark"

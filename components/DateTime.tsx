@@ -11,10 +11,7 @@ const DateTime = ({ tz }: DateTimeProps) => {
     const updateTime = () => {
         const date = new Date();
         
-        const formatDate = date.toLocaleDateString("en-US", {
-            dateStyle: "medium",
-            timeZone: tz
-        }).slice(0, 6).trimEnd();
+        const formatDate = date.toString().slice(4, 10).trimEnd();
         const formatTime = date.toLocaleTimeString("en-US", {
             hour: "numeric",
             hour12: true,

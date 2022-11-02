@@ -37,21 +37,14 @@ const SlideCityInfo = ({ next }: SlideProps) => {
 
     React.useEffect(() => {
         let timeout = setTimeout(() => {
-            if (slideState.index >= 1) {
-                next();
-            } else {
-                slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-            }
+            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+            if (slideState.index >= 1) setTimeout(next, 1000);
         }, 8000);
         return () => clearTimeout(timeout);
     }, [slideState.index]);
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.45, ease: "easeInOut" }}
+        <div
             id="city-info-slide"
             className="relative bg-city-info-slide bg-no-repeat w-full min-h-infoslide max-h-infoslide overflow-hidden flex flex-col"
         >
@@ -72,7 +65,7 @@ const SlideCityInfo = ({ next }: SlideProps) => {
             <AnimatePresence mode="wait">
                 {currentSlide}
             </AnimatePresence>
-        </motion.div>
+        </div>
     );
 };
 

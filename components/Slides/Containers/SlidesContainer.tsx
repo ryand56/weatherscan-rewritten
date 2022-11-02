@@ -3,7 +3,6 @@ import SlideHeader from "./Headers/SlideHeader";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
-import { AnimatePresence } from "framer-motion";
 
 import { SlideshowReducer, Slides, ActionType } from "../../../hooks/useSlides";
 import CityIntro from "./Slides/CityIntro";
@@ -36,9 +35,9 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
         console.log("Rendering new slide");
         switch (slideState.index) {
             case Slides.INTRO:
-                return <CityIntro key="city-intro-slide" next={SlideCallback} />;
+                return <CityIntro next={SlideCallback} />;
             case Slides.INFO:
-                return <CityInfo key="city-info-slide" next={SlideCallback} />;
+                return <CityInfo next={SlideCallback} />;
             default:
                 return null;
         }
@@ -62,9 +61,7 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />
                 </AudioPlayerProvider>
-                <AnimatePresence mode="wait">
-                    {currentSlide}
-                </AnimatePresence>
+                {currentSlide}
             </div>
         </div>
     );

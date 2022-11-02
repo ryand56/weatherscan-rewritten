@@ -150,7 +150,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     */
     return (
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
-            <img className="block max-h-full max-w-full" src="/images/template-4k.png" />
+            <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
             {isReady && <SlidesContainer setMainVol={setMainVol} />}
             {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}

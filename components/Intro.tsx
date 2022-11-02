@@ -109,7 +109,7 @@ const Intro = ({ winSize, callback }: IntroProps) => {
                     <div className="whitespace-nowrap relative font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] pt-6">other settings</div>
                     <div className="whitespace-nowrap relative font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] pt-6">Save</div>
                 </div>
-                <img className="object-contain absolute w-[500px] h-[175px] right-[1.9%] -top-[9px]" src="/images/weatherlogos.png" />
+                <img className="object-contain absolute w-[500px] h-[175px] right-[1.9%] -top-[9px]" src="/images/weatherlogos.png" alt="weatherscan" />
             </div>
             <div id="appearancesettingspane" className="pt-[200px] hidden">
                 <select name="background" id="background">
@@ -136,7 +136,7 @@ const Intro = ({ winSize, callback }: IntroProps) => {
             <div id="locationsettingspane" className="pt-[200px] hidden">
                 <div id="weathertitle" className="absolute w-full text-center text-[56px] top-[16px]">Location Settings</div>
             </div>
-            <img ref={intellistarRef} className="object-contain object-center w-[625px] h-[205px] block m-[0px] m-auto mt-[440px]" src="/images/intellistarlogo.png" />
+            <img ref={intellistarRef} className="object-contain object-center w-[625px] h-[205px] block m-[0px] m-auto mt-[440px]" src="/images/intellistarlogo.png" alt="intellistar" />
         </div>
     );
 };

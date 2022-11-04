@@ -43,13 +43,11 @@ const Index = () => {
 
     if (loading) return <div>Loading...</div>;
 
-    /*
-        <AudioPlayerProvider>
-            <MusicAudio vol={musicVol} />
-        </AudioPlayerProvider>
-    */
     return (
         <>
+            <AudioPlayerProvider>
+                <MusicAudio vol={musicVol} />
+            </AudioPlayerProvider>
             <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
             <Display
                 isReady={introDone}

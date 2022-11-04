@@ -113,6 +113,8 @@ module.exports = {
         "subhead-city-r": "90px",
         "subhead-shadow-t": "50.8%",
         "subhead-shadow-l": "7px",
+        "subhead-title-t": "50.8%",
+        "subhead-title-l": "7px",
         "forecast": "10%",
         "logo-area-t": "83.4%",
         "logo-area-img-t": "19%",
@@ -195,6 +197,7 @@ module.exports = {
         "infoslide-container": "884.5px",
         "gradient": "125px",
         "subhead-shadow": "250%",
+        "subhead-title": "250%",
         "logo-area": "31.528%",
         "logo-area-img": "65%"
       },

@@ -7,7 +7,7 @@ interface CCIconProps {
 }
 
 const CCIcon = ({ iconCode, windData }: CCIconProps) => {
-    const [icon, setIcon] = React.useState<number>(Icons2010.UNK);
+    const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
 
     React.useEffect(() => {
         if (typeof iconCode === "number" && typeof windData === "number") {

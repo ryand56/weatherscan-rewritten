@@ -4,7 +4,7 @@ export const enum Slides {
 }
 
 export interface SlideProps {
-    next: () => void
+    next?: () => void
 }
 
 export const enum ActionType {

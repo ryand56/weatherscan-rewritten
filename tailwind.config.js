@@ -54,6 +54,7 @@ module.exports = {
         "bulletin-frost-pane": "-72px -329px",
         "severe-city-info-pos": "69% 41.5%",
         "frost-pane": "-72px -329px",
+        "frost-pane-detailed-right": "-570px -329px",
         "city-info-slide": "69% 41.5%"
       },
       backgroundSize: {
@@ -244,9 +245,11 @@ module.exports = {
       },
       translate: {
         "2.5": "2.5px",
+        "6px": "6px",
         "60px": "60px",
         "42-5": "42.5%",
-        "43-5": "43.5%"
+        "43-5": "43.5%",
+        "47-5": "47.5%"
       },
       scale: {
         "1": "1",
@@ -260,8 +263,10 @@ module.exports = {
         "110": "1.10",
         "112": "1.12",
         "112-5": "1.125",
+        "113-5": "1.135",
         "114-5": "1.145",
         "115": "1.15",
+        "115-5": "1.155",
         "117": "1.17",
         "118": "1.18"
       },

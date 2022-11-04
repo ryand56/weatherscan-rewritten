@@ -21,7 +21,7 @@ const Detailed = () => {
                 <span
                     id="subhead-city"
                     className="font-frutiger text-subhead-city pt-0 transform -translate-y-43-5 scale-x-105-9 scale-y-100 origin-right right-subhead-city-r font-stretch-semi-exp absolute top-1/2"
-                >Hello</span>
+                >N/A</span>
             </motion.div>
             <motion.div
                 initial={{ opacity: 0 }}
@@ -32,7 +32,7 @@ const Detailed = () => {
                 id="info-subheadershadowfix"
                 className="font-normal font-frutiger57-cond text-white flex flex-row flex-nowrap justify-between text-subhead h-subhead z-subheader-shadow whitespace-nowrap text-shadow-subhead absolute min-w-subhead-shadow"
             >
-                <span id="subhead-title" className="absolute top-[50.8%] transform -translate-y-42-5 scale-x-118 scale-y-100 origin-left left-[7px] w-[250%]">Hello World</span>
+                <span id="subhead-title" className="absolute top-[50.8%] transform -translate-y-42-5 scale-x-118 scale-y-100 origin-left left-[7px] w-[250%]">Local Forecast</span>
             </motion.div>
             <motion.div
                 initial={{ opacity: 0 }}

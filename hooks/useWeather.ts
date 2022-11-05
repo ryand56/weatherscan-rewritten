@@ -23,8 +23,22 @@ interface WeatherAPILocation {
     ianaTimeZone: string[]
 }
 
+interface WeatherAPIExtraLoc {
+    city: string
+    adminDistrict: string
+    country: string
+    countryCode: string
+    latitude: number
+    longitude: number
+    ianaTimeZone: string
+}
+
 interface WeatherAPILocResponse {
     location: Partial<WeatherAPILocation>
+}
+
+interface WeatherAPIExtraLocResponse {
+    location: Partial<WeatherAPIExtraLoc>
 }
 
 // ip-api.com
@@ -67,6 +81,7 @@ export interface CurrentCond {
     humidity: number
     dewpt: number
     pres: number
+    chill: number
 }
 
 export const currentDefaults: CurrentCond = Object.freeze({
@@ -79,7 +94,8 @@ export const currentDefaults: CurrentCond = Object.freeze({
     phrase: "",
     humidity: 0,
     dewpt: 0,
-    pres: 0
+    pres: 0,
+    chill: NaN
 });
 
 const memoAsync = (cb) => {
@@ -149,8 +165,10 @@ export const getClosestLocation = async () => {
 
 export const getExtraLocations = async (lat: number, lon: number) => {
     return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
-        .then(res => {
-
+        .then(async (res: Response) => {
+            return res.json().then((data: WeatherAPIExtraLocResponse) => {
+                const dataLoc = data.location;
+            });
         });
 };
 
@@ -172,6 +190,7 @@ export const getCurrentCond = async (lat: number, lon: number, language?: string
                 current.humidity = dataLoc.relativeHumidity;
                 current.dewpt = dataLoc.temperatureDewPoint;
                 current.pres = dataLoc.pressureAltimeter.toFixed(2);
+                current.chill = dataLoc.temperatureWindChill;
 
                 return current;
             }).catch(err => {

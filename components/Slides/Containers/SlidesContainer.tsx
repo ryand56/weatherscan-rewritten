@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { CurrentCond } from "../../../hooks/useWeather";
 import SlideHeader from "./Headers/SlideHeader";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
@@ -10,9 +11,10 @@ import CityInfo from "./Slides/CityInfo";
 
 interface SlidesContainerProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
+    currentCityInfo?: Partial<CurrentCond>
 }
 
-const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {    
+const SlidesContainer = ({ setMainVol, currentCityInfo }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(VocalFemale.CURRENT_COND);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
@@ -37,7 +39,7 @@ const SlidesContainer = ({ setMainVol }: SlidesContainerProps) => {
             case Slides.INTRO:
                 return <CityIntro next={SlideCallback} />;
             case Slides.INFO:
-                return <CityInfo next={SlideCallback} />;
+                return <CityInfo next={SlideCallback} currentCityInfo={currentCityInfo} />;
             default:
                 return null;
         }

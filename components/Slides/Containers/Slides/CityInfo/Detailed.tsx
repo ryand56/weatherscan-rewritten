@@ -1,10 +1,21 @@
 import * as React from "react";
+import type { CurrentCond } from "../../../../../hooks/useWeather";
 import { Icons2010, getIcon } from "../../../../../hooks/useIconMap";
 import { motion } from "framer-motion";
 import FrostPane from "../FrostPane";
 
-const Detailed = () => {
+interface DetailedProps {
+    city?: string
+    info?: Partial<CurrentCond>
+}
+
+const Detailed = ({ city, info }: DetailedProps) => {
     const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
+
+    React.useEffect(() => {
+        const mapped = getIcon(info.icon, info.windSpeed);
+        setIcon(mapped);
+    }, [info]);
 
     return (
         <>
@@ -21,7 +32,7 @@ const Detailed = () => {
                 <span
                     id="subhead-city"
                     className="font-frutiger text-subhead-city pt-0 transform -translate-y-43-5 scale-x-105-9 scale-y-100 origin-right right-subhead-city-r font-stretch-semi-exp absolute top-1/2"
-                >N/A</span>
+                >{city}</span>
             </motion.div>
             <motion.div
                 initial={{ opacity: 0 }}
@@ -63,19 +74,19 @@ const Detailed = () => {
                         <br />
                         Wind Chill
                     </div>
-                    <div id="frost-pane-data" className="absolute pt-[5px] leading-[182.5%] font-frutiger57-cond transform scale-x-113-5 scale-y-100 origin-right right-[10%] text-[37.5px] text-right">
-                        82%
+                    {info && <div id="frost-pane-data" className="absolute pt-[5px] leading-[182.5%] font-frutiger57-cond transform scale-x-113-5 scale-y-100 origin-right right-[10%] text-[37.5px] text-right">
+                        {`${info.humidity}%`}
                         <br />
-                        39
+                        {info.dewpt}
                         <br />
-                        30.22
+                        {info.pres}
                         <br/>
-                        S 7
+                        {info.wind}
                         <br/>
                         none
                         <br />
-                        40
-                    </div>
+                        {info.chill.toString()}
+                    </div>}
                 </FrostPane>
                 <FrostPane
                     id="right"
@@ -90,14 +101,16 @@ const Detailed = () => {
                         className="bg-no-repeat bg-cover bg-info-icon w-[212px] h-[212px] transform -translate-y-[5px]"
                         style={{ backgroundImage: `url(/images/icons2010/${icon}.png)` }}
                     />
-                    <div
-                        id="conditions"
-                        className="flex items-center justify-center absolute text-[36px] font-medium leading-[110%] top-[220px] text-center capitalize break-word w-[25%] h-[50px] transform -translate-x-[11px] translate-y-0 scale-x-[104.5%] scale-y-100"
-                    >N/A</div>
-                    <div
-                        id="temp"
-                        className="font-frutigerbold-cn text-[69px] font-bold absolute top-[323px] tracking-[2.5px] transform -translate-x-6px translate-y-0 scale-x-102-5 scale-y-100 origin-left"
-                    >NaN</div>
+                    {info && <>
+                        <div
+                            id="conditions"
+                            className="flex items-center justify-center absolute text-[36px] font-medium leading-[110%] top-[220px] text-center capitalize break-word w-[25%] h-[50px] transform -translate-x-[11px] translate-y-0 scale-x-[104.5%] scale-y-100"
+                        >{info.phrase}</div>
+                        <div
+                            id="temp"
+                            className="font-frutigerbold-cn text-[69px] font-bold absolute top-[323px] tracking-[2.5px] transform -translate-x-6px translate-y-0 scale-x-102-5 scale-y-100 origin-left"
+                        >{info.temp}</div>
+                    </>}
                 </FrostPane>
             </motion.div>
         </>

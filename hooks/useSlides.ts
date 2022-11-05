@@ -1,9 +1,12 @@
+import type { CurrentCond } from "./useWeather";
+
 export const enum Slides {
     INTRO,
     INFO
 }
 
 export interface SlideProps {
+    currentCityInfo?: Partial<CurrentCond>
     next?: () => void
 }
 

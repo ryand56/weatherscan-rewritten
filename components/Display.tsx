@@ -69,6 +69,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
+    const [extraInfo, setExtraInfo] = React.useState<Map<string, Partial<CurrentCond>>>(new Map<string, Partial<CurrentCond>>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
     const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
@@ -152,7 +153,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
-            {isReady && <SlidesContainer setMainVol={setMainVol} />}
+            {isReady && <SlidesContainer setMainVol={setMainVol} currentCityInfo={currentInfo} />}
             {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}
             {locInfo.city !== "" && <div
                 id="city"

@@ -102,7 +102,7 @@ const Icons2010CodeMap = Object.freeze([
     Icons2010.THUNDER_NIGHT // 47
 ]);
 
-export const getIcon = (iconCode: number, windData: number) : number => {
+export const getIcon = (iconCode: number, windData: number) : Icons2010 => {
     let icon = Icons2010CodeMap[iconCode];
     if (windData >= 20) {
         if (icon === Icons2010.HEAVY_SNOW || icon === Icons2010.SNOW || icon === Icons2010.SNOW_ALT) {

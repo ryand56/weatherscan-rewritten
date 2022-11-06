@@ -190,7 +190,9 @@ export const getClosestLocation = async () => {
         });
 };
 
-export const getExtraLocations = async (lat: number, lon: number) => {
+export const getExtraLocations = async (lat: number, lon: number, language?: string) => {
+    const apiLanguage = language || "en-US";
+
     return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((near: WeatherAPINearResponse) => {
@@ -198,7 +200,7 @@ export const getExtraLocations = async (lat: number, lon: number) => {
                 const dataLocLength = dataLoc.stationName.length;
                 const extraLocs: ExtraLocation[] = [];
                 for (let i = 0; i < dataLocLength; i++) {
-                    memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+                    memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
                         .then(async (res: Response) => {
                             return res.json().then((point: WeatherAPIPointResponse) => {
                                 const pointData = point.location;

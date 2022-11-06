@@ -59,7 +59,7 @@ interface WeatherAPIPointResponse {
     location: WeatherAPILocation
 }
 
-interface ExtraLocation {
+export interface ExtraLocation {
     lat?: number
     lon?: number
     distance?: number
@@ -218,11 +218,11 @@ export const getExtraLocations = async (lat: number, lon: number, language?: str
 
                 return extraLocs;
             }).catch(err => {
-                console.error(err);
-            })
+                throw new Error(err);
+            });
         }).catch(err => {
-            console.error(err);
-        })
+            throw new Error(err);
+        });
 };
 
 export const getCurrentCond = async (lat: number, lon: number, language?: string) => {

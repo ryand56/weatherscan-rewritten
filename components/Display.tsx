@@ -1,10 +1,11 @@
 import * as React from "react";
-import type { Location, CurrentCond, Alert } from "../hooks/useWeather";
+import type { Location, ExtraLocation, CurrentCond, Alert } from "../hooks/useWeather";
 import {
     defaults,
     currentDefaults,
     getMainLocation,
     getClosestLocation,
+    getExtraLocations,
     getCurrentCond,
     getAlerts,
     getAlertText
@@ -48,6 +49,11 @@ interface DisplayProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
+interface ExtraInfo {
+    details?: ExtraLocation
+    current?: Partial<CurrentCond>
+}
+
 const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
@@ -69,7 +75,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
-    const [extraInfo, setExtraInfo] = React.useState<Map<string, Partial<CurrentCond>>>(new Map<string, Partial<CurrentCond>>());
+    const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
     const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
@@ -93,6 +99,27 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             }
         }
     }, [isReady, location]);
+
+    const fetchExtra = (lat: number, lon: number) => {
+        getExtraLocations(lat, lon, language).then(data => {
+            const tempMap = new Map<string, ExtraInfo>();
+            for (let i = 0; i < data.length; i++) {
+                const location = data[i];
+                getCurrentCond(location.lat, location.lon, language).then(current => {
+                    tempMap.set(location.displayName, {
+                        details: location,
+                        current
+                    });
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
+
+            setExtraInfo(tempMap);
+        }).catch(err => {
+            console.error(err);
+        });
+    };
 
     const fetchCurrent = (lat: number, lon: number) => {
         getCurrentCond(lat, lon, language).then(data => {
@@ -118,6 +145,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             
             let intervalTimer: NodeJS.Timeout;
             if (lat && lon) {
+                fetchExtra(lat, lon);
                 fetchCurrent(lat, lon);
                 fetchAlerts(lat, lon);
                 intervalTimer = setInterval(() => {
@@ -142,6 +170,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             })
         }
     }, [alerts.length]);
+
+    React.useEffect(() => {
+        console.log(extraInfo);
+    }, [extraInfo]);
 
     /*
         <InfoMarquee

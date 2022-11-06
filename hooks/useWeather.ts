@@ -14,31 +14,58 @@ export interface Location {
 
 // api.weather.com
 interface WeatherAPILocation {
-    city: string[]
-    adminDistrict: string[]
-    country: string[]
-    countryCode: string[]
-    latitude: number[]
-    longitude: number[]
-    ianaTimeZone: string[]
+    city?: string
+    displayName?: string
+    adminDistrict?: string
+    country?: string
+    countryCode?: string
+    latitude?: number
+    longitude?: number
+    ianaTimeZone?: string
 }
 
-interface WeatherAPIExtraLoc {
-    city: string
-    adminDistrict: string
-    country: string
-    countryCode: string
-    latitude: number
-    longitude: number
-    ianaTimeZone: string
+interface WeatherAPISearchLoc {
+    city?: string[]
+    adminDistrict?: string[]
+    country?: string[]
+    countryCode?: string[]
+    latitude?: number[]
+    longitude?: number[]
+    ianaTimeZone?: string[]
 }
 
-interface WeatherAPILocResponse {
-    location: Partial<WeatherAPILocation>
+interface WeatherAPINear {
+    adminDistrictCode?: string[]
+    stationName?: string[]
+    countryCode?: string[]
+    stationId?: string[]
+    ianaTimeZone?: string[]
+    obsType?: string[]
+    latitude?: number[]
+    longitude?: number[]
+    distanceKm?: number[]
+    distanceMi?: number[]
 }
 
-interface WeatherAPIExtraLocResponse {
-    location: Partial<WeatherAPIExtraLoc>
+interface WeatherAPISearchLocResponse {
+    location: WeatherAPISearchLoc
+}
+
+interface WeatherAPINearResponse {
+    location: WeatherAPINear
+}
+
+interface WeatherAPIPointResponse {
+    location: WeatherAPILocation
+}
+
+interface ExtraLocation {
+    lat?: number
+    lon?: number
+    distance?: number
+    stationUrl?: string
+    name: string
+    displayName?: string
 }
 
 // ip-api.com
@@ -116,7 +143,7 @@ export const getMainLocation = async (location: string, language?: string) => {
 
     return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
-            return res.json().then((data: WeatherAPILocResponse) => {
+            return res.json().then((data: WeatherAPISearchLocResponse) => {
                 const dataLocs = data.location;
 
                 const loc = Object.assign({}, defaults);
@@ -166,10 +193,26 @@ export const getClosestLocation = async () => {
 export const getExtraLocations = async (lat: number, lon: number) => {
     return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
-            return res.json().then((data: WeatherAPIExtraLocResponse) => {
-                const dataLoc = data.location;
-            });
-        });
+            return res.json().then((near: WeatherAPINearResponse) => {
+                const dataLoc = near.location;
+                const dataLocLength = dataLoc.stationName.length;
+                const extraLocs: ExtraLocation[] = [];
+                for (let i = 0; i < dataLocLength; i++) {
+                    memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=en-US&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+                        .then(async (res: Response) => {
+                            return res.json().then((point: WeatherAPIPointResponse) => {
+                                const pointData = point.location;
+                            });
+                        });
+                }
+
+                return extraLocs;
+            }).catch(err => {
+                console.error(err);
+            })
+        }).catch(err => {
+            console.error(err);
+        })
 };
 
 export const getCurrentCond = async (lat: number, lon: number, language?: string) => {

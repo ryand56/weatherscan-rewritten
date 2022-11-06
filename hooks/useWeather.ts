@@ -202,6 +202,14 @@ export const getExtraLocations = async (lat: number, lon: number) => {
                         .then(async (res: Response) => {
                             return res.json().then((point: WeatherAPIPointResponse) => {
                                 const pointData = point.location;
+                                extraLocs.push({
+                                    name: pointData.displayName,
+                                    displayName: pointData.displayName,
+                                    lat: pointData.latitude,
+                                    lon: pointData.longitude,
+                                    distance: dataLoc.distanceMi[i],
+                                    stationUrl: dataLoc.stationId[i]
+                                });
                             });
                         });
                 }

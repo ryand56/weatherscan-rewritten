@@ -7,6 +7,7 @@ import {
     getClosestLocation,
     getExtraLocations,
     getCurrentCond,
+    getExtraCond,
     getAlerts,
     getAlertText
 } from "../hooks/useWeather";
@@ -75,7 +76,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
-    const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
+    const [extraInfo, setExtraInfo] = React.useState<Map<string, Partial<CurrentCond>>>(new Map<string, Partial<CurrentCond>>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
     const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
@@ -101,18 +102,26 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     }, [isReady, location]);
 
     const fetchExtra = (lat: number, lon: number) => {
-        getExtraLocations(lat, lon, language).then(data => {
-            const tempMap = new Map<string, ExtraInfo>();
+        getExtraLocations(lat, lon, language).then(async data => {
+            const tempMap = new Map<string, Partial<CurrentCond>>();
+            const latLonMap = new Map<string, string>();
+            const queryLatLons: string[] = [];
+
+            // Dirty way of doing things
             for (let i = 0; i < data.length; i++) {
                 const location = data[i];
-                getCurrentCond(location.lat, location.lon, language).then(current => {
-                    tempMap.set(location.displayName, {
-                        details: location,
-                        current
-                    });
-                }).catch(err => {
-                    console.error(err);
-                });
+                const latLon = `${location.lat},${location.lon}`;
+                console.log(latLon);
+                queryLatLons.push(latLon);
+                latLonMap.set(latLon, location.displayName);
+            }
+
+            const extras = await getExtraCond(queryLatLons, language);
+            for (const [key, value] of Object.entries(extras)) {
+                console.log(key);
+                const displayName = latLonMap.get(key);
+                console.log(displayName, value);
+                tempMap.set(displayName, value);
             }
 
             setExtraInfo(tempMap);

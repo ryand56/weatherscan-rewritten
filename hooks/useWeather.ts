@@ -195,25 +195,26 @@ export const getExtraLocations = async (lat: number, lon: number, language?: str
 
     return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
-            return res.json().then((near: WeatherAPINearResponse) => {
+            return res.json().then(async (near: WeatherAPINearResponse) => {
                 const dataLoc = near.location;
                 const dataLocLength = dataLoc.stationName.length;
                 const extraLocs: ExtraLocation[] = [];
                 for (let i = 0; i < dataLocLength; i++) {
-                    memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+                    const point = await memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
                         .then(async (res: Response) => {
                             return res.json().then((point: WeatherAPIPointResponse) => {
                                 const pointData = point.location;
-                                extraLocs.push({
-                                    name: pointData.displayName,
-                                    displayName: pointData.displayName,
-                                    lat: pointData.latitude,
-                                    lon: pointData.longitude,
-                                    distance: dataLoc.distanceMi[i],
-                                    stationUrl: dataLoc.stationId[i]
-                                });
+                                return pointData;
                             });
                         });
+                    extraLocs.push({
+                        name: point.displayName,
+                        displayName: point.displayName,
+                        lat: point.latitude,
+                        lon: point.longitude,
+                        distance: dataLoc.distanceMi[i],
+                        stationUrl: dataLoc.stationId[i]
+                    });
                 }
 
                 return extraLocs;
@@ -227,10 +228,10 @@ export const getExtraLocations = async (lat: number, lon: number, language?: str
 
 export const getCurrentCond = async (lat: number, lon: number, language?: string) => {
     const apiLanguage = language || "en-US";
-    return memoizedFetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=${lat},${lon};&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return memoizedFetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then(data => {
-                const dataLoc = data[0]["v3-wx-observations-current"];
+                const dataLoc = data["v3-wx-observations-current"];
 
                 const current = Object.assign({}, currentDefaults);
                 current.temp = dataLoc.temperature;
@@ -252,6 +253,50 @@ export const getCurrentCond = async (lat: number, lon: number, language?: string
         }).catch(err => {
             throw new Error(err);
         });
+};
+
+interface CurrentConds {
+    [latLon: string]: CurrentCond
+}
+
+export const getExtraCond = async (latLons: string[], language?: string) => {
+    const apiLanguage = language || "en-US";
+    let baseUrl = "https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=";
+    for (let i = 0; i < latLons.length; i++) {
+        const latLon = latLons[i];
+        baseUrl += `${latLon};`;
+    }
+    baseUrl += `&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`;
+    const conds = await memoizedFetch(baseUrl)
+        .then(async (res: Response) => {
+            return res.json().then(data => {
+                return data;
+            });
+        });
+
+    const result: CurrentConds = {};
+    
+    for (let i = 0; i < conds.length; i++) {
+        const cond = conds[i];
+        const dataLoc = cond["v3-wx-observations-current"];
+
+        const current = Object.assign({}, currentDefaults);
+        current.temp = dataLoc.temperature;
+        current.icon = dataLoc.iconCode;
+        current.wind = `${(dataLoc.windDirectionCardinal === "CALM" || dataLoc.windSpeed === 0 ? "Calm" : dataLoc.windDirectionCardinal)} ${dataLoc.windSpeed === 0 ? "" : dataLoc.windSpeed}`;
+        current.windSpeed = dataLoc.windSpeed;
+        current.visib = dataLoc.visibility;
+        current.uvIndex = dataLoc.uvDescription;
+        current.phrase = dataLoc.wxPhraseLong.toLowerCase();
+        current.humidity = dataLoc.relativeHumidity;
+        current.dewpt = dataLoc.temperatureDewPoint;
+        current.pres = dataLoc.pressureAltimeter.toFixed(2);
+        current.chill = dataLoc.temperatureWindChill;
+
+        result[cond.id] = current;
+    }
+
+    return result;
 };
 
 enum MessageType {

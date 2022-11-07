@@ -1,5 +1,5 @@
 import * as React from "react";
-import FrostPane from "../FrostPane";
+import FrostPane from "../../FrostPane";
 
 const Forecast = () => (
     <div id="infoslide-content-forecast" className="h-full min-h-full w-full flex-1 z-0 flex flex-row top-forecast text-forecast hidden">

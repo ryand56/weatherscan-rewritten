@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Icons2010 } from "./useIconMap";
 
+interface APIOptions {
+    language?: string
+}
+
 // Mapped location
 export interface Location {
     city: string
@@ -138,8 +142,14 @@ const memoAsync = (cb) => {
 
 const memoizedFetch = memoAsync(fetch);
 
-export const getMainLocation = async (location: string, language?: string) => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets the main location for a query string.
+ * @param location The query string to look up.
+ * @param options The options for this request.
+ * @returns A promise returning a {@link Location} for the query string.
+ */
+export const getMainLocation = async (location: string, options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
 
     return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
@@ -164,6 +174,10 @@ export const getMainLocation = async (location: string, language?: string) => {
         });
 };
 
+/**
+ * Gets the closest location nearest to the user.
+ * @returns A promise returning the {@link Location} of the user.
+ */
 export const getClosestLocation = async () => {
     return memoizedFetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
         .then(async (res: Response) => {
@@ -190,8 +204,15 @@ export const getClosestLocation = async () => {
         });
 };
 
-export const getExtraLocations = async (lat: number, lon: number, language?: string) => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets nearby locations for a single location.
+ * @param lat The latitude of the location.
+ * @param lon The longitude of the location.
+ * @param options The options for this request.
+ * @returns A promise returning an {@link ExtraLocation} array for the specified location.
+ */
+export const getExtraLocations = async (lat: number, lon: number, options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
 
     return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
@@ -226,8 +247,15 @@ export const getExtraLocations = async (lat: number, lon: number, language?: str
         });
 };
 
-export const getCurrentCond = async (lat: number, lon: number, language?: string) => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets the current conditions for a single location.
+ * @param lat The latitude of the location.
+ * @param lon The longitude of the location.
+ * @param options The options for this request.
+ * @returns A promise returning a {@link CurrentCond} object for the specified location.
+ */
+export const getCurrentCond = async (lat: number, lon: number, options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
     return memoizedFetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then(data => {
@@ -255,12 +283,19 @@ export const getCurrentCond = async (lat: number, lon: number, language?: string
         });
 };
 
+/** @internal */
 interface CurrentConds {
     [latLon: string]: CurrentCond
 }
 
-export const getExtraCond = async (latLons: string[], language?: string) => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets the current conditions for a list of locations.
+ * @param latLons An array of locations (latitudes and longitudes).
+ * @param options The options for this request.
+ * @returns A promise returning a {@link CurrentConds} object for the specified locations.
+ */
+export const getExtraCond = async (latLons: string[], options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
     let baseUrl = "https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=";
     for (let i = 0; i < latLons.length; i++) {
         const latLon = latLons[i];
@@ -387,11 +422,13 @@ enum ResponseTypeCode {
     None
 }
 
+/** @internal */
 interface ResponseType {
     responseType: string
     responseTypeCode: ResponseTypeCode
 }
 
+/** @internal */
 interface Text {
     languageCode: string
     description: string
@@ -452,15 +489,18 @@ export interface Alert {
     texts: Text[]
 }
 
+/** @internal */
 interface AlertsMetadata {
     next: any
 }
 
+/** @internal */
 interface AlertsResponse {
     metadata?: AlertsMetadata
     alerts: Alert[]
 }
 
+/** @internal */
 const alertsFallback: AlertsResponse = Object.freeze({
     metadata: {
         next: null
@@ -468,8 +508,15 @@ const alertsFallback: AlertsResponse = Object.freeze({
     alerts: []
 });
 
-export const getAlerts = async (lat: number, lon: number, language?: string) => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets the alerts for a specified latitude and longitude.
+ * @param lat The latitude of the location.
+ * @param lon The longitude of the location.
+ * @param options The options for this request.
+ * @returns A promise returning an {@link Alert} array for the specified latitude and longitude.
+ */
+export const getAlerts = async (lat: number, lon: number, options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
     return memoizedFetch(`https://api.weather.com/v3/alerts/headlines?geocode=${lat},${lon}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: AlertsResponse) => {
@@ -482,12 +529,20 @@ export const getAlerts = async (lat: number, lon: number, language?: string) => 
         });
 };
 
+/** @internal */
 interface AlertDetailResponse {
     alertDetail: Alert
 }
 
-export const getAlertText = async (alertId: string, language?: string) : Promise<Text[]> => {
-    const apiLanguage = language || "en-US";
+/**
+ * Gets the alert text for a specified alert ID. This should be ran after getAlerts.
+ * @param alertId The alert ID to fetch the text for.
+ * @param options The options for this request.
+ * @returns A promise returning a {@link Text} array for the specified alert ID.
+ */
+
+export const getAlertText = async (alertId: string, options?: APIOptions) : Promise<Text[]> => {
+    const apiLanguage = options.language || "en-US";
     return memoizedFetch(`https://api.weather.com/v3/alerts/detail?alertId=${alertId}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: AlertDetailResponse) => {

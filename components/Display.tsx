@@ -86,7 +86,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     React.useEffect(() => {
         if (isReady) {
             if (location !== "") {
-                getMainLocation(location, language).then(data => {
+                getMainLocation(location, { language }).then(data => {
                     setLocInfo(data);
                 }).catch(err => {
                     console.error(err);
@@ -102,7 +102,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     }, [isReady, location]);
 
     const fetchExtra = (lat: number, lon: number) => {
-        getExtraLocations(lat, lon, language).then(async data => {
+        getExtraLocations(lat, lon, { language }).then(async data => {
             const tempMap = new Map<string, Partial<CurrentCond>>();
             const latLonMap = new Map<string, string>();
             const queryLatLons: string[] = [];
@@ -116,7 +116,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
                 latLonMap.set(latLon, location.displayName);
             }
 
-            const extras = await getExtraCond(queryLatLons, language);
+            const extras = await getExtraCond(queryLatLons, { language });
             for (const [key, value] of Object.entries(extras)) {
                 console.log(key);
                 const displayName = latLonMap.get(key);
@@ -131,7 +131,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     };
 
     const fetchCurrent = (lat: number, lon: number) => {
-        getCurrentCond(lat, lon, language).then(data => {
+        getCurrentCond(lat, lon, { language }).then(data => {
             setCurrentInfo(data);
         }).catch(err => {
             console.error(err);
@@ -139,7 +139,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     };
 
     const fetchAlerts = (lat: number, lon: number) => {
-        getAlerts(lat, lon, language).then(data => {
+        getAlerts(lat, lon, { language }).then(data => {
             setAlerts(data);
         }).catch(err => {
             console.error(err);
@@ -170,7 +170,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     React.useEffect(() => {
         if (alerts.length > 0) {
             setFocusedAlert(alerts[0]);
-            getAlertText(alerts[0].detailKey, language).then(texts => {
+            getAlertText(alerts[0].detailKey, { language }).then(texts => {
                 if (texts.length > 0) {
                     setFocusedAlertText(texts[0].description);
                 }

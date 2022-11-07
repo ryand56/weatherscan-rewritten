@@ -51,6 +51,7 @@ export enum Icons2010 {
     HEAVY_WIND_ALT
 };
 
+/** @internal */
 const Icons2010CodeMap = Object.freeze([
     Icons2010.UNUSED, // 0
     Icons2010.UNUSED, // 1
@@ -102,6 +103,12 @@ const Icons2010CodeMap = Object.freeze([
     Icons2010.THUNDER_NIGHT // 47
 ]);
 
+/**
+ * Gets the mapped icon for the specified code and wind data.
+ * @param iconCode The icon code to map.
+ * @param windData The wind data to map.
+ * @returns An {@link Icons2010} member for the specified code and wind data.
+ */
 export const getIcon = (iconCode: number, windData: number) : Icons2010 => {
     let icon = Icons2010CodeMap[iconCode];
     if (windData >= 20) {

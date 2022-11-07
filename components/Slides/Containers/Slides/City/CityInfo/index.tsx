@@ -1,11 +1,11 @@
 import * as React from "react";
-import type { SlideProps } from "../../../../../hooks/useSlides";
-import { SlideshowReducer, Slides, ActionType } from "../../../../../hooks/useSlides";
+import type { SlideProps } from "../../../../../../hooks/useSlides";
+import { SlideshowReducer, Slides, ActionType } from "../../../../../../hooks/useSlides";
 import { motion, AnimatePresence } from "framer-motion";
 import Forecast from "./Forecast";
 import Detailed from "./Detailed";
 
-const SlideCityInfo = ({ next, currentCityInfo }: SlideProps) => {
+const SlideCityInfo = ({ next, location, currentCityInfo }: SlideProps) => {
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
 
     const currentSlide = React.useMemo(() => {
@@ -32,7 +32,7 @@ const SlideCityInfo = ({ next, currentCityInfo }: SlideProps) => {
                     className="transform translate-x-0 translate-y-60px scale-x-114-5 scale-y-100 origin-left absolute whitespace-nowrap font-frutiger57-cond pt-noreport-t pl-tempunavailable-l text-white text-tempunavailable text-shadow z-noreport"
                 >Temporarily Unavailable</motion.div>;
             case 2:
-                return <Detailed info={currentCityInfo} />;
+                return <Detailed city={location} info={currentCityInfo} />;
             default:
                 return null;
         }

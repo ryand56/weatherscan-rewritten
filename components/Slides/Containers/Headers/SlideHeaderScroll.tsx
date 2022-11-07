@@ -14,7 +14,7 @@ interface ItemsRef {
 interface SlideHeaderScrollProps {
     locations: string[]
     willUpdate: boolean
-    cycleCallback: () => void
+    cycleCallback: (selected: string) => void
 }
 
 const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeaderScrollProps) => {
@@ -52,11 +52,10 @@ const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeader
                     left: `${-1.06*(cityRefWidth + arrowRefWidth)}px`,
                     transition: { duration: 0.9 }
                 }).then(() => {
+                    cycleCallback(items[1].city.innerHTML);
                     setShiftNeeded(true);
                     controls.set({ left: null });
                 });
-
-                cycleCallback();
             }
         }
     }, [willUpdate, itemsRef]);

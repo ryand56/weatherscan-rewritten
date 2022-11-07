@@ -1,8 +1,8 @@
 import * as React from "react";
-import type { CurrentCond } from "../../../../../hooks/useWeather";
-import { Icons2010, getIcon } from "../../../../../hooks/useIconMap";
+import type { CurrentCond } from "../../../../../../hooks/useWeather";
+import { Icons2010, getIcon } from "../../../../../../hooks/useIconMap";
 import { motion } from "framer-motion";
-import FrostPane from "../FrostPane";
+import FrostPane from "../../FrostPane";
 
 interface DetailedProps {
     city?: string

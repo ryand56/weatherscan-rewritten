@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { SlideProps } from "../../../../../hooks/useSlides";
+import type { SlideProps } from "../../../../../../hooks/useSlides";
 import { motion, useAnimation } from "framer-motion";
 
 type SlideState = "active" | "inactive";

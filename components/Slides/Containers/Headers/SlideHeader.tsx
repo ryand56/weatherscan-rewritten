@@ -4,7 +4,7 @@ import SlideHeaderScroll from "./SlideHeaderScroll";
 interface SlideHeaderProps {
     locations: string[]
     willUpdate: boolean
-    cycleCallback: () => void
+    cycleCallback: (selected: string) => void
 }
 
 const SlideHeader = ({ locations, willUpdate, cycleCallback }: SlideHeaderProps) => (

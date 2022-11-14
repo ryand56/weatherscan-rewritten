@@ -110,7 +110,7 @@ const Intro = ({ winSize, callback }: IntroProps) => {
                     <div className="whitespace-nowrap relative font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] pt-6">Save</div>
                 </div>
                 <img className="object-contain absolute w-[500px] h-[175px] right-[1.9%] -top-[9px]" src="/images/weatherlogos.png" alt="weatherscan" />
-                <a target="_blank" href="https://ryand.ca" className="whitespace-nowrap font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] float-right pt-40 pr-[7rem]">Now rewritten!</a>
+                <a target="_blank" rel="noreferrer" href="https://ryand.ca" className="whitespace-nowrap font-frutiger font-semibold text-[#d8c422] text-[31.5px] tracking-[1px] float-right pt-40 pr-[7rem]">Now rewritten!</a>
             </div>
             <div id="appearancesettingspane" className="pt-[200px] hidden">
                 <select name="background" id="background">

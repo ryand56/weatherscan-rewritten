@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Location, ExtraLocation, CurrentCond, Alert } from "../hooks/useWeather";
+import type { Location, ExtraLocation, ExtraInfo, CurrentCond, Alert } from "../hooks/useWeather";
 import {
     defaults,
     currentDefaults,
@@ -50,11 +50,6 @@ interface DisplayProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-interface ExtraInfo {
-    details?: ExtraLocation
-    current?: Partial<CurrentCond>
-}
-
 const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
@@ -76,7 +71,14 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
-    const [extraInfo, setExtraInfo] = React.useState<Map<string, Partial<CurrentCond>>>(new Map<string, Partial<CurrentCond>>());
+    const [currentExtra, setCurrentExtra] = React.useState<ExtraInfo>({
+        details: {
+            name: "",
+            lat: 0,
+            lon: 0
+        }
+    });
+    const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
     const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
@@ -103,8 +105,16 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const fetchExtra = (lat: number, lon: number) => {
         getExtraLocations(lat, lon, { language }).then(async data => {
-            const tempMap = new Map<string, Partial<CurrentCond>>();
-            tempMap.set(locInfo.city, currentInfo);
+            const tempMap = new Map<string, ExtraInfo>();
+            const currentEx = {
+                details: {
+                    name: locInfo.city,
+                    lat,
+                    lon
+                },
+                current: currentInfo
+            };
+            tempMap.set(locInfo.city, currentEx);
 
             const latLonMap = new Map<string, string>();
             const queryLatLons: string[] = [];
@@ -123,9 +133,18 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
                 console.log(key);
                 const displayName = latLonMap.get(key);
                 console.log(displayName, value);
-                tempMap.set(displayName, value);
+                const latLon = key.split(",");
+                tempMap.set(displayName, {
+                    details: {
+                        name: displayName,
+                        lat: parseFloat(latLon[0]),
+                        lon: parseFloat(latLon[1])
+                    },
+                    current: value
+                });
             }
 
+            setCurrentExtra(currentEx);
             setExtraInfo(tempMap);
         }).catch(err => {
             console.error(err);
@@ -156,11 +175,12 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             
             let intervalTimer: NodeJS.Timeout;
             if (lat && lon) {
-                fetchExtra(lat, lon);
                 fetchCurrent(lat, lon);
+                fetchExtra(lat, lon);
                 fetchAlerts(lat, lon);
                 intervalTimer = setInterval(() => {
                     fetchCurrent(lat, lon);
+                    fetchExtra(lat, lon);
                     fetchAlerts(lat, lon);
                 }, 300000);
             }
@@ -196,10 +216,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
-            {(isReady && locInfo && currentInfo && extraInfo.size !== 0) && <SlidesContainer
+            {(isReady && locInfo && currentExtra && extraInfo.size !== 0) && <SlidesContainer
                 setMainVol={setMainVol}
                 locInfo={locInfo}
-                mainCityInfo={currentInfo}
+                mainCityInfo={currentExtra}
                 extraCityInfo={extraInfo}
             />}
             {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}

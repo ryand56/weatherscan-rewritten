@@ -1,21 +1,26 @@
 import * as React from "react";
-import type { CurrentCond } from "../../../../../../hooks/useWeather";
+import type { ExtraInfo } from "../../../../../../hooks/useWeather";
 import { Icons2010, getIcon } from "../../../../../../hooks/useIconMap";
 import { motion } from "framer-motion";
 import FrostPane from "../../FrostPane";
 
 interface DetailedProps {
-    city?: string
-    info?: Partial<CurrentCond>
+    info?: ExtraInfo
 }
 
-const Detailed = ({ city, info }: DetailedProps) => {
+const Detailed = ({ info }: DetailedProps) => {
     const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
 
     React.useEffect(() => {
-        const mapped = getIcon(info.icon, info.windSpeed);
-        setIcon(mapped);
+        console.log(info);
     }, [info]);
+
+    React.useEffect(() => {
+        if (info.current) {
+            const mapped = getIcon(info.current.icon, info.current.windSpeed);
+            setIcon(mapped);
+        }
+    }, [info.current]);
 
     return (
         <>
@@ -32,7 +37,7 @@ const Detailed = ({ city, info }: DetailedProps) => {
                 <span
                     id="subhead-city"
                     className="font-frutiger text-subhead-city pt-0 transform -translate-y-43-5 scale-x-105-9 scale-y-100 origin-right right-subhead-city-r font-stretch-semi-exp absolute top-1/2"
-                >{city}</span>
+                >{info.details ? info.details.name : "N/A"}</span>
             </motion.div>
             <motion.div
                 initial={{ opacity: 0 }}
@@ -74,18 +79,18 @@ const Detailed = ({ city, info }: DetailedProps) => {
                         <br />
                         Wind Chill
                     </div>
-                    {info && <div id="frost-pane-data" className="absolute pt-[5px] leading-[182.5%] font-frutiger57-cond transform scale-x-113-5 scale-y-100 origin-right right-[10%] text-[37.5px] text-right">
-                        {`${info.humidity}%`}
+                    {info.current && <div id="frost-pane-data" className="absolute pt-[5px] leading-[182.5%] font-frutiger57-cond transform scale-x-113-5 scale-y-100 origin-right right-[10%] text-[37.5px] text-right">
+                        {`${info.current.humidity}%`}
                         <br />
-                        {info.dewpt}
+                        {info.current.dewpt}
                         <br />
-                        {info.pres}
+                        {info.current.pres}
                         <br/>
-                        {info.wind}
+                        {info.current.wind}
                         <br/>
                         none
                         <br />
-                        {info.chill.toString()}
+                        {info.current.chill.toString()}
                     </div>}
                 </FrostPane>
                 <FrostPane
@@ -101,15 +106,15 @@ const Detailed = ({ city, info }: DetailedProps) => {
                         className="bg-no-repeat bg-cover bg-info-icon w-[212px] h-[212px] transform -translate-y-[5px]"
                         style={{ backgroundImage: `url(/images/icons2010/${icon}.png)` }}
                     />
-                    {info && <>
+                    {info.current && <>
                         <div
                             id="conditions"
                             className="flex items-center justify-center absolute text-[36px] font-medium leading-[110%] top-[220px] text-center capitalize break-word w-[25%] h-[50px] transform -translate-x-[11px] translate-y-0 scale-x-[104.5%] scale-y-100"
-                        >{info.phrase}</div>
+                        >{info.current.phrase}</div>
                         <div
                             id="temp"
                             className="font-frutigerbold-cn text-[69px] font-bold absolute top-[323px] tracking-[2.5px] transform -translate-x-6px translate-y-0 scale-x-102-5 scale-y-100 origin-left"
-                        >{info.temp}</div>
+                        >{info.current.temp}</div>
                     </>}
                 </FrostPane>
             </motion.div>

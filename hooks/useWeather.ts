@@ -68,8 +68,13 @@ export interface ExtraLocation {
     lon?: number
     distance?: number
     stationUrl?: string
-    name: string
+    name?: string
     displayName?: string
+}
+
+export interface ExtraInfo {
+    details?: ExtraLocation
+    current?: Partial<CurrentCond>
 }
 
 // ip-api.com
@@ -129,7 +134,7 @@ export const currentDefaults: CurrentCond = Object.freeze({
     chill: NaN
 });
 
-const memoAsync = (cb) => {
+/* const memoAsync = (cb) => {
     const cache = new Map();
     return async (...args) => {
         const key = JSON.stringify(args);
@@ -140,7 +145,7 @@ const memoAsync = (cb) => {
     };
 };
 
-const memoizedFetch = memoAsync(fetch);
+const memoizedFetch = memoAsync(fetch); */
 
 /**
  * Gets the main location for a query string.
@@ -151,7 +156,7 @@ const memoizedFetch = memoAsync(fetch);
 export const getMainLocation = async (location: string, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
 
-    return memoizedFetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: WeatherAPISearchLocResponse) => {
                 const dataLocs = data.location;
@@ -179,7 +184,7 @@ export const getMainLocation = async (location: string, options?: APIOptions) =>
  * @returns A promise returning the {@link Location} of the user.
  */
 export const getClosestLocation = async () => {
-    return memoizedFetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
+    return fetch(`https://pro.ip-api.com/json/?key=${process.env.NEXT_PUBLIC_IP_API_KEY}&exposeDate=true`)
         .then(async (res: Response) => {
             return res.json().then((data: IPAPILocResponse) => {
                 if (data.status === IPAPIStatus.SUCCESS) {
@@ -214,14 +219,14 @@ export const getClosestLocation = async () => {
 export const getExtraLocations = async (lat: number, lon: number, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
 
-    return memoizedFetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=observation&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then(async (near: WeatherAPINearResponse) => {
                 const dataLoc = near.location;
                 const dataLocLength = dataLoc.stationName.length;
                 const extraLocs: ExtraLocation[] = [];
                 for (let i = 0; i < dataLocLength; i++) {
-                    const point = await memoizedFetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+                    const point = await fetch(`https://api.weather.com/v3/location/point?geocode=${dataLoc.latitude[i]},${dataLoc.longitude[i]}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
                         .then(async (res: Response) => {
                             return res.json().then((point: WeatherAPIPointResponse) => {
                                 const pointData = point.location;
@@ -256,7 +261,7 @@ export const getExtraLocations = async (lat: number, lon: number, options?: APIO
  */
 export const getCurrentCond = async (lat: number, lon: number, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
-    return memoizedFetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then(data => {
                 const dataLoc = data["v3-wx-observations-current"];
@@ -302,7 +307,7 @@ export const getExtraCond = async (latLons: string[], options?: APIOptions) => {
         baseUrl += `${latLon};`;
     }
     baseUrl += `&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`;
-    const conds = await memoizedFetch(baseUrl)
+    const conds = await fetch(baseUrl)
         .then(async (res: Response) => {
             return res.json().then(data => {
                 return data;
@@ -517,7 +522,7 @@ const alertsFallback: AlertsResponse = Object.freeze({
  */
 export const getAlerts = async (lat: number, lon: number, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
-    return memoizedFetch(`https://api.weather.com/v3/alerts/headlines?geocode=${lat},${lon}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`https://api.weather.com/v3/alerts/headlines?geocode=${lat},${lon}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: AlertsResponse) => {
                 return data.alerts;
@@ -543,7 +548,7 @@ interface AlertDetailResponse {
 
 export const getAlertText = async (alertId: string, options?: APIOptions) : Promise<Text[]> => {
     const apiLanguage = options.language || "en-US";
-    return memoizedFetch(`https://api.weather.com/v3/alerts/detail?alertId=${alertId}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`https://api.weather.com/v3/alerts/detail?alertId=${alertId}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: AlertDetailResponse) => {
                 return data.alertDetail.texts;

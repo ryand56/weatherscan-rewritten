@@ -32,7 +32,7 @@ const SlideCityInfo = ({ next, location, currentCityInfo }: SlideProps) => {
                     className="transform translate-x-0 translate-y-60px scale-x-114-5 scale-y-100 origin-left absolute whitespace-nowrap font-frutiger57-cond pt-noreport-t pl-tempunavailable-l text-white text-tempunavailable text-shadow z-noreport"
                 >Temporarily Unavailable</motion.div>;
             case 2:
-                return <Detailed city={location} info={currentCityInfo} />;
+                return <Detailed info={currentCityInfo} />;
             default:
                 return null;
         }
@@ -41,7 +41,10 @@ const SlideCityInfo = ({ next, location, currentCityInfo }: SlideProps) => {
     React.useEffect(() => {
         let timeout = setTimeout(() => {
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-            if (slideState.index >= 2) setTimeout(next, 800);
+            if (slideState.index >= 2) setTimeout(() => {
+                next();
+                slideDispatch({ type: ActionType.SET, payload: 0 });
+            }, 800);
         }, 8000);
         return () => clearTimeout(timeout);
     }, [slideState.index]);
@@ -51,7 +54,7 @@ const SlideCityInfo = ({ next, location, currentCityInfo }: SlideProps) => {
             id="city-info-slide"
             className="relative bg-city-info-slide bg-no-repeat w-full min-h-infoslide max-h-infoslide overflow-hidden flex flex-col"
         >
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
                 {currentSlide}
             </AnimatePresence>
         </div>

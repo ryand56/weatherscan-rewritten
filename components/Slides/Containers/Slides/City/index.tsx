@@ -6,16 +6,16 @@ import CityIntro from "./CityIntro";
 import CityInfo from "./CityInfo";
 
 const City = ({ next, location, currentCityInfo, introNeeded }: MainSlideProps) => {
-    const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
+    const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: introNeeded ? 0 : 1 });
 
     const SlideCallback = React.useCallback(() => {
         if (slideState.index >= 1) {
             next();
-            slideDispatch({ type: ActionType.SET, payload: 1 });
+            slideDispatch({ type: ActionType.SET, payload: introNeeded ? 0 : 1 });
         } else {
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
         }
-    }, [slideState.index]);
+    }, [slideState.index, introNeeded]);
 
     const currentSlide = React.useMemo(() => {
         console.log("Rendering new city slide");

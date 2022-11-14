@@ -65,7 +65,7 @@ const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeader
         if (shiftNeeded) {
             const copy = [...list];
             const oldLocation = copy.shift();
-            const newList = [...list.filter(a => a !== oldLocation), oldLocation];
+            const newList = [...list.slice(1), oldLocation];
             setList(newList);
             setShiftNeeded(false);
         }

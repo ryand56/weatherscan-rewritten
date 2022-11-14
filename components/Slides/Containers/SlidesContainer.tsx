@@ -1,18 +1,23 @@
 import * as React from "react";
-import type { Location, CurrentCond } from "../../../hooks/useWeather";
+import type { Location, ExtraInfo, CurrentCond } from "../../../hooks/useWeather";
 import SlideHeader from "./Headers/SlideHeader";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
 
 import { SlideshowReducer, Slides, ActionType } from "../../../hooks/useSlides";
+
 import City from "./Slides/City";
+import Health from "./Slides/Health";
+import Travel from "./Slides/Travel";
+import Airports from "./Slides/Airports";
+import International from "./Slides/International";
 
 interface SlidesContainerProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
     locInfo?: Partial<Location>
-    mainCityInfo?: Partial<CurrentCond>
-    extraCityInfo?: Map<string, Partial<CurrentCond>>
+    mainCityInfo?: ExtraInfo
+    extraCityInfo?: Map<string, ExtraInfo>
 }
 
 const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: SlidesContainerProps) => {    
@@ -20,15 +25,16 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(VocalFemale.CURRENT_COND);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
 
-    const [cityInfo, setCityInfo] = React.useState<Map<string, Partial<CurrentCond>>>(extraCityInfo);
+    const [cityInfo, setCityInfo] = React.useState<Map<string, ExtraInfo>>(extraCityInfo);
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
-    const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(mainCityInfo);
+    const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
     const [header, setHeader] = React.useState<string[]>([]);
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
     const HeaderCallback = (selected: string) => {
         console.log("Header cycle complete");
+        console.log(selected);
         const selectedInfo = cityInfo.get(selected);
         if (selectedInfo !== undefined) {
             setCurrentCity(selected);
@@ -46,17 +52,30 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
     }, [cityInfo]);
 
     const currentSlide = React.useMemo(() => {
-        console.log("Rendering new slide");
-        switch (slideState.index) {
-            case Slides.CITY:
-                return <City
-                    next={SlideCallback}
-                    location={currentCity}
-                    currentCityInfo={currentInfo}
-                />;
-            default:
-                return null;
+        if (currentCity && currentInfo) {
+            console.log("Rendering new slide");
+            switch (slideState.index) {
+                case Slides.CITY:
+                    return <City
+                        next={SlideCallback}
+                        location={currentCity}
+                        currentCityInfo={currentInfo}
+                        introNeeded={locInfo.city === currentCity}
+                    />;
+                case Slides.HEALTH:
+                    return <Health next={SlideCallback} />;
+                case Slides.TRAVEL:
+                    return <Travel next={SlideCallback} />;
+                case Slides.AIRPORTS:
+                    return <Airports next={SlideCallback} />;
+                case Slides.INTERNATIONAL:
+                    return <International next={SlideCallback} />;
+                default:
+                    return null;
+            }
         }
+
+        return null;
     }, [slideState.index, SlideCallback, currentCity, currentInfo]);
 
     return (

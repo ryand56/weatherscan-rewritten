@@ -1,7 +1,11 @@
-import type { CurrentCond } from "./useWeather";
+import type { ExtraInfo } from "./useWeather";
 
 export const enum Slides {
-    CITY
+    CITY,
+    HEALTH,
+    TRAVEL,
+    AIRPORTS,
+    INTERNATIONAL
 }
 
 // City slides
@@ -11,7 +15,7 @@ export const enum SlidesCity {
 }
 
 export interface SlideProps {
-    currentCityInfo?: Partial<CurrentCond>
+    currentCityInfo?: ExtraInfo
     next?: () => void
     location?: string
 }

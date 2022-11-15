@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useCallback } from "react";
 import type { Location, ExtraLocation, ExtraInfo, CurrentCond, Alert } from "../hooks/useWeather";
 import {
     defaults,
@@ -71,13 +72,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
-    const [currentExtra, setCurrentExtra] = React.useState<ExtraInfo>({
-        details: {
-            name: "",
-            lat: 0,
-            lon: 0
-        }
-    });
+    const [currentExtra, setCurrentExtra] = React.useState<ExtraInfo>(null);
     const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
@@ -90,81 +85,64 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             if (location !== "") {
                 getMainLocation(location, { language }).then(data => {
                     setLocInfo(data);
-                }).catch(err => {
-                    console.error(err);
-                });
+                }).catch(err => console.error(err));
             } else {
                 getClosestLocation().then(data => {
                     setLocInfo(data);
-                }).catch(err => {
-                    console.error(err);
-                });
+                }).catch(err => console.error(err));
             }
         }
     }, [isReady, location]);
 
-    const fetchExtra = (lat: number, lon: number) => {
-        getExtraLocations(lat, lon, { language }).then(async data => {
-            const tempMap = new Map<string, ExtraInfo>();
-            const currentEx = {
-                details: {
-                    name: locInfo.city,
-                    lat,
-                    lon
-                },
-                current: currentInfo
-            };
-            tempMap.set(locInfo.city, currentEx);
-
-            const latLonMap = new Map<string, string>();
-            const queryLatLons: string[] = [];
-
-            // Dirty way of doing things
-            for (let i = 0; i < data.length; i++) {
-                const location = data[i];
-                const latLon = `${location.lat},${location.lon}`;
-                console.log(latLon);
-                queryLatLons.push(latLon);
-                latLonMap.set(latLon, location.displayName);
-            }
-
-            const extras = await getExtraCond(queryLatLons, { language });
-            for (const [key, value] of Object.entries(extras)) {
-                console.log(key);
-                const displayName = latLonMap.get(key);
-                console.log(displayName, value);
-                const latLon = key.split(",");
-                tempMap.set(displayName, {
-                    details: {
-                        name: displayName,
-                        lat: parseFloat(latLon[0]),
-                        lon: parseFloat(latLon[1])
-                    },
-                    current: value
-                });
-            }
-
-            setCurrentExtra(currentEx);
-            setExtraInfo(tempMap);
-        }).catch(err => {
-            console.error(err);
+    const fetchCurrent = (lat: number, lon: number) : Promise<CurrentCond> => {
+        return new Promise((resolve, reject) => {
+            getCurrentCond(lat, lon, { language }).then(data => {
+                setCurrentInfo(data);
+                resolve(data);
+            }).catch(err => reject(err));
         });
     };
 
-    const fetchCurrent = (lat: number, lon: number) => {
-        getCurrentCond(lat, lon, { language }).then(data => {
-            setCurrentInfo(data);
-        }).catch(err => {
-            console.error(err);
-        });
+    // Bugged
+    const fetchExtra = async (lat: number, lon: number, initial?: Map<string, ExtraInfo>) => {
+        const data = await getExtraLocations(lat, lon, { language });
+
+        const tempMap = new Map<string, ExtraInfo>(initial ?? []);
+        const latLonMap = new Map<string, string>();
+        const queryLatLons: string[] = [];
+
+        // Dirty way of doing things
+        for (let i = 0; i < data.length; i++) {
+            const location = data[i];
+            const latLon = `${location.lat},${location.lon}`;
+            console.log(latLon);
+            queryLatLons.push(latLon);
+            latLonMap.set(latLon, location.displayName);
+        }
+
+        const extras = await getExtraCond(queryLatLons, { language });
+        for (const [key, value] of Object.entries(extras)) {
+            console.log(key);
+            const displayName = latLonMap.get(key);
+            console.log(displayName, value);
+            const latLon = key.split(",");
+            tempMap.set(displayName, {
+                details: {
+                    name: displayName,
+                    lat: parseFloat(latLon[0]),
+                    lon: parseFloat(latLon[1])
+                },
+                current: value
+            });
+        }
+
+        setExtraInfo(tempMap);
     };
 
     const fetchAlerts = (lat: number, lon: number) => {
         getAlerts(lat, lon, { language }).then(data => {
             setAlerts(data);
-        }).catch(err => {
-            console.error(err);
-        });
+        }).catch(err => console.error(err));
     };
 
     // Current conditions and alerts handler
@@ -173,19 +151,36 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             const lat = locInfo.latitude;
             const lon = locInfo.longitude;
             
-            let intervalTimer: NodeJS.Timeout;
+            let timeoutTimer: NodeJS.Timer;
+            let intervalTimer: NodeJS.Timer;
             if (lat && lon) {
-                fetchCurrent(lat, lon);
-                fetchExtra(lat, lon);
-                fetchAlerts(lat, lon);
-                intervalTimer = setInterval(() => {
-                    fetchCurrent(lat, lon);
-                    fetchExtra(lat, lon);
+                const fetchCallback = (data: CurrentCond) => {
+                    const tempMap = new Map<string, ExtraInfo>();
+                    const currentEx = {
+                        details: {
+                            name: locInfo.city,
+                            lat,
+                            lon
+                        },
+                        current: data
+                    };
+                    tempMap.set(locInfo.city, currentEx);
+                    setCurrentExtra(currentEx);
+
+                    fetchExtra(lat, lon, tempMap);
                     fetchAlerts(lat, lon);
+                };
+
+                fetchCurrent(lat, lon).then(fetchCallback).catch(err => console.error(err));
+                intervalTimer = setInterval(() => {
+                    fetchCurrent(lat, lon).then(fetchCallback).catch(err => console.error(err));
                 }, 300000);
             }
 
-            return () => clearInterval(intervalTimer);
+            return () => {
+                clearTimeout(timeoutTimer)
+                clearInterval(intervalTimer);
+            };
         }
     }, [isReady, locInfo.latitude, locInfo.longitude]);
 
@@ -203,6 +198,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
     }, [alerts.length]);
 
     React.useEffect(() => {
+        console.log(currentExtra);
+    }, [currentExtra]);
+
+    React.useEffect(() => {
         console.log(extraInfo);
     }, [extraInfo]);
 
@@ -216,7 +215,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
-            {(isReady && locInfo && currentExtra && extraInfo.size !== 0) && <SlidesContainer
+            {(isReady && locInfo && currentExtra && extraInfo.size > 1) && <SlidesContainer
                 setMainVol={setMainVol}
                 locInfo={locInfo}
                 mainCityInfo={currentExtra}

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useCallback } from "react";
 import type { Location, ExtraLocation, ExtraInfo, CurrentCond, Alert } from "../hooks/useWeather";
 import {
     defaults,
@@ -72,7 +71,13 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const [locInfo, setLocInfo] = React.useState<Partial<Location>>(defaults);
     const [currentInfo, setCurrentInfo] = React.useState<Partial<CurrentCond>>(currentDefaults);
-    const [currentExtra, setCurrentExtra] = React.useState<ExtraInfo>(null);
+    const [currentExtra, setCurrentExtra] = React.useState<ExtraInfo>({
+        details: {
+            name: "",
+            lat: 0,
+            lon: 0
+        }
+    });
     const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
@@ -103,7 +108,6 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         });
     };
 
-    // Bugged
     const fetchExtra = async (lat: number, lon: number, initial?: Map<string, ExtraInfo>) => {
         const data = await getExtraLocations(lat, lon, { language });
 
@@ -151,7 +155,6 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             const lat = locInfo.latitude;
             const lon = locInfo.longitude;
             
-            let timeoutTimer: NodeJS.Timer;
             let intervalTimer: NodeJS.Timer;
             if (lat && lon) {
                 const fetchCallback = (data: CurrentCond) => {
@@ -177,10 +180,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
                 }, 300000);
             }
 
-            return () => {
-                clearTimeout(timeoutTimer)
-                clearInterval(intervalTimer);
-            };
+            return () => clearInterval(intervalTimer);
         }
     }, [isReady, locInfo.latitude, locInfo.longitude]);
 
@@ -215,7 +215,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
         <div id="main" ref={mainRef} className="relative top-1/2 left-1/2 overflow-hidden w-main h-main">
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
-            {(isReady && locInfo && currentExtra && extraInfo.size > 1) && <SlidesContainer
+            {(isReady && locInfo && currentExtra && extraInfo.size !== 0) && <SlidesContainer
                 setMainVol={setMainVol}
                 locInfo={locInfo}
                 mainCityInfo={currentExtra}

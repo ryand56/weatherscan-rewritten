@@ -22,8 +22,13 @@ interface SlidesContainerProps {
 
 const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0, isCity: true });
-    const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(VocalFemale.CURRENT_COND);
+    const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
+
+    const SetVocalDebounce = (vocal: VocalMale | VocalFemale) => {
+        setVocal(vocal);
+        setTimeout(() => setVocal(null), 500);
+    };
 
     const [cityInfo, setCityInfo] = React.useState<Map<string, ExtraInfo>>(extraCityInfo);
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
@@ -61,6 +66,7 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
                         location={currentCity}
                         currentCityInfo={currentInfo}
                         introNeeded={locInfo.city === currentCity}
+                        setVocal={SetVocalDebounce}
                     />;
                 case Slides.HEALTH:
                     return <Health next={SlideCallback} />;

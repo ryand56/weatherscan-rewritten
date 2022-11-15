@@ -1,3 +1,4 @@
+import { VocalMale, VocalFemale } from "../components/VocalAudio";
 import type { ExtraInfo } from "./useWeather";
 
 export const enum Slides {
@@ -18,6 +19,7 @@ export interface SlideProps {
     currentCityInfo?: ExtraInfo
     next?: () => void
     location?: string
+    setVocal?: (vocal: VocalMale | VocalFemale) => void
 }
 
 export interface MainSlideProps extends SlideProps {

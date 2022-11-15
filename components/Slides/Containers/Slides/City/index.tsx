@@ -5,7 +5,7 @@ import { SlideshowReducer, SlidesCity, ActionType } from "../../../../../hooks/u
 import CityIntro from "./CityIntro";
 import CityInfo from "./CityInfo";
 
-const City = ({ next, location, currentCityInfo, introNeeded }: MainSlideProps) => {
+const City = ({ next, location, currentCityInfo, introNeeded, setVocal }: MainSlideProps) => {
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: introNeeded ? 0 : 1 });
 
     const SlideCallback = React.useCallback(() => {
@@ -27,6 +27,7 @@ const City = ({ next, location, currentCityInfo, introNeeded }: MainSlideProps) 
                     next={SlideCallback}
                     location={location}
                     currentCityInfo={currentCityInfo}
+                    setVocal={setVocal}
                 />;
         }
     }, [slideState.index, SlideCallback, location, currentCityInfo]);

@@ -48,7 +48,7 @@ const Detailed = ({ info }: DetailedProps) => {
                 id="info-subheadershadowfix"
                 className="font-normal font-frutiger57-cond text-white flex flex-row flex-nowrap justify-between text-subhead h-subhead z-subheader-shadow whitespace-nowrap text-shadow-subhead absolute min-w-subhead-shadow"
             >
-                <span id="subhead-title" className="absolute top-subhead-title-t transform -translate-y-42-5 scale-x-118 scale-y-100 origin-left left-subhead-title-l w-subhead-title">Local Forecast</span>
+                <span id="subhead-title" className="absolute top-subhead-title-t transform -translate-y-42-5 scale-x-118 scale-y-100 origin-left left-subhead-title-l w-subhead-title">Currently</span>
             </motion.div>
             <motion.div
                 initial={{ opacity: 0 }}

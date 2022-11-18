@@ -19,3 +19,6 @@ jobs:
         run: npm run build
       - name: Generate Preview
         run: node scripts/preview.mjs "${{ github.sha }}"
+        env:
+          NEXT_PUBLIC_IP_API_KEY: ${{ secrets.NEXT_PUBLIC_IP_API_KEY }}
+          NEXT_PUBLIC_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }}

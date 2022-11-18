@@ -17,3 +17,5 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
+      - name: Generate Preview
+        run: node scripts/preview.mjs "${{ github.sha }}"

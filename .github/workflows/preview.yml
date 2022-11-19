@@ -18,11 +18,13 @@ jobs:
       - name: Build
         run: npm run build
       - name: Generate Preview
+        if: ${{ startsWith(github.event.head_commit.message, '[pre]') }}
         run: node scripts/preview.mjs "${{ github.sha }}"
         env:
           NEXT_PUBLIC_IP_API_KEY: ${{ secrets.NEXT_PUBLIC_IP_API_KEY }}
           NEXT_PUBLIC_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }}
       - name: Upload Preview
+        if: ${{ startsWith(github.event.head_commit.message, '[pre]') }}
         uses: elementemerald/r2-upload-action@v1.0.5
         with:
           r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}

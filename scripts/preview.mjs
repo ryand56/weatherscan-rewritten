@@ -42,6 +42,10 @@ const __dirname = path.dirname(__filename);
             const browserVersion = await browser.version();
             console.log(`Running Chromium version: ${browserVersion}`);
             const page = await browser.newPage();
+            await page.setViewport({
+                width: 1920,
+                height: 1080
+            });
             const res = await page.goto("http://localhost:3000/?location=Denver,CO");
             if (res && res.ok()) {
                 await page.waitForSelector("#city-info-slide");

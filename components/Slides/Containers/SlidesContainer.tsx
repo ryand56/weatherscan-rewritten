@@ -25,9 +25,14 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
 
-    const SetVocalDebounce = (vocal: VocalMale | VocalFemale) => {
-        setVocal(vocal);
-        setTimeout(() => setVocal(null), 500);
+    const SetVocalDebounce = (vocal: VocalMale | VocalFemale) : Promise<void> => {
+        return new Promise(resolve => {
+            setVocal(vocal);
+            setTimeout(() => {
+                setVocal(null);
+                resolve();
+            }, 500);
+        });
     };
 
     const [cityInfo, setCityInfo] = React.useState<Map<string, ExtraInfo>>(extraCityInfo);

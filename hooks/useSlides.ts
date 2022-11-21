@@ -19,7 +19,7 @@ export interface SlideProps {
     currentCityInfo?: ExtraInfo
     next?: () => void
     location?: string
-    setVocal?: (vocal: VocalMale | VocalFemale) => void
+    setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>
 }
 
 export interface MainSlideProps extends SlideProps {

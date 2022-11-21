@@ -1,15 +1,21 @@
 import * as React from "react";
 import type { ExtraInfo } from "../../../../../../hooks/useWeather";
+import { VocalMale, VocalFemale } from "../../../../../VocalAudio";
 import { Icons2010, getIcon } from "../../../../../../hooks/useIconMap";
 import { motion } from "framer-motion";
 import FrostPane from "../../FrostPane";
 
 interface DetailedProps {
     info?: ExtraInfo
+    setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>
 }
 
-const Detailed = ({ info }: DetailedProps) => {
+const Detailed = ({ info, setVocal }: DetailedProps) => {
     const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
+
+    React.useEffect(() => {
+        setVocal(VocalFemale.CURRENT_COND);
+    }, []);
 
     React.useEffect(() => {
         console.log(info);

@@ -33,8 +33,10 @@ const SlideCityInfo = ({ next, location, currentCityInfo, setVocal }: SlideProps
                     className="transform translate-x-0 translate-y-60px scale-x-114-5 scale-y-100 origin-left absolute whitespace-nowrap font-frutiger57-cond pt-noreport-t pl-tempunavailable-l text-white text-tempunavailable text-shadow z-noreport"
                 >Temporarily Unavailable</motion.div>;
             case 2:
-                setVocal(VocalFemale.CURRENT_COND);
-                return <Detailed info={currentCityInfo} />;
+                return <Detailed
+                    info={currentCityInfo}
+                    setVocal={setVocal}
+                />;
             default:
                 return null;
         }

@@ -1,8 +1,16 @@
 import * as React from "react";
 import { Icons2010 } from "./useIconMap";
 
+export enum TemperatureUnit {
+    ENGLISH = "e",
+    METRIC = "m",
+    HYBRID = "h",
+    METRIC_SI = "s"
+}
+
 interface APIOptions {
     language?: string
+    units?: TemperatureUnit
 }
 
 // Mapped location
@@ -261,7 +269,8 @@ export const getExtraLocations = async (lat: number, lon: number, options?: APIO
  */
 export const getCurrentCond = async (lat: number, lon: number, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
-    return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    const apiUnits = options.units || TemperatureUnit.METRIC_SI;
+    return fetch(`https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocode=${lat},${lon}&language=${apiLanguage}&units=${apiUnits}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then(data => {
                 const dataLoc = data["v3-wx-observations-current"];
@@ -301,12 +310,13 @@ interface CurrentConds {
  */
 export const getExtraCond = async (latLons: string[], options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
+    const apiUnits = options.units || TemperatureUnit.METRIC_SI;
     let baseUrl = "https://api.weather.com/v3/aggcommon/v3-wx-observations-current?geocodes=";
     for (let i = 0; i < latLons.length; i++) {
         const latLon = latLons[i];
         baseUrl += `${latLon};`;
     }
-    baseUrl += `&language=${apiLanguage}&units=s&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`;
+    baseUrl += `&language=${apiLanguage}&units=${apiUnits}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`;
     const conds = await fetch(baseUrl)
         .then(async (res: Response) => {
             return res.json().then(data => {

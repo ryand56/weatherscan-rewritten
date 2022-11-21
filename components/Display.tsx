@@ -1,5 +1,12 @@
 import * as React from "react";
-import type { Location, ExtraLocation, ExtraInfo, CurrentCond, Alert } from "../hooks/useWeather";
+import type {
+    TemperatureUnit,
+    Location,
+    ExtraLocation,
+    ExtraInfo,
+    CurrentCond,
+    Alert
+} from "../hooks/useWeather";
 import {
     defaults,
     currentDefaults,
@@ -47,10 +54,11 @@ interface DisplayProps {
     winSize: number[]
     location: string
     language: string
+    units: TemperatureUnit
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayProps) => {
+const Display = ({ isReady, winSize, location, language, units, setMainVol }: DisplayProps) => {
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
 
@@ -101,7 +109,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
 
     const fetchCurrent = (lat: number, lon: number) : Promise<CurrentCond> => {
         return new Promise((resolve, reject) => {
-            getCurrentCond(lat, lon, { language }).then(data => {
+            getCurrentCond(lat, lon, {
+                language,
+                units
+            }).then(data => {
                 setCurrentInfo(data);
                 resolve(data);
             }).catch(err => reject(err));
@@ -124,7 +135,10 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             latLonMap.set(latLon, location.displayName);
         }
 
-        const extras = await getExtraCond(queryLatLons, { language });
+        const extras = await getExtraCond(queryLatLons, {
+            language,
+            units
+        });
         for (const [key, value] of Object.entries(extras)) {
             console.log(key);
             const displayName = latLonMap.get(key);

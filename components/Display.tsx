@@ -147,7 +147,7 @@ const Display = ({
   React.useEffect(() => {
     if (alerts.length > 0) {
       setFocusedAlert(alerts[0]);
-      getAlertText(alerts[0].detailKey, language)
+      getAlertText(alerts[0].id, language)
         .then((texts) => {
           if (texts.length > 0) {
             setFocusedAlertText(texts[0].description);

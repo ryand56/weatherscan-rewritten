@@ -442,7 +442,7 @@ interface AlertDetailResponse {
 }
 
 export const getAlertText = async (
-  alertId: string,
+  alertId: string | number,
   language?: string
 ): Promise<Text[]> => {
   const apiLanguage = language || "en-US";

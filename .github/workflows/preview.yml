@@ -22,7 +22,7 @@ jobs:
         run: node scripts/preview.mjs "${{ github.sha }}"
         env:
           NEXT_PUBLIC_IP_API_KEY: ${{ secrets.NEXT_PUBLIC_IP_API_KEY }}
-          NEXT_PUBLIC_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }}
+          NEXT_PUBLIC_OPEN_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_OPEN_WEATHER_API_KEY }}
       - name: Upload Preview
         if: ${{ startsWith(github.event.head_commit.message, '[pre]') }}
         uses: elementemerald/r2-upload-action@v1.0.5

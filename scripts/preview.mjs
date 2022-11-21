@@ -29,7 +29,7 @@ const __dirname = path.dirname(__filename);
             res.end("Internal server error");
         }
     });
-    
+
     server.listen(3000, err => {
         if (err) throw err;
         console.log("Preview server is up. Attempting to grab a screenshot once loaded.");

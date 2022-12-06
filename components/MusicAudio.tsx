@@ -32,9 +32,9 @@ const MusicAudio = ({ vol }: MusicAudioProps) => {
             console.log(`${file} has ended`);
             if (!loop)
             {
-                let rand = randNum(1, 13);
+                let rand = randNum(1, 15);
                 while (rand === fileIdx) {
-                    rand = randNum(1, 13);
+                    rand = randNum(1, 15);
                 }
                 setFileIdx(rand);
             }

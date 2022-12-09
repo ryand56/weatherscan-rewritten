@@ -3,6 +3,8 @@ import type { SlideProps } from "../../../../../../hooks/useSlides";
 import { SlideshowReducer, Slides, ActionType } from "../../../../../../hooks/useSlides";
 import { VocalMale, VocalFemale } from "../../../../../VocalAudio";
 import { motion, AnimatePresence } from "framer-motion";
+import NoReport from "./NoReport";
+import Unavailable from "./Unavailable";
 import Detailed from "./Detailed";
 import Near from "./Near";
 
@@ -13,25 +15,9 @@ const SlideCityInfo = ({ next, location, currentCityInfo, setVocal }: SlideProps
         console.log("Rendering new city info slide");
         switch (slideState.index) {
             case 0:
-                return <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    key="noreport"
-                    id="noreport"
-                    className="transform translate-x-0 translate-y-60px scale-x-114-5 scale-y-100 origin-left absolute whitespace-nowrap font-frutiger57-cond pt-noreport-t pl-noreport-l text-white text-noreport text-shadow z-noreport"
-                >No Report</motion.div>;
+                return <NoReport />;
             case 1:
-                return <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    key="tempunavailable"
-                    id="tempunavailable"
-                    className="transform translate-x-0 translate-y-60px scale-x-114-5 scale-y-100 origin-left absolute whitespace-nowrap font-frutiger57-cond pt-noreport-t pl-tempunavailable-l text-white text-tempunavailable text-shadow z-noreport"
-                >Temporarily Unavailable</motion.div>;
+                return <Unavailable />;
             case 2:
                 return <Detailed
                     info={currentCityInfo}

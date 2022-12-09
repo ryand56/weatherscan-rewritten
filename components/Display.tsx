@@ -59,6 +59,7 @@ interface DisplayProps {
 }
 
 const Display = ({ isReady, winSize, location, language, units, setMainVol }: DisplayProps) => {
+    const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
 
@@ -234,6 +235,8 @@ const Display = ({ isReady, winSize, location, language, units, setMainVol }: Di
                 locInfo={locInfo}
                 mainCityInfo={currentExtra}
                 extraCityInfo={extraInfo}
+                introLoaded={cityIntroLoaded}
+                setIntroLoaded={setCityIntroLoaded}
             />}
             {locInfo.timezone !== "" && <DateTime tz={locInfo.timezone} />}
             {locInfo.city !== "" && <div

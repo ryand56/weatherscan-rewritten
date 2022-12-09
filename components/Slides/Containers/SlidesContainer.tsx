@@ -18,9 +18,11 @@ interface SlidesContainerProps {
     locInfo?: Partial<Location>
     mainCityInfo?: ExtraInfo
     extraCityInfo?: Map<string, ExtraInfo>
+    introLoaded: boolean
+    setIntroLoaded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: SlidesContainerProps) => {    
+const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, introLoaded, setIntroLoaded }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0, isCity: true });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
@@ -39,7 +41,6 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
     const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
     const [header, setHeader] = React.useState<string[]>([]);
-    const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
@@ -78,8 +79,8 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
                         next={SlideCallback}
                         location={currentCity}
                         currentCityInfo={currentInfo}
-                        isLoaded={cityIntroLoaded}
-                        setLoaded={setCityIntroLoaded}
+                        isLoaded={introLoaded}
+                        setLoaded={setIntroLoaded}
                         setVocal={SetVocalDebounce}
                     />;
                 case Slides.HEALTH:

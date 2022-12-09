@@ -6,7 +6,7 @@ import CityIntro from "./CityIntro";
 import CityInfo from "./CityInfo";
 
 const City = ({ next, location, currentCityInfo, isLoaded = false, setLoaded, setVocal }: MainSlideProps) => {
-    const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
+    const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: isLoaded ? 1 : 0 });
 
     React.useEffect(() => {
         if (!isLoaded) setLoaded(true);

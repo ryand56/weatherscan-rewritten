@@ -1,3 +1,4 @@
+import * as React from "react";
 import { VocalMale, VocalFemale } from "../components/VocalAudio";
 import type { ExtraInfo } from "./useWeather";
 
@@ -23,7 +24,8 @@ export interface SlideProps {
 }
 
 export interface MainSlideProps extends SlideProps {
-    introNeeded?: boolean
+    isLoaded?: boolean
+    setLoaded?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const enum ActionType {

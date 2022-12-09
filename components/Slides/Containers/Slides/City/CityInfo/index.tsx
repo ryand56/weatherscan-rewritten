@@ -15,14 +15,12 @@ const SlideCityInfo = ({ next, location, currentCityInfo, setVocal }: SlideProps
         console.log("Rendering new city info slide");
         switch (slideState.index) {
             case 0:
-                return <NoReport />;
-            case 1:
-                return <Unavailable />;
-            case 2:
                 return <Detailed
                     info={currentCityInfo}
                     setVocal={setVocal}
                 />;
+            case 1:
+                return <Near />;
             default:
                 return null;
         }
@@ -30,11 +28,19 @@ const SlideCityInfo = ({ next, location, currentCityInfo, setVocal }: SlideProps
 
     React.useEffect(() => {
         let timeout = setTimeout(() => {
-            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-            if (slideState.index >= 2) setTimeout(() => {
+            /* if (slideState.index >= 1) setTimeout(() => {
                 next();
                 slideDispatch({ type: ActionType.SET, payload: 0 });
-            }, 800);
+            }, 800); */
+            if (slideState.index >= 1) {
+                console.log("Slide state index is over 1");
+                next();
+                slideDispatch({ type: ActionType.SET, payload: 0 });
+                return;
+            }
+
+            console.log("Slide state dispatch increase");
+            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
         }, 8000);
         return () => clearTimeout(timeout);
     }, [slideState.index]);

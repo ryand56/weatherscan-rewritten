@@ -14,10 +14,11 @@ interface ItemsRef {
 interface SlideHeaderScrollProps {
     locations: string[]
     willUpdate: boolean
-    cycleCallback: (selected: string) => void
+    startCallback?: (toSelect: string) => void
+    finishCallback?: (selected: string) => void
 }
 
-const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeaderScrollProps) => {
+const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallback }: SlideHeaderScrollProps) => {
     const [loaded, setLoaded] = React.useState<boolean>(false);
     const [list, setList] = React.useState<string[]>(locations);
     const [shiftNeeded, setShiftNeeded] = React.useState<boolean>(false);
@@ -48,11 +49,13 @@ const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeader
                 const cityRefWidth = getWidth(current.city, "full");
                 const arrowRefWidth = getWidth(current.arrow, "full");
 
+                startCallback(items[1].city.innerHTML);
+
                 controls.start({
                     left: `${-1.06*(cityRefWidth + arrowRefWidth)}px`,
                     transition: { duration: 0.9 }
                 }).then(() => {
-                    cycleCallback(items[1].city.innerHTML);
+                    finishCallback(items[1].city.innerHTML);
                     setShiftNeeded(true);
                     controls.set({ left: null });
                 });

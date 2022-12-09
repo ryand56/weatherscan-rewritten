@@ -39,10 +39,17 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
     const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
     const [header, setHeader] = React.useState<string[]>([]);
+    const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
-    const HeaderCallback = (selected: string) => {
+    const HeaderStartCallback = (toSelect: string) => {
+        //const introNeeded = locInfo.city === toSelect;
+        //console.log(introNeeded);
+        //setIntroNeeded(introNeeded);
+    };
+
+    const HeaderFinishCallback = (selected: string) => {
         console.log("Header cycle complete");
         console.log(selected);
         const selectedInfo = cityInfo.get(selected);
@@ -54,6 +61,7 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
             slideDispatch({ type: ActionType.SET_CITY, payloadCity: false });
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
         }
+
         setHeaderUpdate(false);
     };
 
@@ -70,7 +78,8 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
                         next={SlideCallback}
                         location={currentCity}
                         currentCityInfo={currentInfo}
-                        introNeeded={locInfo.city === currentCity}
+                        isLoaded={cityIntroLoaded}
+                        setLoaded={setCityIntroLoaded}
                         setVocal={SetVocalDebounce}
                     />;
                 case Slides.HEALTH:
@@ -102,7 +111,8 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo }: S
                     ...header.slice().reverse()
                 ]}
                 willUpdate={headerWillUpdate}
-                cycleCallback={HeaderCallback}
+                startCallback={HeaderStartCallback}
+                finishCallback={HeaderFinishCallback}
             />}
             <div id="info-slide-container" className="absolute top-infoslide-container-t h-infoslide-container w-infoslide-container">
                 <AudioPlayerProvider>

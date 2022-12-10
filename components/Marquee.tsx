@@ -32,18 +32,23 @@ import Marquee from "./CustomMarquee";
     }
 */
 
+interface InfoMarqueeSection {
+    text: string
+    duration?: number
+}
+
 interface InfoMarqueeProps {
-    top: string
-    bottom: string
+    top: InfoMarqueeSection
+    bottom: InfoMarqueeSection
 }
 
 const InfoMarquee = ({ top, bottom }: InfoMarqueeProps) => (
     <div className="absolute left-[31.35%] top-[82.5%] w-full flex flex-col">
-        <Marquee play={true} gradient={false} duration={5} pauseOnHover={true}>
-            <span className="text-marquee-top text-shadow-sm origin-left">{top}</span>
+        <Marquee play={true} gradient={false} duration={top.duration ?? 5} pauseOnHover={true}>
+            <span className="text-marquee-top text-shadow-sm origin-left">{top.text}</span>
         </Marquee>
-        <Marquee play={true} gradient={false} duration={60} pauseOnHover={true}>
-            <span className="text-marquee-bottom font-normal origin-left">{bottom}</span>
+        <Marquee play={true} gradient={false} duration={bottom.duration ?? 15} pauseOnHover={true}>
+            <span className="text-marquee-bottom font-normal origin-left">{bottom.text}</span>
         </Marquee>
     </div>
 );

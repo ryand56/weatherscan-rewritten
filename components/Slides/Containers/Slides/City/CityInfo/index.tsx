@@ -33,27 +33,30 @@ const SlideCityInfo = ({ next, location, currentCityInfo, setVocal }: SlideProps
                 slideDispatch({ type: ActionType.SET, payload: 0 });
             }, 800); */
             if (slideState.index >= 1) {
-                console.log("Slide state index is over 1");
                 next();
                 slideDispatch({ type: ActionType.SET, payload: 0 });
                 return;
             }
 
-            console.log("Slide state dispatch increase");
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
         }, 8000);
         return () => clearTimeout(timeout);
     }, [slideState.index]);
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.09, ease: "easeInOut" }}
+            key="city-info-slide"
             id="city-info-slide"
             className="relative bg-city-info-slide bg-no-repeat w-full min-h-infoslide max-h-infoslide overflow-hidden flex flex-col"
         >
             <AnimatePresence>
                 {currentSlide}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 };
 

@@ -7,7 +7,7 @@ const Health = ({ next }: SlideProps) => {
         return () => clearTimeout(timeout);
     }, []);
 
-    return <div></div>;
+    return <div id="health"></div>;
 };
 
 export default Health;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { VocalMale, VocalFemale } from "../components/VocalAudio";
 import type { ExtraInfo } from "./useWeather";
 
-export const enum Slides {
+export enum Slides {
     CITY,
     HEALTH,
     TRAVEL,

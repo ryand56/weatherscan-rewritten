@@ -1,8 +1,8 @@
 import * as React from "react";
+import { motion } from "framer-motion";
 import type { ExtraInfo } from "../../../../../../hooks/useWeather";
 import { VocalMale, VocalFemale } from "../../../../../VocalAudio";
 import { Icons2010, getIcon } from "../../../../../../hooks/useIconMap";
-import { motion } from "framer-motion";
 import FrostPane from "../../FrostPane";
 
 interface DetailedProps {
@@ -110,7 +110,7 @@ const Detailed = ({ info, setVocal }: DetailedProps) => {
                 >
                     <div id="info-icon"
                         className="bg-no-repeat bg-cover bg-info-icon w-[212px] h-[212px] transform -translate-y-[5px]"
-                        style={{ backgroundImage: `url(/images/icons2010/${icon}.png)` }}
+                        style={{ backgroundImage: `url(/images/icons2010/${icon < 10 ? `0${icon}` : icon}.png)` }}
                     />
                     {info.current && <>
                         <div

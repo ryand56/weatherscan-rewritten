@@ -1,4 +1,5 @@
 import * as React from "react";
+import { AnimatePresence } from "framer-motion";
 import type { MainSlideProps } from "../../../../../hooks/useSlides";
 import { SlideshowReducer, SlidesCity, ActionType, SlideProps } from "../../../../../hooks/useSlides";
 
@@ -37,7 +38,11 @@ const City = ({ next, location, currentCityInfo, isLoaded = false, setLoaded, se
         }
     }, [slideState.index, SlideCallback, location, currentCityInfo]);
 
-    return currentSlide;
+    return (
+        <AnimatePresence>
+            {currentSlide}
+        </AnimatePresence>
+    );
 };
 
 export default City;

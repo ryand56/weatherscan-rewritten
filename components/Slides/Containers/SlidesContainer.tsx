@@ -53,17 +53,30 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
     const HeaderFinishCallback = (selected: string) => {
         console.log("Header cycle complete");
         console.log(selected);
+        setHeaderUpdate(false);
+
         const selectedInfo = cityInfo.get(selected);
         if (selectedInfo !== undefined) {
             setCurrentCity(selected);
             setCurrentInfo(selectedInfo);
             slideDispatch({ type: ActionType.SET, payload: 0, payloadCity: true });
-        } else {
-            slideDispatch({ type: ActionType.SET_CITY, payloadCity: false });
-            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+            return;
         }
 
-        setHeaderUpdate(false);
+        // Check for slide currently selected
+        const found = Object.entries(Slides).find(([key, value]) => key === selected.toUpperCase());
+        if (found) {
+            const [slideKey, slideIdx] = found;
+            slideDispatch({
+                type: ActionType.SET,
+                payload: slideIdx as number,
+                payloadCity: false
+            });
+            return;
+        }
+
+        slideDispatch({ type: ActionType.SET_CITY, payloadCity: false });
+        slideDispatch({ type: ActionType.INCREASE, payload: 1 });
     };
 
     React.useEffect(() => {
@@ -109,7 +122,8 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
                     ...header,
                     "Airports",
                     "International",
-                    ...header.slice().reverse()
+                    ...header.slice().reverse(),
+                    "Travel"
                 ]}
                 willUpdate={headerWillUpdate}
                 startCallback={HeaderStartCallback}

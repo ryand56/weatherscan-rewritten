@@ -32,12 +32,12 @@ import Marquee from "./CustomMarquee";
     }
 */
 
-interface InfoMarqueeSection {
+export interface InfoMarqueeSection {
     text: string
     duration?: number
 }
 
-interface InfoMarqueeProps {
+export interface InfoMarqueeProps {
     top: InfoMarqueeSection
     bottom: InfoMarqueeSection
 }

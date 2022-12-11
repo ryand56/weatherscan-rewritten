@@ -49,6 +49,15 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
     const [header, setHeader] = React.useState<string[]>([]);
     const [random, setRandom] = React.useState<string>("");
 
+    const isExtraLoc = (location: string) => {
+        const extraLoc = extraCityInfo.get(location);
+        if (extraLoc !== undefined) {
+            return location !== locInfo.city;
+        }
+
+        return false;
+    };
+
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
     const HeaderStartCallback = (toSelect: string) => {
@@ -95,10 +104,13 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
             const headLength = header.length;
             const idx = getRandomIdx(headLength);
             let rand = header[idx];
+            console.log(rand);
             
-            while (rand === locInfo.city) {
+            while (!isExtraLoc(rand)) {
+                console.warn("Encountered main location when setting random - rerolling");
                 const tempIdx = getRandomIdx(headLength);
                 rand = header[tempIdx];
+                console.log(rand);
             }
 
             setRandom(rand);

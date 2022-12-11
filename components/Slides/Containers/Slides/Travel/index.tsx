@@ -7,7 +7,7 @@ const Travel = ({ next }: SlideProps) => {
         return () => clearTimeout(timeout);
     }, []);
 
-    return <div id="travel"></div>;
+    return <div id="travel">Travel</div>;
 };
 
 export default Travel;

@@ -7,7 +7,7 @@ const International = ({ next }: SlideProps) => {
         return () => clearTimeout(timeout);
     })
 
-    return <div id="international"></div>;
+    return <div id="international">International</div>;
 };
 
 export default International;

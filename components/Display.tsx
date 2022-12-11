@@ -261,8 +261,13 @@ const Display = ({ isReady, winSize, location, language, units, setMainVol }: Di
                 }}
             />
             {focusedAlert && <MarqueeSevere
-                top={focusedAlert.eventDescription}
-                bottom={focusedAlertText}
+                top={{
+                    text: focusedAlert.eventDescription
+                }}
+                bottom={{
+                    text: focusedAlertText,
+                    duration: 20
+                }}
             />}
         </div>
     );

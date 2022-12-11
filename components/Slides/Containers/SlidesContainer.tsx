@@ -22,6 +22,12 @@ interface SlidesContainerProps {
     setIntroLoaded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const getRandomIdx = (max?: number, min?: number) => {
+    const minIdx = min ?? 0;
+    const maxIdx = max ?? 5;
+    return Math.floor(Math.random() * (maxIdx - minIdx) + minIdx);
+};
+
 const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, introLoaded, setIntroLoaded }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0, isCity: true });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
@@ -41,6 +47,7 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
     const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
     const [header, setHeader] = React.useState<string[]>([]);
+    const [random, setRandom] = React.useState<string>("");
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
@@ -83,6 +90,21 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
         setHeader(Array.from(cityInfo.keys()));
     }, [cityInfo]);
 
+    React.useEffect(() => {
+        if (header && header.length > 0) {
+            const headLength = header.length;
+            const idx = getRandomIdx(headLength);
+            let rand = header[idx];
+            
+            while (rand === locInfo.city) {
+                const tempIdx = getRandomIdx(headLength);
+                rand = header[tempIdx];
+            }
+
+            setRandom(rand);
+        }
+    }, [header]);
+
     const currentSlide = React.useMemo(() => {
         if (currentCity && currentInfo) {
             console.log("Rendering new slide");
@@ -114,11 +136,12 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
 
     return (
         <div id="info-slides-container" className="flex flex-col absolute right-infoslides-container-r top-infoslides-container-t w-infoslides-container h-infoslides-container max-h-infoslides-container z-[1] p-slides">
-            {(cityInfo && header.length > 0) && <SlideHeader
+            {(cityInfo && header.length > 0 && random !== "") && <SlideHeader
                 locations={[
                     locInfo.city,
                     "Health",
                     "Travel",
+                    random,
                     ...header,
                     "Airports",
                     "International",

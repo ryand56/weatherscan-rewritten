@@ -7,11 +7,22 @@ import VocalAudio from "../../../components/VocalAudio";
 
 import { SlideshowReducer, Slides, ActionType } from "../../../hooks/useSlides";
 
-import City from "./Slides/City";
-import Health from "./Slides/Health";
-import Travel from "./Slides/Travel";
-import Airports from "./Slides/Airports";
-import International from "./Slides/International";
+// Lazy load individual slides
+const City = React.lazy(() => import(
+    "./Slides/City" /* webpackChunkName: "citySlide", webpackPreload: true */
+));
+const Health = React.lazy(() => import(
+    "./Slides/Health" /* webpackChunkName: "healthSlide", webpackPreload: true */
+));
+const Travel = React.lazy(() => import(
+    "./Slides/Travel" /* webpackChunkName: "travelSlide", webpackPreload: true */
+));
+const Airports = React.lazy(() => import(
+    "./Slides/Airports" /* webpackChunkName: "airportsSlide", webpackPreload: true */
+));
+const International = React.lazy(() => import(
+    "./Slides/International" /* webpackChunkName: "intSlide", webpackPreload: true */
+));
 
 interface SlidesContainerProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>

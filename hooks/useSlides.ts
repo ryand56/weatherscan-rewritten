@@ -11,14 +11,21 @@ export enum Slides {
 }
 
 // City slides
-export const enum SlidesCity {
+export enum SlidesCity {
     INTRO,
     INFO
+}
+
+export enum SlidesCityInfo {
+    DETAILED,
+    NEAR,
+    EXTENDED
 }
 
 export interface SlideProps {
     currentCityInfo?: ExtraInfo
     next?: () => void
+    debug?: boolean
     location?: string
     setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>
 }

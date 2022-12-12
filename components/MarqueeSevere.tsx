@@ -8,6 +8,7 @@ interface InfoMarqueeSevereProps extends InfoMarqueeProps {
 }
 
 const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps) => {
+    const beep = new Audio("/vocals/beepmuffled.mp3");
     const [utterance, setUtterance] = React.useState<SpeechSynthesisUtterance>(
         new SpeechSynthesisUtterance()
     );
@@ -15,21 +16,29 @@ const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps
 
     const tts = React.useCallback((message: string) => {
         if (utterance) {
-            utterance.text = message;
-            //utterance.pitch = 3 / 5;
-            speechSynthesis.speak(utterance);
+            setMainVol(0.25);
 
-            utterance.onstart = () => setMainVol(0.25);
-            utterance.onend = () => setMainVol(1);
+            beep.play();
+            beep.onended = () => {
+                utterance.text = message;
+                //utterance.pitch = 3 / 5;
+                speechSynthesis.speak(utterance);
+
+                utterance.onend = () => setMainVol(1);
+            };
         }
     }, [utterance, setMainVol]);
+
+    React.useEffect(() => {
+        if (top.text !== "") setSpeech(`A ${top.text.toLowerCase()} is in your area.`);
+    }, [top.text]);
 
     React.useEffect(() => {
         let interval: NodeJS.Timer;
         if (typeof window !== undefined) {
             if (!mute && speech && speech !== "") {
                 tts(speech);
-                interval = setInterval(() => tts(speech), 21500);
+                interval = setInterval(() => tts(speech), 31500);
             }
         }
         return () => {

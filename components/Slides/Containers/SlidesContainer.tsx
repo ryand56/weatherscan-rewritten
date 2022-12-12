@@ -25,6 +25,7 @@ const International = React.lazy(() => import(
 ));
 
 interface SlidesContainerProps {
+    debug: boolean
     setMainVol: React.Dispatch<React.SetStateAction<number>>
     locInfo?: Partial<Location>
     mainCityInfo?: ExtraInfo
@@ -39,7 +40,7 @@ const getRandomIdx = (max?: number, min?: number) => {
     return Math.floor(Math.random() * (maxIdx - minIdx) + minIdx);
 };
 
-const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, introLoaded, setIntroLoaded }: SlidesContainerProps) => {    
+const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityInfo, introLoaded, setIntroLoaded }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0, isCity: true });
     const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
@@ -78,8 +79,10 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
     };
 
     const HeaderFinishCallback = (selected: string) => {
-        console.log("Header cycle complete");
-        console.log(selected);
+        if (debug) {
+            console.log("Header cycle complete");
+            console.log(selected);
+        }
         setHeaderUpdate(false);
 
         const selectedInfo = cityInfo.get(selected);
@@ -115,13 +118,13 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
             const headLength = header.length;
             const idx = getRandomIdx(headLength);
             let rand = header[idx];
-            console.log(rand);
+            if (debug) console.log(rand);
             
             while (!isExtraLoc(rand)) {
                 console.warn("Encountered main location when setting random - rerolling");
                 const tempIdx = getRandomIdx(headLength);
                 rand = header[tempIdx];
-                console.log(rand);
+                if (debug) console.log(rand);
             }
 
             setRandom(rand);
@@ -130,11 +133,12 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
 
     const currentSlide = React.useMemo(() => {
         if (currentCity && currentInfo) {
-            console.log("Rendering new slide");
+            if (debug) console.log("Rendering new slide");
             switch (slideState.index) {
                 case Slides.CITY:
                     return <City
                         next={SlideCallback}
+                        debug={debug}
                         location={currentCity}
                         currentCityInfo={currentInfo}
                         isLoaded={introLoaded}

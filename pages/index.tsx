@@ -67,6 +67,10 @@ const Index = () => {
             <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
             <Display
                 isReady={introDone}
+                debug={
+                    process.env.NODE_ENV === "development"
+                    || process.env.NODE_ENV === "test"
+                }
                 winSize={[innerWidth, innerHeight]}
                 location={location}
                 language={language}

@@ -26,7 +26,10 @@ import CCIcon from "./CCIcon";
 import Current from "./Current";
 import LogoArea from "./LogoArea";
 import InfoMarquee from "./Marquee";
-import MarqueeSevere from "./MarqueeSevere";
+//import MarqueeSevere from "./MarqueeSevere";
+const MarqueeSevere = React.lazy(() => import(
+    "./MarqueeSevere" /* webpackChunkName: "marqueeSevere" */
+));
 
 const resizeWindow = (
     mainRef: React.MutableRefObject<HTMLDivElement>,
@@ -51,6 +54,7 @@ const resizeWindow = (
 
 interface DisplayProps {
     isReady: boolean
+    debug: boolean
     winSize: number[]
     location: string
     language: string
@@ -59,7 +63,7 @@ interface DisplayProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, winSize, location, language, units, muteSevere, setMainVol }: DisplayProps) => {
+const Display = ({ isReady, debug, winSize, location, language, units, muteSevere, setMainVol }: DisplayProps) => {
     const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
@@ -132,7 +136,7 @@ const Display = ({ isReady, winSize, location, language, units, muteSevere, setM
         for (let i = 0; i < data.length; i++) {
             const location = data[i];
             const latLon = `${location.lat},${location.lon}`;
-            console.log(latLon);
+            if (debug) console.log(latLon);
             queryLatLons.push(latLon);
             latLonMap.set(latLon, location.displayName);
         }
@@ -142,9 +146,11 @@ const Display = ({ isReady, winSize, location, language, units, muteSevere, setM
             units
         });
         for (const [key, value] of Object.entries(extras)) {
-            console.log(key);
             const displayName = latLonMap.get(key);
-            console.log(displayName, value);
+            if (debug) {
+                console.log(key);
+                console.log(displayName, value);
+            }
             const latLon = key.split(",");
             tempMap.set(displayName, {
                 details: {
@@ -214,11 +220,11 @@ const Display = ({ isReady, winSize, location, language, units, muteSevere, setM
     }, [alerts.length]);
 
     React.useEffect(() => {
-        console.log(currentExtra);
+        if (debug) console.log(currentExtra);
     }, [currentExtra]);
 
     React.useEffect(() => {
-        console.log(extraInfo);
+        if (debug) console.log(extraInfo);
     }, [extraInfo]);
 
     /*
@@ -232,6 +238,7 @@ const Display = ({ isReady, winSize, location, language, units, muteSevere, setM
             <img className="block max-h-full max-w-full" src="/images/template-4k.png" alt="background" />
             <SlideBg />
             {(isReady && locInfo && currentExtra && extraInfo.size !== 0) && <SlidesContainer
+                debug={debug}
                 setMainVol={setMainVol}
                 locInfo={locInfo}
                 mainCityInfo={currentExtra}

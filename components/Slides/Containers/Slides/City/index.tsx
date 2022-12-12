@@ -6,7 +6,7 @@ import { SlideshowReducer, SlidesCity, ActionType, SlideProps } from "../../../.
 import CityIntro from "./CityIntro";
 import CityInfo from "./CityInfo";
 
-const City = ({ next, location, currentCityInfo, isLoaded = false, setLoaded, setVocal }: MainSlideProps) => {
+const City = ({ next, debug, location, currentCityInfo, isLoaded = false, setLoaded, setVocal }: MainSlideProps) => {
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: isLoaded ? 1 : 0 });
 
     React.useEffect(() => {
@@ -14,7 +14,8 @@ const City = ({ next, location, currentCityInfo, isLoaded = false, setLoaded, se
     }, []);
 
     const SlideCallback = React.useCallback(() => {
-        if (slideState.index >= 1) {
+        const numSlides = Object.keys(SlidesCity).length / 2;
+        if (slideState.index >= (numSlides - 1)) {
             next();
             slideDispatch({ type: ActionType.SET, payload: 2 });
             setTimeout(() => slideDispatch({ type: ActionType.SET, payload: isLoaded ? 1 : 0 }), 900);
@@ -24,17 +25,20 @@ const City = ({ next, location, currentCityInfo, isLoaded = false, setLoaded, se
     }, [slideState.index, isLoaded]);
 
     const currentSlide = React.useMemo(() => {
-        console.log("Rendering new city slide");
+        if (debug) console.log("Rendering new city slide");
         switch (slideState.index) {
             case SlidesCity.INTRO:
                 return <CityIntro next={SlideCallback} />;
             case SlidesCity.INFO:
                 return <CityInfo
                     next={SlideCallback}
+                    debug={debug}
                     location={location}
                     currentCityInfo={currentCityInfo}
                     setVocal={setVocal}
                 />;
+            default:
+                return null;
         }
     }, [slideState.index, SlideCallback, location, currentCityInfo]);
 

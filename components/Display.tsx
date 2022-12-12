@@ -55,10 +55,11 @@ interface DisplayProps {
     location: string
     language: string
     units: TemperatureUnit
+    muteSevere: boolean
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, winSize, location, language, units, setMainVol }: DisplayProps) => {
+const Display = ({ isReady, winSize, location, language, units, muteSevere, setMainVol }: DisplayProps) => {
     const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();
@@ -260,14 +261,16 @@ const Display = ({ isReady, winSize, location, language, units, setMainVol }: Di
                     duration: 12
                 }}
             />
-            {focusedAlert && <MarqueeSevere
+            {(focusedAlert && focusedAlertText) && <MarqueeSevere
                 top={{
                     text: focusedAlert.eventDescription
                 }}
                 bottom={{
                     text: focusedAlertText,
-                    duration: 20
+                    duration: 0.1 * (focusedAlertText.length)
                 }}
+                mute={muteSevere}
+                setMainVol={setMainVol}
             />}
         </div>
     );

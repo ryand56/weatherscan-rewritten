@@ -179,7 +179,9 @@ const SlidesContainer = ({ setMainVol, locInfo, mainCityInfo, extraCityInfo, int
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />
                 </AudioPlayerProvider>
-                {currentSlide}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                    {currentSlide}
+                </React.Suspense>
             </div>
         </div>
     );

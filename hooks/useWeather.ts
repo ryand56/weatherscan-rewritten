@@ -569,3 +569,56 @@ export const getAlertText = async (alertId: string, options?: APIOptions) : Prom
             throw new Error(err);
         })
 };
+
+interface AlertSectionColor {
+    primary: string
+    secondary: string
+}
+
+interface AlertColor {
+    header: AlertSectionColor
+    body: AlertSectionColor
+}
+
+/**
+ * Gets the alert color for a specified alert. This should be ran after getAlerts.
+ * @param alert The alert to fetch the color for.
+ * @returns The color that the alert should show.
+ */
+
+export const getAlertColor = (alert: Alert) : AlertColor => {
+    // Header
+    let headerPrimary = "#510d08";
+    let headerSecondary = "#b41a08";
+
+    // Body
+    let bodyPrimary = "#d51e08";
+    let bodySecondary = "#b41a08";
+
+    switch (alert.significance) {
+        case "Y":
+        case "S":
+            headerPrimary = "#874901";
+            headerSecondary = "#bb631a";
+            bodyPrimary = "#f2992e";
+            bodySecondary = "#bb631a";
+        case "A":
+            headerPrimary = "#846811";
+            headerSecondary = "#9b7d0e";
+            bodyPrimary = "#e5dd20";
+            bodySecondary = "#9b7d0e";
+    }
+
+    const color: AlertColor = {
+        header: {
+            primary: headerPrimary,
+            secondary: headerSecondary
+        },
+        body: {
+            primary: bodyPrimary,
+            secondary: bodySecondary
+        }
+    };
+
+    return color;
+};

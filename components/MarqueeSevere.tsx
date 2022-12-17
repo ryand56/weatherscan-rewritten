@@ -38,7 +38,7 @@ const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps
         if (typeof window !== undefined) {
             if (!mute && speech && speech !== "") {
                 tts(speech);
-                interval = setInterval(() => tts(speech), 31500);
+                interval = setInterval(() => tts(speech), 41500);
             }
         }
         return () => {

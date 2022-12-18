@@ -227,7 +227,7 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
                 const parsedLon = parseFloat(lon);
 
                 const city = marqueeCities.find(c => c.latitude === parsedLat && c.longitude === parsedLon);
-                city.observations = cond;
+                if (city) city.observations = cond;
             }
         };
 

@@ -1,11 +1,14 @@
 import * as React from "react";
-import type {
+import {
     TemperatureUnit,
     Location,
     ExtraLocation,
     ExtraInfo,
     CurrentCond,
-    Alert
+    CurrentConds,
+    Alert,
+    MarqueeLocation,
+    MarqueeCities
 } from "../hooks/useWeather";
 import {
     defaults,
@@ -98,6 +101,8 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
     const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
     const [focusedAlertText, setFocusedAlertText] = React.useState<string>(null);
 
+    const [marqueeCities, setMarqueeCities] = React.useState<MarqueeLocation[]>(MarqueeCities);
+
     // Location handler
     React.useEffect(() => {
         if (isReady) {
@@ -166,7 +171,7 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
     };
 
     const fetchAlerts = (lat: number, lon: number) => {
-        getAlerts(lat, lon, { language }).then(data => {
+        getAlerts(lat, lon, { language, units }).then(data => {
             setAlerts(data);
         }).catch(err => console.error(err));
     };
@@ -205,6 +210,34 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
             return () => clearInterval(intervalTimer);
         }
     }, [isReady, locInfo.latitude, locInfo.longitude]);
+
+    React.useEffect(() => {
+        if (!isReady || !marqueeCities) return;
+        let latLons: string[] = [];
+
+        for (const city of marqueeCities) {
+            latLons.push(`${city.latitude},${city.longitude}`);
+        }
+
+        const ExtraCondCallback = (ret: CurrentConds) => {
+            for (const latLon of latLons) {
+                const cond = ret[latLon];
+                const [lat, lon] = latLon.split(",");
+                const parsedLat = parseFloat(lat);
+                const parsedLon = parseFloat(lon);
+
+                const city = marqueeCities.find(c => c.latitude === parsedLat && c.longitude === parsedLon);
+                city.observations = cond;
+            }
+        };
+
+        getExtraCond(latLons, { language, units }).then(ExtraCondCallback).catch(err => console.error(err));
+        const interval = setInterval(() => {
+            getExtraCond(latLons, { language, units }).then(ExtraCondCallback).catch(err => console.error(err));
+        }, 300000);
+
+        return () => clearInterval(interval);
+    }, [isReady, marqueeCities]);
 
     React.useEffect(() => {
         if (alerts.length > 0) {
@@ -260,10 +293,10 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
             <LogoArea />
             <InfoMarquee
                 top={{
-                    text: "Hello World",
+                    locations: marqueeCities ?? [],
                     duration: 4.5
                 }}
-                bottom={{
+                ticker={{
                     text: "This project is open source: github.com/elementemerald/weatherscan-rewritten | NextJs version inspired from https://github.com/buffbears/Weatherscan |",
                     duration: 12
                 }}

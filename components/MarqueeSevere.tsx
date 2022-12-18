@@ -1,8 +1,10 @@
 import * as React from "react";
 import Marquee from "./CustomMarquee";
-import { InfoMarqueeProps } from "./Marquee";
+import { InfoMarqueeSingle } from "./Marquee";
 
-interface InfoMarqueeSevereProps extends InfoMarqueeProps {
+interface InfoMarqueeSevereProps {
+    top: InfoMarqueeSingle
+    bottom: InfoMarqueeSingle
     mute: boolean
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }

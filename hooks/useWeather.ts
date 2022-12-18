@@ -155,6 +155,8 @@ export const currentDefaults: CurrentCond = Object.freeze({
 
 const memoizedFetch = memoAsync(fetch); */
 
+const baseUrl = "https://api.weather.com";
+
 /**
  * Gets the main location for a query string.
  * @param location The query string to look up.
@@ -164,7 +166,7 @@ const memoizedFetch = memoAsync(fetch); */
 export const getMainLocation = async (location: string, options?: APIOptions) => {
     const apiLanguage = options.language || "en-US";
 
-    return fetch(`https://api.weather.com/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+    return fetch(`${baseUrl}/v3/location/search?query=${encodeURIComponent(location)}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
         .then(async (res: Response) => {
             return res.json().then((data: WeatherAPISearchLocResponse) => {
                 const dataLocs = data.location;
@@ -177,6 +179,39 @@ export const getMainLocation = async (location: string, options?: APIOptions) =>
                 loc.latitude = dataLocs.latitude[0];
                 loc.longitude = dataLocs.longitude[0];
                 loc.timezone = dataLocs.ianaTimeZone[0];
+
+                return loc;
+            }).catch(err => {
+                throw new Error(err);
+            });
+        }).catch(err => {
+            throw new Error(err);
+        });
+};
+
+/**
+ * Gets the location info of a point.
+ * @param lat The latitude of the point.
+ * @param lon The longitude of the point.
+ * @param options The options for this request.
+ */
+// https://api.weather.com/v3/aggcommon/v3-location-point;v3-wx-observations-current?geocodes=41.881832,-87.623177;44.986656,-93.258133;33.427204,-111.939896;46.877186,-96.789803;34.187042,-118.381256;33.660057,-117.998970;36.114647,-115.172813;21.315603,-157.858093;28.538336,-81.379234;43.0,-75.0;&language=en-US&units=e&format=json&apiKey=e1f10a1e78da46f5b10a1e78da96f525
+export const getPointLocation = async (lat: number, lon: number, options?: APIOptions) => {
+    const apiLanguage = options.language || "en-US";
+
+    return fetch(`${baseUrl}/v3/location/point?geocode=${lat},${lon}&language=${apiLanguage}&format=json&apiKey=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
+        .then(async (res: Response) => {
+            return res.json().then((data: WeatherAPIPointResponse) => {
+                const dataLoc = data.location;
+
+                const loc = Object.assign({}, defaults);
+                loc.city = dataLoc.city;
+                loc.state = dataLoc.adminDistrict;
+                loc.country = dataLoc.country;
+                loc.countryCode = dataLoc.countryCode;
+                loc.latitude = dataLoc.latitude;
+                loc.longitude = dataLoc.longitude;
+                loc.timezone = dataLoc.ianaTimeZone;
 
                 return loc;
             }).catch(err => {
@@ -297,8 +332,7 @@ export const getCurrentCond = async (lat: number, lon: number, options?: APIOpti
         });
 };
 
-/** @internal */
-interface CurrentConds {
+export interface CurrentConds {
     [latLon: string]: CurrentCond
 }
 
@@ -622,3 +656,29 @@ export const getAlertColor = (alert: Alert) : AlertColor => {
 
     return color;
 };
+
+export interface MarqueeLocation extends Location {
+    observations?: Partial<CurrentCond>
+}
+
+// Cities that the marquee should cycle through
+export const MarqueeCities: MarqueeLocation[] = [
+    {
+        city: "Chicago",
+        state: "Illinois",
+        country: "United States",
+        countryCode: "US",
+        latitude: 41.882,
+        longitude: -87.629,
+        timezone: "America/Chicago"
+    },
+    {
+        city: "Minneapolis",
+        state: "Minnesota",
+        country: "United States",
+        countryCode: "US",
+        latitude: 44.988,
+        longitude: -93.26,
+        timezone: "America/Chicago"
+    }
+];

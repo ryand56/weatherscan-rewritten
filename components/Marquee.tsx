@@ -1,5 +1,6 @@
 import * as React from "react";
 import Marquee from "./CustomMarquee";
+import { MarqueeLocation } from "../hooks/useWeather";
 
 /*
     #marquee1 {
@@ -33,22 +34,36 @@ import Marquee from "./CustomMarquee";
 */
 
 export interface InfoMarqueeSection {
-    text: string
     duration?: number
 }
 
-export interface InfoMarqueeProps {
-    top: InfoMarqueeSection
-    bottom: InfoMarqueeSection
+export interface InfoMarqueeSingle extends InfoMarqueeSection {
+    text: string
 }
 
-const InfoMarquee = ({ top, bottom }: InfoMarqueeProps) => (
+export interface InfoMarqueeLocations extends InfoMarqueeSection {
+    locations: MarqueeLocation[]
+}
+
+export interface InfoMarqueeProps {
+    top: InfoMarqueeLocations
+    ticker: InfoMarqueeSingle
+}
+
+/* <span className="text-marquee-top text-shadow-sm origin-left">{top.text}</span> */
+const InfoMarquee = ({ top, ticker }: InfoMarqueeProps) => (
     <div className="absolute left-[31.35%] top-[82.5%] w-full flex flex-col">
         <Marquee play={true} gradient={false} duration={top.duration ?? 5} pauseOnHover={true}>
-            <span className="text-marquee-top text-shadow-sm origin-left">{top.text}</span>
+            <div id="marquee-loc">
+                {top.locations.map(v => (
+                    <span key={v.city} className="text-marquee-top text-shadow-sm origin-left pr-[3vw]">
+                        {`${v.city}: ${v.observations?.temp} ${v.observations?.phrase}`}
+                    </span>
+                ))}
+            </div>
         </Marquee>
-        <Marquee play={true} gradient={false} duration={bottom.duration ?? 15} pauseOnHover={true}>
-            <span className="text-marquee-bottom font-normal origin-left">{bottom.text}</span>
+        <Marquee play={true} gradient={false} duration={ticker.duration ?? 15} pauseOnHover={true}>
+            <span className="text-marquee-bottom font-normal origin-left">{ticker.text}</span>
         </Marquee>
     </div>
 );

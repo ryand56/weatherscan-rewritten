@@ -25,6 +25,7 @@ export enum SlidesCityInfo {
 export interface SlideProps {
     currentCityInfo?: ExtraInfo
     next?: () => void
+    duration?: number
     debug?: boolean
     location?: string
     setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>

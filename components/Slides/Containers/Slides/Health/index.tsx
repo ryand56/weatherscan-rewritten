@@ -1,13 +1,11 @@
 import * as React from "react";
 import type { SlideProps } from "../../../../../hooks/useSlides";
+import BaseSlide from "..";
 
-const Health = ({ next }: SlideProps) => {
-    React.useEffect(() => {
-        let timeout = setTimeout(next, 8000);
-        return () => clearTimeout(timeout);
-    }, []);
-
-    return <div id="health">Health</div>;
-};
+const Health = ({ next, duration }: SlideProps) => (
+    <BaseSlide next={next} duration={duration}>
+        <div id="health">Health</div>
+    </BaseSlide>
+);
 
 export default Health;

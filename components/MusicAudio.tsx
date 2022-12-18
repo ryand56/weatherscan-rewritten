@@ -18,7 +18,7 @@ interface MusicAudioProps {
 }
 
 const MusicAudio = ({ vol }: MusicAudioProps) => {
-    const [fileIdx, setFileIdx] = React.useState<number>(randNum(1, 13));
+    const [fileIdx, setFileIdx] = React.useState<number>(randNum(1, 33));
     const [file, setFile] = React.useState<string>(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
     const [loop, setLoop] = React.useState<boolean>(false);
 

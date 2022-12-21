@@ -297,7 +297,7 @@ const Display = ({ isReady, debug, winSize, location, language, units, muteSever
                     duration: 4.5
                 }}
                 ticker={{
-                    text: "This project is open source: github.com/elementemerald/weatherscan-rewritten | NextJs version inspired from https://github.com/buffbears/Weatherscan |",
+                    text: "Happy holidays! | This project is open source: github.com/elementemerald/weatherscan-rewritten | NextJs version inspired from https://github.com/buffbears/Weatherscan |",
                     duration: 12
                 }}
             />

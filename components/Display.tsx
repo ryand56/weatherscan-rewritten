@@ -166,7 +166,7 @@ const Display = ({ isReady, winSize, location, language, setMainVol }: DisplayPr
             />
             <LogoArea />
             <InfoMarquee
-                top="Hello World"
+                top="Happy Holidays!"
                 bottom="We have currently partnered with Indigo Wireless to offer great wireless service in Tioga County! Go to indigowireless.com or stop in at 100 Main in Wellsboro for more information on this promo. | Save $5.00 a month with easy, painless auto pay system. Sign up Today! | In weeks to come we will be making upgrades to our network to serve your TV experience better! You may experience brief No Signal mesages on your TV. If the message stays on your TV for more than 4 hours please reboot the TV and call us. | Remember that this is all made possible with help from the Weather Ranch Discord Server! | Help from MapGuy11, Goldblaze, and TWCJon! | To stay up to date with all the latest on the emulator join the Discord Server! https://discord.gg/4TpAsRtsAx | NextJs version inspired from https://github.com/buffbears/Weatherscan |"
             />
             {focusedAlert && <MarqueeSevere

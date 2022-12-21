@@ -50,6 +50,7 @@ const Index = () => {
             setUnits(units);
         }
 
+        // Mute severe marquees
         if (muteSevere !== undefined && muteSevere !== null) {
             setMuteSevere(Boolean(muteSevere));
         }

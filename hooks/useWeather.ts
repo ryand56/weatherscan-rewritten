@@ -83,6 +83,7 @@ export interface ExtraLocation {
 export interface ExtraInfo {
     details?: ExtraLocation
     current?: Partial<CurrentCond>
+    fiveDay?: CurrentCond[]
 }
 
 // ip-api.com

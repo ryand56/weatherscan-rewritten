@@ -22,7 +22,7 @@ const Extended = React.lazy(() => import(
 const SlideCityInfo = ({ next, debug, location, currentCityInfo, setVocal }: SlideProps) => {
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0 });
 
-    const currentSlide = React.useMemo(() => {
+    /* const currentSlide = React.useMemo(() => {
         if (debug) console.log("Rendering new city info slide");
         switch (slideState.index) {
             case SlidesCityInfo.DETAILED:
@@ -42,10 +42,6 @@ const SlideCityInfo = ({ next, debug, location, currentCityInfo, setVocal }: Sli
     React.useEffect(() => {
         let timeout = setTimeout(() => {
             const numSlides = Object.keys(SlidesCityInfo).length / 2;
-            /* if (slideState.index >= (numSlides - 1)) setTimeout(() => {
-                next();
-                slideDispatch({ type: ActionType.SET, payload: 0 });
-            }, 800); */
             if (slideState.index >= (numSlides - 1)) {
                 next();
                 slideDispatch({ type: ActionType.SET, payload: 0 });
@@ -55,7 +51,7 @@ const SlideCityInfo = ({ next, debug, location, currentCityInfo, setVocal }: Sli
             slideDispatch({ type: ActionType.INCREASE, payload: 1 });
         }, 8000);
         return () => clearTimeout(timeout);
-    }, [slideState.index]);
+    }, [slideState.index]); */
 
     return (
         <motion.div
@@ -68,7 +64,7 @@ const SlideCityInfo = ({ next, debug, location, currentCityInfo, setVocal }: Sli
             className="relative bg-city-info-slide bg-no-repeat w-full min-h-infoslide max-h-infoslide overflow-hidden flex flex-col"
         >
             <AnimatePresence>
-                {currentSlide}
+                <Extended />
             </AnimatePresence>
         </motion.div>
     );

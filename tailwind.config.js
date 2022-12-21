@@ -55,7 +55,8 @@ module.exports = {
         "severe-city-info-pos": "69% 41.5%",
         "frost-pane": "-72px -329px",
         "frost-pane-detailed-right": "-570px -329px",
-        "city-info-slide": "69% 41.5%"
+        "city-info-slide": "69% 41.5%",
+        "city-info-extended": "-72px -364px"
       },
       backgroundSize: {
         "conditions-icon": "100% 100%",
@@ -249,6 +250,8 @@ module.exports = {
       translate: {
         "2.5": "2.5px",
         "6px": "6px",
+        "10px": "10px",
+        "45px": "45px",
         "60px": "60px",
         "42-5": "42.5%",
         "43-5": "43.5%",

@@ -66,7 +66,16 @@ interface DisplayProps {
     setMainVol: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Display = ({ isReady, debug, winSize, location, language, units, muteSevere, setMainVol }: DisplayProps) => {
+const Display = ({
+    isReady,
+    debug,
+    winSize,
+    location,
+    language,
+    units,
+    muteSevere,
+    setMainVol
+}: DisplayProps) => {
     const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
     const [innerWidth, innerHeight] = winSize;
     const mainRef = React.useRef<HTMLDivElement>();

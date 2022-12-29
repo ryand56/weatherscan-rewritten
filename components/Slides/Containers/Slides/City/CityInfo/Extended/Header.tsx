@@ -9,6 +9,10 @@ const Header = ({ days }: ExtendedHeaderProps) => (
         id="extendedHeader"
         className="text-white font-frutiger text-[30px] text-shadow h-[35px] w-full absolute flex top-[70px] z-[388688] text-center"
     >
+        <div
+            id="extendedMask"
+            className="absolute h-[35px] w-full bg-[#2a3a8a] frostpane-mask-header"
+        />
         {days.map(day => (
             <div
                 key={day}

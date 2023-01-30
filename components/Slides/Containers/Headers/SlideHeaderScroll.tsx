@@ -49,12 +49,14 @@ const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallbac
                 const cityRefWidth = getWidth(current.city, "full");
                 const arrowRefWidth = getWidth(current.arrow, "full");
 
+                items[1].city.classList.remove("opacity-half");
                 startCallback(items[1].city.innerHTML);
 
                 controls.start({
                     left: `${-1.06*(cityRefWidth + arrowRefWidth)}px`,
                     transition: { duration: 0.9 }
                 }).then(() => {
+                    items[1].city.classList.add("opacity-half");
                     finishCallback(items[1].city.innerHTML);
                     setShiftNeeded(true);
                     controls.set({ left: null });

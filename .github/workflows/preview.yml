@@ -16,7 +16,7 @@ jobs:
         with:
           version: latest
       - name: Install Dependencies
-        run: pnpm ci
+        run: pnpm i --frozen-lockfile
       - name: Lint
         run: pnpm run lint
       - name: Build

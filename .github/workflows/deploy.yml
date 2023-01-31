@@ -23,7 +23,7 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Install Dependencies
-        run: pnpm ci
+        run: pnpm i --frozen-lockfile
       - name: Lint
         run: pnpm run lint
       - name: Build Project Artifacts

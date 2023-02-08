@@ -8,10 +8,10 @@ I made this out of curiousity and it was very interesting to me. (Plus that musi
 <!-- INSTALLATION -->
 ## Installation
 
-### Docker
-Make a new directory and download the latest Docker Compose configuration file.
+Make a new directory and download the ``.env.sample`` file to your directory and rename it to ``.env.local`` and fill in your keys.
 
-Download the ``.env.production.sample`` file to your directory and rename it to ``.env.production`` and fill in your keys.
+### Docker
+Download the latest Docker Compose configuration file. Modify it if needed.
 
 The image can then be deployed by running:
 ```

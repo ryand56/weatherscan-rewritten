@@ -31,6 +31,9 @@ COPY --from=deps /bin/pnpm /bin/pnpm
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NEXT_PUBLIC_IP_API_KEY=APP_NEXT_PUBLIC_IP_API_KEY
+ENV NEXT_PUBLIC_WEATHER_API_KEY=APP_NEXT_PUBLIC_WEATHER_API_KEY
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
@@ -56,11 +59,14 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/entrypoint.sh ./entrypoint.sh
 
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
+
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["node", "server.js"]

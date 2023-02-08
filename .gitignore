@@ -39,7 +39,8 @@ jspm_packages
 
 **/.DS_Store
 .env
-.env.production
+.env.*
+!.env.sample
 .vercel
 
 scripts/dist/**.jpg

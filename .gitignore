@@ -38,7 +38,8 @@ jspm_packages
 .next
 
 **/.DS_Store
-.env.local
+.env
+.env.production
 .vercel
 
 scripts/dist/**.jpg

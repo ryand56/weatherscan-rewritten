@@ -8,7 +8,7 @@ I made this out of curiousity and it was very interesting to me. (Plus that musi
 <!-- INSTALLATION -->
 ## Installation
 
-Make a new directory and download the ``.env.sample`` file to your directory and rename it to ``.env.local`` and fill in your keys.
+Make a new directory, download the ``.env.sample`` file to your directory, rename it to ``.env.local``, and fill in your keys.
 
 ### Docker
 Download the latest Docker Compose configuration file. Modify it if needed.

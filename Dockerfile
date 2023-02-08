@@ -74,4 +74,7 @@ EXPOSE 3000
 
 ENV PORT 3000
 
+HEALTHCHECK --interval=10s --timeout=3s --start-period=20s \
+  CMD netstat -ltn | grep -c ':3000'
+
 CMD ["node", "server.js"]

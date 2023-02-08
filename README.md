@@ -9,23 +9,14 @@ I made this out of curiousity and it was very interesting to me. (Plus that musi
 ## Installation
 
 ### Docker
-Clone the repository:
-```
-git clone https://github.com/elementemerald/weatherscan-rewritten.git
-```
-Rename ``.env.production.sample`` to ``.env.production`` and fill in your keys and then build the image:
-```
-docker build -t wscan-local .
-```
+Make a new directory and download the latest Docker Compose configuration file.
 
-#### CLI
-The image can be deployed by running:
-```
-docker run -d -p 3000:3000 --name wscan-prod wscan-local
-```
+Download the ``.env.production.sample`` file to your directory and rename it to ``.env.production`` and fill in your keys.
 
-#### Compose
-WIP
+The image can then be deployed by running:
+```
+docker-compose up -d
+```
 
 <!-- ROADMAP -->
 ## Roadmap

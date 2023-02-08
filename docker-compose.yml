@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  wscan-prod:
+    image: elementemerald/weatherscan-rewritten:latest
+    container_name: wscan-prod
+    env_file: .env.local
+    ports:
+      - "3000:3000"
+    restart: always
+    healthcheck:
+      test: "netstat -ltn | grep -c ':3000'"
+      timeout: 5s
+      retries: 0

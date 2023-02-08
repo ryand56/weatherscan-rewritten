@@ -5,6 +5,19 @@ Rewritten version of the original [Weatherscan Emulator](https://github.com/buff
 ## Why?
 I made this out of curiousity and it was very interesting to me. (Plus that music as well) I managed to find source code but I could barely read it. I ended up making this project in a more modern sense and deployed it as such.
 
+<!-- INSTALLATION -->
+## Installation
+
+Make a new directory, download the ``.env.sample`` file to your directory, rename it to ``.env.local``, and fill in your keys.
+
+### Docker
+Download the latest Docker Compose configuration file. Modify it if needed.
+
+The image can then be deployed by running:
+```
+docker-compose up -d
+```
+
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Support for celsius units (Implemented in sidebar)

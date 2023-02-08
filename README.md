@@ -24,6 +24,9 @@ The image can be deployed by running:
 docker run -d -p 3000:3000 --name wscan-prod wscan-local
 ```
 
+#### Compose
+WIP
+
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Support for celsius units (Implemented in sidebar)

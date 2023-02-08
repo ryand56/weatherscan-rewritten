@@ -5,6 +5,25 @@ Rewritten version of the original [Weatherscan Emulator](https://github.com/buff
 ## Why?
 I made this out of curiousity and it was very interesting to me. (Plus that music as well) I managed to find source code but I could barely read it. I ended up making this project in a more modern sense and deployed it as such.
 
+<!-- INSTALLATION -->
+## Installation
+
+### Docker
+Clone the repository:
+```
+git clone https://github.com/elementemerald/weatherscan-rewritten.git
+```
+Rename ``.env.production.sample`` to ``.env.production`` and fill in your keys and then build the image:
+```
+docker build -t wscan-local .
+```
+
+#### CLI
+The image can be deployed by running:
+```
+docker run -d -p 3000:3000 --name wscan-prod wscan-local
+```
+
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Support for celsius units (Implemented in sidebar)

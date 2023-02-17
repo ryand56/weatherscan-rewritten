@@ -1,8 +1,10 @@
 name: NextJsPreview
+
 on:
   pull_request:
     branches:
       - main
+
 jobs:
   build:
     name: Build
@@ -21,19 +23,3 @@ jobs:
         run: pnpm run lint
       - name: Build
         run: pnpm run build
-      - name: Generate Preview
-        if: ${{ startsWith(github.event.head_commit.message, '[pre]') }}
-        run: node scripts/preview.mjs "${{ github.sha }}"
-        env:
-          NEXT_PUBLIC_IP_API_KEY: ${{ secrets.NEXT_PUBLIC_IP_API_KEY }}
-          NEXT_PUBLIC_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }}
-      - name: Upload Preview
-        if: ${{ startsWith(github.event.head_commit.message, '[pre]') }}
-        uses: elementemerald/r2-upload-action@v1.1
-        with:
-          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
-          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
-          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: scripts/dist/
-          destination-dir: projects/weatherscan-rewritten/autopreviews/

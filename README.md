@@ -44,6 +44,6 @@ Don't forget to give this project a star. Thanks!
 
 <!-- LICENSE -->
 ## License
-Copyright (C) 2022 Ryan Omasta - ryand@emeraldsys.xyz
+Copyright (C) 2022 - 2023 Ryan O. - ryand@emeraldsys.xyz
 All rights reserved.
 Distributed under the MIT License. See `LICENSE` or https://license.ryand.ca for more information.

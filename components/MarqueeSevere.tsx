@@ -31,8 +31,20 @@ const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps
         }
     }, [utterance, setMainVol]);
 
+    const isVowel = (char: string) => {
+        return char == "a" || char == "e" || char == "i" || char == "o" || char == "u";
+    };
+
     React.useEffect(() => {
-        if (top.text !== "") setSpeech(`A ${top.text.toLowerCase()} is in your area.`);
+        if (top.text !== "") {
+            // A/An
+            const topText = top.text.toLowerCase();
+            const prefixCharCode = topText.charAt(0);
+            const prefix = isVowel(prefixCharCode) ? "An" : "A";
+            const speech = `${prefix} ${topText} is in your area.`;
+            console.log(speech);
+            setSpeech(speech);
+        }
     }, [top.text]);
 
     React.useEffect(() => {

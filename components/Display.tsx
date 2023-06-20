@@ -306,7 +306,7 @@ const Display = ({
                     duration: 4.5
                 }}
                 ticker={{
-                    text: "Releasing soon... | This project is open source: github.com/elementemerald/weatherscan-rewritten | NextJs version inspired from https://github.com/buffbears/Weatherscan |",
+                    text: "Releasing soon... | This project is open source: github.com/ryand56/weatherscan-rewritten | NextJs version inspired from https://github.com/buffbears/Weatherscan |",
                     duration: 12
                 }}
             />

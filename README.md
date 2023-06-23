@@ -22,7 +22,7 @@ docker-compose up -d
 ## Roadmap
 - [x] Support for celsius units (Implemented in sidebar)
 - [x] Music player controls? (Sort of)
-- [ ] Fully working and operational
+- [x] Fully working and operational
 
 <!-- PREVIEW -->
 ## Latest Preview

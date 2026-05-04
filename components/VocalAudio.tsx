@@ -15,7 +15,7 @@ interface VocalProps {
 
 const globalAudio = typeof window !== "undefined" ? new Audio() : null;
 
-// 2. Create a persistent volume reset mechanism
+// Create a persistent volume reset mechanism
 let globalSetMainVol: ((v: number) => void) | null = null;
 
 if (globalAudio) {

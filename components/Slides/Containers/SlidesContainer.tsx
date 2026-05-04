@@ -59,6 +59,15 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
     const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
 
+    const isExtraLoc = (location: string) => {
+        const extraLoc = extraCityInfo.get(location);
+        if (extraLoc !== undefined) {
+            return location !== locInfo.city;
+        }
+
+        return false;
+    };
+
     const header = React.useMemo(() => {
         return cityInfo ? Array.from(cityInfo.keys()) : [];
     }, [cityInfo]);
@@ -75,15 +84,6 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
 
         return rand;
     }, [header]);
-
-    const isExtraLoc = (location: string) => {
-        const extraLoc = extraCityInfo.get(location);
-        if (extraLoc !== undefined) {
-            return location !== locInfo.city;
-        }
-
-        return false;
-    };
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 

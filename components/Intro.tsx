@@ -35,8 +35,8 @@ interface IntroProps {
 const Intro = ({ winSize, callback }: IntroProps) => {
     const [innerWidth, innerHeight] = winSize;
 
-    const mainRef = React.useRef<HTMLDivElement>();
-    const intellistarRef = React.useRef<HTMLImageElement>();
+    const mainRef = React.useRef<HTMLDivElement>(null);
+    const intellistarRef = React.useRef<HTMLImageElement>(null);
 
     function resize() {
         resizeWindow(mainRef, innerWidth, innerHeight);

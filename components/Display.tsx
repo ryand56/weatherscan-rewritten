@@ -78,7 +78,7 @@ const Display = ({
 }: DisplayProps) => {
     const [cityIntroLoaded, setCityIntroLoaded] = React.useState<boolean>(false);
     const [innerWidth, innerHeight] = winSize;
-    const mainRef = React.useRef<HTMLDivElement>();
+    const mainRef = React.useRef<HTMLDivElement>(null);
 
     const resize = () => {
         resizeWindow(mainRef, innerWidth, innerHeight);
@@ -191,7 +191,7 @@ const Display = ({
             const lat = locInfo.latitude;
             const lon = locInfo.longitude;
             
-            let intervalTimer: NodeJS.Timer;
+            let intervalTimer: NodeJS.Timeout;
             if (lat && lon) {
                 const fetchCallback = (data: CurrentCond) => {
                     const tempMap = new Map<string, ExtraInfo>();

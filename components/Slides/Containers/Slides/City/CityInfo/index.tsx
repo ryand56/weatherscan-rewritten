@@ -1,8 +1,7 @@
 import * as React from "react";
 import type { SlideProps } from "../../../../../../hooks/useSlides";
 import { SlidesCityInfo } from "../../../../../../hooks/useSlides";
-import { SlideshowReducer, Slides, ActionType } from "../../../../../../hooks/useSlides";
-import { VocalMale, VocalFemale } from "../../../../../VocalAudio";
+import { SlideshowReducer, ActionType } from "../../../../../../hooks/useSlides";
 import { motion, AnimatePresence } from "framer-motion";
 // import NoReport from "./NoReport";
 // import Unavailable from "./Unavailable";

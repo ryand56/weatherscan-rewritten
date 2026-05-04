@@ -86,9 +86,17 @@ const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallbac
         >
             {loaded && list.map((location, idx) => (
                 <React.Fragment key={idx}>
-                    <motion.span animate={cityControls} ref={cityRef => itemsRef.current[idx].city = cityRef} id="city" className={`uppercase inline-block${idx !== 0 ? " opacity-half" : ""}`}>{location}</motion.span>
+                    <motion.span animate={cityControls} ref={(cityRef) => {
+                      if (itemsRef.current[idx]) {
+                        itemsRef.current[idx].city = cityRef
+                      };
+                    }} id="city" className={`uppercase inline-block${idx !== 0 ? " opacity-half" : ""}`}>{location}</motion.span>
                     {idx !== (list.length - 1) &&
-                        <motion.span ref={arrowRef => itemsRef.current[idx].arrow = arrowRef} id="divider-arrow" className="opacity-half text-divider-arrow inline-block transform scale-x-1 scale-y-105 translate-x-0 -translate-y-2.5 origin-left-center font-bold pl-[7px] pr-[7px] font-zemestro-std">&lt;</motion.span>
+                        <motion.span ref={(arrowRef) => {
+                          if (itemsRef.current[idx]) {
+                            itemsRef.current[idx].arrow = arrowRef
+                          };
+                        }} id="divider-arrow" className="opacity-half text-divider-arrow inline-block transform scale-x-1 scale-y-105 translate-x-0 -translate-y-2.5 origin-left-center font-bold pl-[7px] pr-[7px] font-zemestro-std">&lt;</motion.span>
                     }
                 </React.Fragment>
             ))}

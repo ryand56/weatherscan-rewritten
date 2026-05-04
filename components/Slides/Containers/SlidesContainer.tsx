@@ -1,8 +1,8 @@
 import * as React from "react";
-import type { Location, ExtraInfo, CurrentCond } from "../../../hooks/useWeather";
+import type { Location, ExtraInfo } from "../../../hooks/useWeather";
 import SlideHeader from "./Headers/SlideHeader";
 import { AudioPlayerProvider } from "react-use-audio-player";
-import { VocalMale, VocalFemale } from "../../../components/VocalAudio";
+import { VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
 
 import { SlideshowReducer, Slides, ActionType } from "../../../hooks/useSlides";
@@ -42,10 +42,10 @@ const getRandomIdx = (max?: number, min?: number) => {
 
 const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityInfo, introLoaded, setIntroLoaded }: SlidesContainerProps) => {    
     const [slideState, slideDispatch] = React.useReducer(SlideshowReducer, { index: 0, isCity: true });
-    const [vocal, setVocal] = React.useState<VocalMale | VocalFemale>(null);
+    const [vocal, setVocal] = React.useState<VocalFemale>(null);
     const [headerWillUpdate, setHeaderUpdate] = React.useState<boolean>(false);
 
-    const SetVocalDebounce = (vocal: VocalMale | VocalFemale) : Promise<void> => {
+    const SetVocalDebounce = (vocal: VocalFemale) : Promise<void> => {
         return new Promise(resolve => {
             setVocal(vocal);
             setTimeout(() => {

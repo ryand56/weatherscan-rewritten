@@ -1,5 +1,5 @@
 import * as React from "react";
-import { VocalMale, VocalFemale } from "../components/VocalAudio";
+import { VocalFemale } from "../components/VocalAudio";
 import type { ExtraInfo } from "./useWeather";
 
 export enum Slides {
@@ -28,7 +28,7 @@ export interface SlideProps {
     duration?: number
     debug?: boolean
     location?: string
-    setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>
+    setVocal?: (vocal: VocalFemale) => Promise<void>
 }
 
 export interface MainSlideProps extends SlideProps {

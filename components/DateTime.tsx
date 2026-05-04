@@ -37,7 +37,7 @@ const DateTime = ({ tz }: DateTimeProps) => {
     };
 
     React.useEffect(() => {
-        let interval: NodeJS.Timer;
+        let interval: NodeJS.Timeout;
 
         if (tz !== "") {
             updateTime();

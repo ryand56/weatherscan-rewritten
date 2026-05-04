@@ -1,13 +1,13 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import type { ExtraInfo } from "../../../../../../hooks/useWeather";
-import { VocalMale, VocalFemale } from "../../../../../VocalAudio";
+import { VocalFemale } from "../../../../../VocalAudio";
 import { Icons2010, getIcon } from "../../../../../../hooks/useIconMap";
 import FrostPane from "../../FrostPane";
 
 interface DetailedProps {
     info?: ExtraInfo
-    setVocal?: (vocal: VocalMale | VocalFemale) => Promise<void>
+    setVocal?: (vocal: VocalFemale) => Promise<void>
 }
 
 const Detailed = ({ info, setVocal }: DetailedProps) => {

@@ -1,35 +1,69 @@
 import * as React from "react";
-import { useAudioPlayer } from "react-use-audio-player";
-
-export const enum VocalMale {}
+import { useFirstClick } from "./MusicAudio";
 
 export const enum VocalFemale {
-    RADAR = "/vocals/female/The_local_Doppler_radar.mp3",
-    CURRENT_COND = "/vocals/female/Your_current_conditions.mp3",
-    LOCAL_FORECAST_1 = "/vocals/female/Your_local_forecast_1.mp3",
-    LOCAL_FORECAST_2 = "/vocals/female/Your_local_forecast_2.mp3"
+  RADAR = "/vocals/female/The_local_Doppler_radar.mp3",
+  CURRENT_COND = "/vocals/female/Your_current_conditions.mp3",
+  LOCAL_FORECAST_1 = "/vocals/female/Your_local_forecast_1.mp3",
+  LOCAL_FORECAST_2 = "/vocals/female/Your_local_forecast_2.mp3"
 }
 
 interface VocalProps {
-    vocal?: VocalMale | VocalFemale
-    setMainVol: React.Dispatch<React.SetStateAction<number>>
+  vocal?: VocalFemale;
+  setMainVol: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const globalAudio = typeof window !== "undefined" ? new Audio() : null;
+
+// 2. Create a persistent volume reset mechanism
+let globalSetMainVol: ((v: number) => void) | null = null;
+
+if (globalAudio) {
+  globalAudio.addEventListener("ended", () => {
+    if (globalSetMainVol) globalSetMainVol(1);
+  });
+  globalAudio.addEventListener("error", () => {
+    if (globalSetMainVol) globalSetMainVol(1);
+  });
 }
 
 const VocalAudio = ({ vocal, setMainVol }: VocalProps) => {
-    const { load } = useAudioPlayer();
+  const firstClick = useFirstClick();
+  const lastVocalRef = React.useRef<string | undefined>(undefined);
 
-    React.useEffect(() => {
-        if (vocal) {
-            load({
-                src: vocal,
-                autoplay: true,
-                onplay: () => setMainVol(0.25),
-                onend: () => setMainVol(1)
-            });
-        }
-    }, [vocal]);
+  // Keep the global setter in sync with the current setMainVol prop
+  React.useEffect(() => {
+    globalSetMainVol = setMainVol;
+  }, [setMainVol]);
 
-    return null;
+  React.useEffect(() => {
+    if (!globalAudio || !firstClick) return;
+
+    if (!vocal) {
+      if (globalAudio.paused || globalAudio.ended) {
+        setMainVol(1);
+      }
+      lastVocalRef.current = undefined;
+      return;
+    }
+
+    if (vocal === lastVocalRef.current) return;
+
+    const audio = globalAudio;
+
+    setMainVol(0.25);
+    
+    lastVocalRef.current = vocal;
+    audio.src = vocal;
+    audio.play().catch((err) => {
+      console.warn("Playback interrupted:", err);
+      setMainVol(1);
+    });
+
+    return () => { };
+  }, [vocal, firstClick, setMainVol]);
+
+  return null;
 };
 
 export default VocalAudio;

@@ -48,7 +48,7 @@ const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps
     }, [top.text]);
 
     React.useEffect(() => {
-        let interval: NodeJS.Timer;
+        let interval: NodeJS.Timeout;
         if (typeof window !== undefined) {
             if (!mute && speech && speech !== "") {
                 tts(speech);

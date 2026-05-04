@@ -9,6 +9,7 @@ import Intro from "../components/Intro";
 import Display from "../components/Display";
 
 import { useWinSizeInner } from "../hooks/useWinSize";
+import { audioStore } from "../hooks/audioStore";
 
 const Index = () => {
     const { isReady, query } = useRouter();
@@ -26,6 +27,10 @@ const Index = () => {
 
     const IntroCallback = () => {
         setIntroDone(true);
+    };
+
+    const HandleFirstClick = () => {
+      audioStore.set(true);
     };
 
     React.useEffect(() => {
@@ -61,7 +66,7 @@ const Index = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <>
+        <div onClick={HandleFirstClick} style={{ display: 'contents' }}>
             <AudioPlayerProvider>
                 <MusicAudio vol={musicVol} />
             </AudioPlayerProvider>
@@ -79,7 +84,7 @@ const Index = () => {
                 muteSevere={muteSevere}
                 setMainVol={setMusicVol}
             />
-        </>
+        </div>
     );
 };
 

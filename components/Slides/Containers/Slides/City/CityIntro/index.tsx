@@ -18,8 +18,8 @@ const CityIntro = ({ next }: SlideProps) => {
     };
 
     React.useEffect(() => {
-        let timeout: NodeJS.Timer;
-        let waitTimeout: NodeJS.Timer;
+        let timeout: NodeJS.Timeout;
+        let waitTimeout: NodeJS.Timeout;
         timeout = setTimeout(() => {
             setSlideState("inactive");
             waitTimeout = setTimeout(next, 500);

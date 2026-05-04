@@ -11,7 +11,9 @@ interface DetailedProps {
 }
 
 const Detailed = ({ info, setVocal }: DetailedProps) => {
-    const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
+    const icon = info?.current
+        ? getIcon(info.current.icon, info.current.windSpeed)
+        : Icons2010.UNK;
 
     React.useEffect(() => {
         setVocal(VocalFemale.CURRENT_COND);
@@ -20,13 +22,6 @@ const Detailed = ({ info, setVocal }: DetailedProps) => {
     React.useEffect(() => {
         console.log(info);
     }, [info]);
-
-    React.useEffect(() => {
-        if (info.current) {
-            const mapped = getIcon(info.current.icon, info.current.windSpeed);
-            setIcon(mapped);
-        }
-    }, [info.current]);
 
     return (
         <>

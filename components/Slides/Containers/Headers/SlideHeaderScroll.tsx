@@ -21,7 +21,6 @@ interface SlideHeaderScrollProps {
 const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallback }: SlideHeaderScrollProps) => {
     const [loaded, setLoaded] = React.useState<boolean>(false);
     const [list, setList] = React.useState<string[]>(locations);
-    const [shiftNeeded, setShiftNeeded] = React.useState<boolean>(false);
     const itemsRef = React.useRef<ItemsRef>([]);
     const controls = useAnimation();
     const cityControls = useAnimation();
@@ -58,23 +57,15 @@ const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallbac
                 }).then(() => {
                     items[1].city.classList.add("opacity-half");
                     finishCallback(items[1].city.innerHTML);
-                    setShiftNeeded(true);
+                    setList((prevList) => {
+                        const [first, ...rest] = prevList;
+                        return [...rest, first];
+                    });
                     controls.set({ left: null });
                 });
             }
         }
     }, [willUpdate, itemsRef]);
-
-    // Shift needed?
-    React.useEffect(() => {
-        if (shiftNeeded) {
-            const copy = [...list];
-            const oldLocation = copy.shift();
-            const newList = [...list.slice(1), oldLocation];
-            setList(newList);
-            setShiftNeeded(false);
-        }
-    }, [shiftNeeded]);
 
     // itemsRef.current[`${idx}_city`] = cityRef
     // itemsRef.current[`${idx}_arrow`] = arrowRef

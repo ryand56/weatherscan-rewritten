@@ -14,7 +14,6 @@ import { audioStore } from "../hooks/audioStore";
 const Index = () => {
     const { isReady, query } = useRouter();
 
-    const [loading, setLoading] = React.useState<boolean>(true);
     const [location, setLocation] = React.useState<string>("");
     const [language, setLanguage] = React.useState<string>("en-US");
     const [units, setUnits] = React.useState<TemperatureUnit>(TemperatureUnit.METRIC_SI);
@@ -33,37 +32,32 @@ const Index = () => {
       audioStore.set(true);
     };
 
-    React.useEffect(() => {
-        if (!isReady) return;
-        const location = query.location as string;
-        const language = query.language as string;
-        const units = query.units as TemperatureUnit;
-        const muteSevere = query.muteSevere as string;
+    const qLocation = query.location as string;
+    const qLanguage = query.language as string;
+    const qUnits = query.units as TemperatureUnit;
+    const qMuteSevere = query.muteSevere as string;
 
-        // Custom location
-        if (location !== undefined && location !== null) {
-            setLocation(location);
-        }
+    // Custom location
+    if (qLocation !== undefined && qLocation !== null) {
+        setLocation(qLocation);
+    }
 
-        // Custom language
-        if (language !== undefined && language !== null) {
-            setLanguage(language);
-        }
+    // Custom language
+    if (qLanguage !== undefined && qLanguage !== null) {
+        setLanguage(qLanguage);
+    }
 
-        // Custom units
-        if (units !== undefined && units !== null) {
-            setUnits(units);
-        }
+    // Custom units
+    if (qUnits !== undefined && qUnits !== null) {
+        setUnits(qUnits);
+    }
 
-        // Mute severe marquees
-        if (muteSevere !== undefined && muteSevere !== null) {
-            setMuteSevere(Boolean(muteSevere));
-        }
+    // Mute severe marquees
+    if (qMuteSevere !== undefined && qMuteSevere !== null) {
+        setMuteSevere(Boolean(qMuteSevere));
+    }
 
-        setLoading(false);
-    }, [isReady]);
-
-    if (loading) return <div>Loading...</div>;
+    if (!isReady) return <div>Loading...</div>;
 
     return (
         <div onClick={HandleFirstClick} style={{ display: 'contents' }}>

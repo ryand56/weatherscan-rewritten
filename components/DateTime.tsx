@@ -20,29 +20,28 @@ const DateTime = ({ tz }: DateTimeProps) => {
         return date.getTimezoneOffset() < stdTimezoneOffset(date);
     };
 
-    const updateTime = () => {
-        const date = new Date();
-        
-        const formatDate = date.toString().slice(4, 10).trimEnd();
-        const formatTime = date.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            hour12: true,
-            minute: "numeric",
-            second: "numeric",
-            timeZone: tz
-        }).replace(/ /g, "").toLowerCase();
-
-        setDate(formatDate);
-        setTime(formatTime);
-    };
-
     React.useEffect(() => {
-        let interval: NodeJS.Timeout;
+        if (tz === "") return;
 
-        if (tz !== "") {
-            updateTime();
-            interval = setInterval(updateTime, 500);
-        }
+        const update = () => {
+            const date = new Date();
+
+            const formatDate = date.toString().slice(4, 10).trimEnd();
+            const formatTime = date.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                hour12: true,
+                minute: "numeric",
+                second: "numeric",
+                timeZone: tz
+            }).replace(/ /g, "").toLowerCase();
+
+            setDate(formatDate);
+            setTime(formatTime);
+        };
+
+        update();
+
+        const interval = setInterval(update, 500);
 
         return () => clearInterval(interval);
     }, [tz]);

@@ -13,9 +13,9 @@ jobs:
     if: ${{ !startsWith(github.event.head_commit.message, '[skip build]') }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
         with:
           version: latest
       - name: Install Vercel CLI
@@ -25,7 +25,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm i --frozen-lockfile
       - name: Lint
-        run: pnpm run lint
+        run: pnpm exec eslint
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel

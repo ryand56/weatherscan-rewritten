@@ -6,13 +6,8 @@ interface CCIconProps {
     windData: number
 }
 
-const CCIcon = ({ iconCode, windData }: CCIconProps) => {
-    const [icon, setIcon] = React.useState<Icons2010>(Icons2010.UNK);
-
-    React.useEffect(() => {
-        const mapped = getIcon(iconCode, windData);
-        setIcon(mapped);
-    }, [iconCode, windData]);
+const CCIcon = ({ iconCode = 44, windData = 0 }: CCIconProps) => {
+    const icon = getIcon(iconCode, windData);
 
     return (
         <div

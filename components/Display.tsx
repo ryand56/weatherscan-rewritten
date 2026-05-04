@@ -107,7 +107,7 @@ const Display = ({
     const [extraInfo, setExtraInfo] = React.useState<Map<string, ExtraInfo>>(new Map<string, ExtraInfo>());
 
     const [alerts, setAlerts] = React.useState<Alert[]>([]);
-    const [focusedAlert, setFocusedAlert] = React.useState<Alert>(null);
+    const focusedAlert = alerts[0] ?? null;
     const [focusedAlertText, setFocusedAlertText] = React.useState<string>(null);
 
     const [marqueeCities, setMarqueeCities] = React.useState<MarqueeLocation[]>(MarqueeCities);
@@ -249,17 +249,17 @@ const Display = ({
     }, [isReady, marqueeCities]);
 
     React.useEffect(() => {
-        if (alerts.length > 0) {
-            setFocusedAlert(alerts[0]);
-            getAlertText(alerts[0].detailKey, { language }).then(texts => {
+        const alert = alerts[0];
+        if (!alert) return;
+
+        getAlertText(alert.detailKey, { language })
+            .then(texts => {
                 if (texts.length > 0) {
                     setFocusedAlertText(texts[0].description);
                 }
-            }).catch(err => {
-                console.error(err);
             })
-        }
-    }, [alerts.length]);
+            .catch(console.error);
+    }, [alerts, language]);
 
     React.useEffect(() => {
         if (debug) console.log(currentExtra);

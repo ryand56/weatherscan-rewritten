@@ -7,29 +7,34 @@ interface CurrentProps {
 }
 
 const Current = ({ temp, info }: CurrentProps) => {
-    const [cycle, setCycle] = React.useState<string[]>([]);
+    const cycle = React.useMemo(() => {
+        if (!info || info.phrase === "") {
+            return [];
+        }
+
+        return [
+            `visibility ${info.visib} ${info.visib != 1 ? "miles" : "mile"}`,
+            `UV index ${info.uvIndex}`,
+            info.phrase,
+            `wind ${info.wind}`,
+            `humidity ${info.humidity}%`,
+            `dew point ${info.dewpt}°`,
+            `pressure ${info.pres}`
+        ];
+    }, [info]);
+
     const [idx, setIdx] = React.useState<number>(0);
-    const [infoMsg, setInfoMsg] = React.useState<string>("");
+    const infoMsg = cycle[idx] ?? "";
 
     React.useEffect(() => {
         let intervalTimer: NodeJS.Timeout;
         if (info) {
             if (info.phrase !== "") {
-                const tempCycle = [
-                    `visibility ${info.visib} ${info.visib != 1 ? "miles" : "mile"}`,
-                    `UV index ${info.uvIndex}`,
-                    info.phrase,
-                    `wind ${info.wind}`,
-                    `humidity ${info.humidity}%`,
-                    `dew point ${info.dewpt}°`,
-                    `pressure ${info.pres}`
-                ];
-
-                setCycle(tempCycle);
+                if (cycle.length === 0) return;
     
                 intervalTimer = setInterval(() => {
                     setIdx((idx) => {
-                        if (idx >= (tempCycle.length - 1)) {
+                        if (idx >= (cycle.length - 1)) {
                             return 0;
                         } else {
                             return idx + 1;
@@ -40,16 +45,7 @@ const Current = ({ temp, info }: CurrentProps) => {
         }
 
         return () => clearInterval(intervalTimer);
-    }, [info]);
-
-    React.useEffect(() => {
-        if (cycle) {
-            if (cycle.length > 0) {
-                const msg = cycle[idx];
-                setInfoMsg(msg);
-            }
-        }
-    }, [idx]);
+    }, [info, cycle.length]);
 
     return (
         <div id="current-conditions" className="font-interstate absolute top-current-t left-0 h-current w-current text-left z-current">

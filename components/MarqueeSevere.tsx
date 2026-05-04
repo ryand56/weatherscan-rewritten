@@ -10,42 +10,47 @@ interface InfoMarqueeSevereProps {
 }
 
 const MarqueeSevere = ({ top, bottom, mute, setMainVol }: InfoMarqueeSevereProps) => {
-    const beep = new Audio("/vocals/beepmuffled.mp3");
-    const [utterance, setUtterance] = React.useState<SpeechSynthesisUtterance>(
-        new SpeechSynthesisUtterance()
-    );
-    const [speech, setSpeech] = React.useState<string>("A severe weather warning is in your area.");
+    const beepRef = React.useRef<HTMLAudioElement | null>(null);
+    const utteranceRef = React.useRef<SpeechSynthesisUtterance | null>(null);
+
+    const speech = React.useMemo(() => {
+        if (!top.text) {
+            return "A severe weather warning is in your area.";
+        }
+
+        const topText = top.text.toLowerCase();
+        const prefixChar = topText.charAt(0);
+        const prefix = isVowel(prefixChar) ? "An" : "A";
+
+        return `${prefix} ${topText} is in your area.`;
+    }, [top.text]);
+
+    React.useEffect(() => {
+        beepRef.current = new Audio("/vocals/beepmuffled.mp3");
+        utteranceRef.current = new SpeechSynthesisUtterance();
+    }, []);
 
     const tts = React.useCallback((message: string) => {
-        if (utterance) {
-            setMainVol(0.25);
+        const beep = beepRef.current;
+        const utterance = utteranceRef.current;
 
-            beep.play();
-            beep.onended = () => {
-                utterance.text = message;
-                //utterance.pitch = 3 / 5;
-                speechSynthesis.speak(utterance);
+        if (!beep || !utterance) return;
 
-                utterance.onend = () => setMainVol(1);
-            };
-        }
-    }, [utterance, setMainVol]);
+        setMainVol(0.25);
+
+        beep.play();
+
+        beep.onended = () => {
+          utterance.text = message;
+          speechSynthesis.speak(utterance);
+
+          utterance.onend = () => setMainVol(1);
+        };
+    }, [setMainVol]);
 
     const isVowel = (char: string) => {
         return char == "a" || char == "e" || char == "i" || char == "o" || char == "u";
     };
-
-    React.useEffect(() => {
-        if (top.text !== "") {
-            // A/An
-            const topText = top.text.toLowerCase();
-            const prefixCharCode = topText.charAt(0);
-            const prefix = isVowel(prefixCharCode) ? "An" : "A";
-            const speech = `${prefix} ${topText} is in your area.`;
-            console.log(speech);
-            setSpeech(speech);
-        }
-    }, [top.text]);
 
     React.useEffect(() => {
         let interval: NodeJS.Timeout;

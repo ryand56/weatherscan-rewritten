@@ -58,8 +58,23 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
     const [cityInfo, setCityInfo] = React.useState<Map<string, ExtraInfo>>(extraCityInfo);
     const [currentCity, setCurrentCity] = React.useState<string>(locInfo.city);
     const [currentInfo, setCurrentInfo] = React.useState<ExtraInfo>(mainCityInfo);
-    const [header, setHeader] = React.useState<string[]>([]);
-    const [random, setRandom] = React.useState<string>("");
+
+    const header = React.useMemo(() => {
+        return cityInfo ? Array.from(cityInfo.keys()) : [];
+    }, [cityInfo]);
+    const random = React.useMemo(() => {
+        if (header.length === 0) return "";
+
+        let rand = header[getRandomIdx(header.length)];
+
+        let attempts = 0;
+        while (!isExtraLoc(rand) && attempts < 10) {
+            rand = header[getRandomIdx(header.length)];
+            attempts++;
+        };
+
+        return rand;
+    }, [header]);
 
     const isExtraLoc = (location: string) => {
         const extraLoc = extraCityInfo.get(location);
@@ -108,28 +123,6 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
         slideDispatch({ type: ActionType.SET_CITY, payloadCity: false });
         slideDispatch({ type: ActionType.INCREASE, payload: 1 });
     };
-
-    React.useEffect(() => {
-        setHeader(Array.from(cityInfo.keys()));
-    }, [cityInfo]);
-
-    React.useEffect(() => {
-        if (header && header.length > 0) {
-            const headLength = header.length;
-            const idx = getRandomIdx(headLength);
-            let rand = header[idx];
-            if (debug) console.log(rand);
-            
-            while (!isExtraLoc(rand)) {
-                console.warn("Encountered main location when setting random - rerolling");
-                const tempIdx = getRandomIdx(headLength);
-                rand = header[tempIdx];
-                if (debug) console.log(rand);
-            }
-
-            setRandom(rand);
-        }
-    }, [header]);
 
     const currentSlide = React.useMemo(() => {
         if (currentCity && currentInfo) {

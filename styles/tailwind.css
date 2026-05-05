@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+@theme {
+  /* =========================================
+     FONTS
+  ========================================= */
+  --font-frutiger: "Frutiger", "Zemestro Std", sans-serif;
+  --font-interstate: "Interstate", "Zemestro Std", sans-serif;
+  --font-interstate-bold: "Interstate Bold", "Zemestro Std", sans-serif;
+  --font-interstate-cn: "Interstate Cn", "Zemestro Std", sans-serif;
+  --font-interstate-mono: "Interstate Mono", "Zemestro Std", sans-serif;
+  --font-parrow: "PressureArrow", "Interstate", "Zemestro Std", sans-serif;
+  --font-interstate2: "Interstate2", "Zemestro Std", sans-serif;
+  --font-frutiger57-cond: "Frutiger 57 Condensed", "Zemestro Std", sans-serif;
+  --font-frutigerbold-cn: "Frutiger Bold Cn", "Zemestro Std", sans-serif;
+  --font-zemestro-std: "Zemestro Std", sans-serif;
+
+  /* =========================================
+     COLORS (Merged text and background colors)
+  ========================================= */
+  --color-dark: #171717;
+  --color-subhead-noaa: #f6a67a;
+  --color-bulletin-cityname: #d8c422;
+  --color-frost-pane-title: #d8c422;
+  --color-marquee-top: #dddddd;
+  --color-marquee-severe-text: #dddddd;
+  --color-cityaccent-yellow: #e5be45;
+  --color-cityaccent-blue: #001782;
+  --color-slidehead: #2267b7;
+  --color-infoslide-color: transparent;
+  --color-city-info-slide: transparent;
+
+  /* =========================================
+     BACKGROUNDS
+  ========================================= */
+  --background-image-marquee-severe-header: linear-gradient(to right, rgb(242, 153, 46) 0px, rgb(187, 99, 26) 100%);
+  --background-image-marquee-severe: linear-gradient(to right, rgb(135, 73, 1) 0px, rgb(187, 99, 26) 100%);
+  --background-image-slideouter: radial-gradient(farthest-corner at 963px 569px, #000d28, #001668);
+  --background-image-slideheadgrad: linear-gradient(to right, rgba(147, 156, 171, 0), rgba(147, 156, 171, 0.97));
+  --background-image-city-intro-slide: url(/images/newbg/city_bg.png);
+  --background-image-copyright: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  --background-image-bulletin-image: url(/images/newbg/weather_bulletin_bg.png);
+  --background-image-bulletin-frost-pane: url(/images/newbg/bulletinfrostpane.svg);
+  --background-image-severe-city-info-image: url(/images/newbg/severe_core_bg.png);
+  --background-image-frost-pane: url(/images/newbg/frostpane.svg);
+  --background-image-severe-frost-pane: url(/images/newbg/severefrostpane.svg);
+  --background-image-city-info-slide: url(/images/newbg/core_mountain_bg.png);
+
+  --background-position-infoslide-pos: 69% 41.5%;
+  --background-position-city-intro-slide: -127px -112px;
+  --background-position-curve: 0 0;
+  --background-position-bulletin-frost-pane: -72px -329px;
+  --background-position-severe-city-info-pos: 69% 41.5%;
+  --background-position-frost-pane: -72px -329px;
+  --background-position-frost-pane-detailed-right: -570px -329px;
+  --background-position-city-info-slide: 69% 41.5%;
+  --background-position-city-info-extended: -72px -364px;
+
+  --background-size-conditions-icon: 100% 100%;
+  --background-size-infoslide-size: 120.3% 150.9%;
+  --background-size-city-intro-slide: 1068px 788px;
+  --background-size-curve: 200% 200%;
+  --background-size-bulletin-frost-pane: 1065px 1164px;
+  --background-size-severe-city-info-size: 120.3% 150.9%;
+  --background-size-frost-pane: 1065px 1164px;
+  --background-size-city-info-slide: 120.3% 150.9%;
+
+  /* =========================================
+     SPACING (Padding, Margin, Inset)
+  ========================================= */
+  --padding-city-t: 10px;
+  --padding-slides: 2.5px 0 2.5px 2.5px;
+  --padding-slidehead: 0 7.5px;
+  --padding-slidehead-severe-city-info-r: 10%;
+  --padding-copyright-l: 11px;
+  --padding-copyright-r: 10px;
+  --padding-copyright-t: 10px;
+  --padding-subhead-city-info-r: 10%;
+  --padding-noreport-t: 23.5%;
+  --padding-noreport-l: 29.65%;
+  --padding-tempunavailable-l: 15%;
+  --padding-bulletin-warnings: 10px;
+  --padding-info-frost-pane: 1% 18% 1% 7%;
+
+  --margin-city-l: 142px;
+  --margin-bulletin-frost-pane: 60px;
+
+  --inset-date-time-t: 101px;
+  --inset-current-t: 376px;
+  --inset-now-t: 12.5px;
+  --inset-now-l: 145px;
+  --inset-nowwide-l: 146px;
+  --inset-temp-t: 88px;
+  --inset-temp-l: 12.5px;
+  --inset-info-l: 145px;
+  --inset-info-t: 177px;
+  --inset-conditions-icon-l: 294px;
+  --inset-conditions-icon-t: 390px;
+  --inset-current-noreport-t: 45%;
+  --inset-current-noreport-l: 32.4%;
+  --inset-city-t: 284px;
+  --inset-infoslides-container-r: 75px;
+  --inset-infoslides-container-t: 92px;
+  --inset-infoslide-container-t: 45px;
+  --inset-slidehead: 2.5px;
+  --inset-gradient-r: 125px;
+  --inset-subhead-noaa-r: 105px;
+  --inset-bulletin-cityname-l: 50px;
+  --inset-bulletin-cityname-t: 16px;
+  --inset-bulletin-warnings-l: 50px;
+  --inset-bulletin-warnings-t: 62.5px;
+  --inset-subhead-city-r: 90px;
+  --inset-subhead-shadow-t: 50.8%;
+  --inset-subhead-shadow-l: 7px;
+  --inset-subhead-title-t: 50.8%;
+  --inset-subhead-title-l: 7px;
+  --inset-forecast: 10%;
+  --inset-logo-area-t: 83.4%;
+  --inset-logo-area-img-t: 19%;
+  --inset-logo-area-img-r: 5%;
+
+  /* =========================================
+     TYPOGRAPHY
+  ========================================= */
+  --text-date: 28px;
+  --text-now: 46px;
+  --text-temp: 69px;
+  --text-info: 31px;
+  --text-current-noreport: 44px;
+  --text-city: 36.5px;
+  --text-slidehead: 31px;
+  --text-hscroller: 30px;
+  --text-divider-arrow: 26px;
+  --text-copyright: 28px;
+  --text-subhead: 39px;
+  --text-subhead-bulletin: 40.5px;
+  --text-subhead-noaa: 22.5px;
+  --text-bulletin-frost-pane: 36px;
+  --text-bulletin-cityname: 36px;
+  --text-bulletin-warnings: 40px;
+  --text-subhead-city: 31px;
+  --text-noreport: 48px;
+  --text-tempunavailable: 49px;
+  --text-forecast: 110%;
+  --text-frost-pane: 36px;
+  --text-frost-pane-content: 50px;
+  --text-severe-frost-pane-title: 41.5px;
+  --text-marquee-top: 33px;
+  --text-marquee-bottom: 41.5px;
+  --text-marquee-severe-text: 50px;
+
+  --leading-info: 117.5%;
+  --leading-city: 110%;
+  --leading-date: 40px;
+  --leading-hscroller: 23.5px;
+  --leading-copyright: 110%;
+  --leading-subheader: 24.5px;
+  --leading-subhead-noaa: 35px;
+  --leading-bulletin-warnings: 125%;
+  --leading-frost-pane-content: 125%;
+
+  --tracking-now: 2px;
+  --tracking-current-noreport: 1.4px;
+  --tracking-severe-frost-pane-title: 0.5px;
+  --tracking-frost-pane-content: 1.5px;
+  --tracking-severe-frost-pane-content: 1.5px;
+
+  /* =========================================
+     SIZING
+  ========================================= */
+  --width-main: 1440px;
+  --width-conditions-icon: 155px;
+  --width-current: 452px;
+  --width-info: 62.5%;
+  --width-current-noreport: 66%;
+  --width-city: 311px;
+  --width-date-time: 458px;
+  --width-infoslides-container: 887px;
+  --width-infoslide-container: 884.5px;
+  --width-gradient: 125px;
+  --width-subhead-shadow: 250%;
+  --width-subhead-title: 250%;
+  --width-logo-area: 31.528%;
+  --width-logo-area-img: 65%;
+
+  --min-width-slidehead: 125%;
+  --min-width-subhead-shadow: 20%;
+  --min-width-infoslide: 885px;
+  --max-width-infoslide: 885px;
+
+  --height-main: 1080px;
+  --height-conditions-icon: 155px;
+  --height-current: 221px;
+  --height-city: 92px;
+  --height-infoslides-container: 569px;
+  --height-infoslide-container: 520.82px;
+  --height-slidehead: 42.5px;
+  --height-copyright: 105px;
+  --height-subhead: 60px;
+  --height-info-frost-pane: 446.25px;
+  --height-frost-pane-content: 400px;
+  --height-severe-frost-pane-content: 400px;
+  --height-logo-area: 9.398%;
+
+  --min-height-slidehead: 42.5px;
+  --min-height-infoslide: 99.87%;
+  --min-height-infoslide-px: 521px;
+
+  --max-height-infoslides-container: 569px;
+  --max-height-slidehead: 42.5px;
+  --max-height-infoslide: 99.87%;
+  --max-height-infoslide-px: 521px;
+  --max-height-bulletin-frost-pane: 446.25px;
+  --max-height-frost-pane: 446.25px;
+  --max-height-frost-pane-content: 400px;
+  --max-height-severe-frost-pane-content: 400px;
+
+  /* =========================================
+     EFFECTS & LAYERS
+  ========================================= */
+  --shadow-slideouter: 0 3px 10px 0 rgba(0, 0, 0, 0.35);
+
+  --drop-shadow-none: 0px 0px 0px #000;
+  --drop-shadow-default: 2px 2px 4px #000;
+  --drop-shadow-subhead: 2px 2px 3px #000;
+  --drop-shadow-subhead-bulletin: 2px 2px 5px #000;
+  --drop-shadow-bulletin-frost-pane: 2px 2px 4px #000;
+
+  --z-index-default: 1;
+  --z-index-current: 4;
+  --z-index-now: 5;
+  --z-index-infoslide: 5;
+  --z-index-subheader: 4;
+  --z-index-subheader-shadow: 6;
+  --z-index-copyright: 101;
+  --z-index-noreport: 2000;
+  --z-index-frost-pane: 388686;
+  --z-index-audio: 999999;
+
+  --opacity-half: 0.5;
+
+  /* =========================================
+     TRANSFORMS
+  ========================================= */
+  --transform-origin-left-center: left center;
+
+  --translate-2-5: 2.5px;
+  --translate-6px: 6px;
+  --translate-10px: 10px;
+  --translate-45px: 45px;
+  --translate-60px: 60px;
+  --translate-42-5: 42.5%;
+  --translate-43-5: 43.5%;
+  --translate-47-5: 47.5%;
+
+  --scale-1: 1;
+  --scale-101: 1.01;
+  --scale-102-5: 1.025;
+  --scale-103: 1.03;
+  --scale-105: 1.05;
+  --scale-105-9: 1.059;
+  --scale-106: 1.06;
+  --scale-107: 1.07;
+  --scale-110: 1.10;
+  --scale-112: 1.12;
+  --scale-112-5: 1.125;
+  --scale-113-5: 1.135;
+  --scale-114-5: 1.145;
+  --scale-115: 1.15;
+  --scale-115-5: 1.155;
+  --scale-117: 1.17;
+  --scale-118: 1.18;
+
+  /* =========================================
+     ANIMATIONS & KEYFRAMES
+  ========================================= */
+  --animate-opacity: opacity 1s ease-in-out;
+  --animate-cityaccentmovei: cityaccentmovei 10s linear normal forwards;
+  --animate-cityaccentmoveii: cityaccentmoveii 10s linear normal forwards;
+  --animate-cityaccentmoveiii: cityaccentmoveiii 5s linear normal forwards;
+
+  @keyframes cityaccentmovei {
+    35% {
+      transform: translate(-0.75%, -4.5%) scaleY(1.03);
+    }
+    100% {
+      transform: translate(-8.75%, -12%) scale(1.15, 1.2);
+    }
+  }
+
+  @keyframes cityaccentmoveii {
+    35% {
+      transform: translate(-0.75%, -4.5%) scaleY(1.03);
+    }
+    100% {
+      transform: translate(-8.15%, -10.15%) scale(1.15, 1.2);
+    }
+  }
+
+  @keyframes cityaccentmoveiii {
+    100% {
+      transform: translate(1%, -4.5%);
+    }
+  }
+
+  @keyframes cityaccentmoveiv {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(4.5%, 8%);
+    }
+  }
+}
+
+@utility bg-* {
+  background-size: --value(--background-size-*);
+  background-position: --value(--background-position-*);
+  background-image: --value(--background-image-*);
+}
+
+@utility marquee-top-text {
+  color: var(--color-marquee-top);
+  font-size: var(--text-marquee-top);
+}

@@ -1,103 +1,133 @@
 import * as React from "react";
-import { useAudioPlayer, useAudioPosition } from "react-use-audio-player";
 import {
-    MdPlayArrow,
-    MdPause,
-    MdReplay10,
-    MdForward10,
-    MdRepeatOne,
-    MdRepeatOneOn
+  MdPlayArrow,
+  MdPause,
+  MdReplay10,
+  MdForward10,
+  MdRepeatOne,
+  MdRepeatOneOn
 } from "react-icons/md";
 
-const randNum = (min: number, max: number) => {
-    return Math.round(Math.random() * (max - min) + min);
-};
+import { useSyncExternalStore } from "react";
+import { audioStore } from "../hooks/audioStore";
+
+export const useFirstClick = () =>
+  useSyncExternalStore(
+    audioStore.subscribe,
+    audioStore.get,
+    audioStore.get
+  );
+
+const randNum = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
 interface MusicAudioProps {
-    vol: number
+  vol: number;
 }
 
 const MusicAudio = ({ vol }: MusicAudioProps) => {
-    const [fileIdx, setFileIdx] = React.useState<number>(randNum(1, 33));
-    const [file, setFile] = React.useState<string>(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
-    const [loop, setLoop] = React.useState<boolean>(false);
+  const firstClick = useFirstClick();
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
-    const { togglePlayPause, ready, loading, playing, load, player, volume } = useAudioPlayer({
-        src: file,
-        format: "mp3",
-        autoplay: true,
-        preload: true,
-        onplay: () => console.log(`Playing ${file}`),
-        onend: () => {
-            console.log(`${file} has ended`);
-            if (!loop)
-            {
-                let rand = randNum(1, 33);
-                while (rand === fileIdx) {
-                    rand = randNum(1, 33);
-                }
-                setFileIdx(rand);
-            }
-        }
-    });
+  const [fileIdx, setFileIdx] = React.useState(randNum(1, 33));
+  const [loop, setLoop] = React.useState(false);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
-    React.useEffect(() => {
-        if (!player) return;
-        player.loop(loop);
-    }, [player, loop]);
+  const src = React.useMemo(() => {
+    return `/music/${encodeURIComponent(
+      `Weatherscan Track ${fileIdx}.mp3`
+    )}`;
+  }, [fileIdx]);
 
-    // Update volume
-    React.useEffect(() => {
-        if (!player) return;
-        volume(vol);
-    }, [player, volume, vol]);
+  React.useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    const toggleLoop = React.useCallback(() => {
-        if (!player) return;
-        
-        console.log(loop ? "Loop turning off" : "Loop turning on");
-        setLoop(!loop);
-    }, [player, loop]);
+    if (!firstClick) return;
 
-    const { position, seek } = useAudioPosition({ highRefreshRate: true });
+    audio.src = src;
+    audio.volume = vol;
+    audio.load();
 
-    const toggleSkipBackward = React.useCallback(() => {
-        if (!player) return;
-        seek(position - 10);
-    }, [player, position]);
+    audio.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+  }, [src, firstClick]);
 
-    const toggleSkipForward = React.useCallback(() => {
-        if (!player) return;
-        seek(position + 10);
-    }, [player, position]);
+  React.useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = vol;
+    }
+  }, [vol]);
 
-    // File index change
-    React.useEffect(() => {
-        setFile(`/music/${encodeURIComponent(`Weatherscan Track ${fileIdx}.mp3`)}`);
-    }, [fileIdx]);
+  const handleEnded = () => {
+    if (loop) {
+      audioRef.current?.play();
+      return;
+    }
 
-    return (
-        player && <div id="audio" className="fixed right-2 bottom-2 flex flex-row flex-nowrap z-audio bg-dark opacity-50 rounded-xl">
-            <button onClick={toggleSkipBackward}>
-                <MdReplay10 className="text-white p-2 w-[36px] h-[36px]" />
-            </button>
-            <button onClick={togglePlayPause}>
-                {playing
-                    ? <MdPause className="text-white p-2 w-[36px] h-[36px]" />
-                    : <MdPlayArrow className="text-white p-2 w-[36px] h-[36px]" />
-                }
-            </button>
-            <button onClick={toggleSkipForward}>
-                <MdForward10 className="text-white p-2 w-[36px] h-[36px]" />
-            </button>
-            <button onClick={toggleLoop}>
-                {loop
-                    ? <MdRepeatOneOn className="text-white p-2 w-[36px] h-[36px]" />
-                    : <MdRepeatOne className="text-white p-2 w-[36px] h-[36px]" />
-                }
-            </button>
-        </div>
-    );
+    let rand = randNum(1, 33);
+    while (rand === fileIdx) rand = randNum(1, 33);
+
+    setFileIdx(rand);
+  };
+
+  const togglePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const skipBackward = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = Math.max(0, audio.currentTime - 10);
+  };
+
+  const skipForward = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+  };
+
+  return (
+    <>
+      <audio ref={audioRef} onEnded={handleEnded} />
+
+      <div className="fixed right-2 bottom-2 flex flex-row z-audio bg-dark opacity-50 rounded-xl">
+        <button onClick={skipBackward}>
+          <MdReplay10 className="text-white p-2 w-[36px] h-[36px]" />
+        </button>
+
+        <button onClick={togglePlayPause}>
+          {isPlaying ? (
+            <MdPause className="text-white p-2 w-[36px] h-[36px]" />
+          ) : (
+            <MdPlayArrow className="text-white p-2 w-[36px] h-[36px]" />
+          )}
+        </button>
+
+        <button onClick={skipForward}>
+          <MdForward10 className="text-white p-2 w-[36px] h-[36px]" />
+        </button>
+
+        <button onClick={() => setLoop((p) => !p)}>
+          {loop ? (
+            <MdRepeatOneOn className="text-white p-2 w-[36px] h-[36px]" />
+          ) : (
+            <MdRepeatOne className="text-white p-2 w-[36px] h-[36px]" />
+          )}
+        </button>
+      </div>
+    </>
+  );
 };
 
 export default MusicAudio;

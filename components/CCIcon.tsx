@@ -6,20 +6,13 @@ interface CCIconProps {
     windData: number
 }
 
-const CCIcon = ({ iconCode, windData }: CCIconProps) => {
-    const [icon, setIcon] = React.useState<number>(Icons2010.UNK);
-
-    React.useEffect(() => {
-        if (typeof iconCode === "number" && typeof windData === "number") {
-            const mapped = getIcon(iconCode, windData);
-            setIcon(mapped);
-        }
-    }, [iconCode, windData]);
+const CCIcon = ({ iconCode = 44, windData = 0 }: CCIconProps) => {
+    const icon = getIcon(iconCode, windData);
 
     return (
         <div
             id="conditions-icon"
-            className="absolute left-conditions-icon-l bg-conditions-icon w-conditions-icon h-conditions-icon bg-no-repeat top-conditions-icon-t z-0"
+            className="absolute left-conditions-icon-l w-conditions-icon h-conditions-icon bg-no-repeat bg-center bg-cover top-conditions-icon-t z-0"
             style={{ backgroundImage: `url(images/icons2010/${icon < 10 ? `0${icon}` : icon}.png)` }}
         />
     );

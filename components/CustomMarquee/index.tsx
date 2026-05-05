@@ -40,69 +40,59 @@ const CustomMarquee = ({
     onCycleComplete,
     children
 }: CustomMarqueeProps) => {
-    const [isMounted, setIsMounted] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
     const rgbaGradientColor = `rgba(${gradientColor[0]}, ${gradientColor[1]}, ${gradientColor[2]})`;
 
     return (
-        <>
-            {!isMounted ? null : (
+        <div
+            style={{
+                ...style,
+                ["--pause-on-hover" as string]: !play || pauseOnHover ? "paused" : "running",
+                ["--pause-on-click" as string]: !play || (pauseOnHover && !pauseOnClick) || pauseOnClick ? "paused" : "running"
+            }}
+            className={styles["marquee-container"] + (className !== "" ? ` ${className}` : "")}
+        >
+            {gradient && (
                 <div
                     style={{
-                        ...style,
-                        ["--pause-on-hover" as string]: !play || pauseOnHover ? "paused" : "running",
-                        ["--pause-on-click" as string]: !play || (pauseOnHover && !pauseOnClick) || pauseOnClick ? "paused" : "running"
+                        ["--gradient-color" as string]: `${rgbaGradientColor}, 1), ${rgbaGradientColor}, 0)`,
+                        ["--gradient-width" as string]:
+                        typeof gradientWidth === "number"
+                            ? `${gradientWidth}px`
+                            : gradientWidth,
                     }}
-                    className={styles["marquee-container"] + (className !== "" ? ` ${className}` : "")}
-                >
-                    {gradient && (
-                        <div
-                            style={{
-                                ["--gradient-color" as string]: `${rgbaGradientColor}, 1), ${rgbaGradientColor}, 0)`,
-                                ["--gradient-width" as string]:
-                                typeof gradientWidth === "number"
-                                    ? `${gradientWidth}px`
-                                    : gradientWidth,
-                            }}
-                            className={styles.overlay}
-                        />
-                    )}
-                    <div
-                        style={{
-                          ["--play" as string]: play ? "running" : "paused",
-                          ["--direction" as string]:
-                            direction === "left" ? "normal" : "reverse",
-                          ["--duration" as string]: `${duration}s`,
-                          ["--delay" as string]: `${delay}s`,
-                          ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
-                        }}
-                        className={styles.marquee}
-                        onAnimationIteration={onCycleComplete}
-                        onAnimationEnd={onFinish}
-                    >
-                        {children}
-                    </div>
-                    <div
-                        style={{
-                        ["--play" as string]: play ? "running" : "paused",
-                        ["--direction" as string]:
-                            direction === "left" ? "normal" : "reverse",
-                        ["--duration" as string]: `${duration}s`,
-                        ["--delay" as string]: `${delay}s`,
-                        ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
-                        }}
-                        className={styles.marquee}
-                        aria-hidden="true"
-                    >
-                        {children}
-                    </div>
-                </div>
+                    className={styles.overlay}
+                />
             )}
-        </>
+            <div
+                style={{
+                  ["--play" as string]: play ? "running" : "paused",
+                  ["--direction" as string]:
+                    direction === "left" ? "normal" : "reverse",
+                  ["--duration" as string]: `${duration}s`,
+                  ["--delay" as string]: `${delay}s`,
+                  ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
+                }}
+                className={styles.marquee}
+                onAnimationIteration={onCycleComplete}
+                onAnimationEnd={onFinish}
+            >
+                {children}
+            </div>
+            <div
+                style={{
+                ["--play" as string]: play ? "running" : "paused",
+                ["--direction" as string]:
+                    direction === "left" ? "normal" : "reverse",
+                ["--duration" as string]: `${duration}s`,
+                ["--delay" as string]: `${delay}s`,
+                ["--iteration-count" as string]: !!loop ? `${loop}` : "infinite",
+                }}
+                className={styles.marquee}
+                aria-hidden="true"
+            >
+                {children}
+            </div>
+        </div>
     );
 };
 

@@ -14,13 +14,13 @@ interface ItemsRef {
 interface SlideHeaderScrollProps {
     locations: string[]
     willUpdate: boolean
-    cycleCallback: () => void
+    startCallback?: (toSelect: string) => void
+    finishCallback?: (selected: string) => void
 }
 
-const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeaderScrollProps) => {
+const SlideHeaderScroll = ({ locations, willUpdate, startCallback, finishCallback }: SlideHeaderScrollProps) => {
     const [loaded, setLoaded] = React.useState<boolean>(false);
     const [list, setList] = React.useState<string[]>(locations);
-    const [shiftNeeded, setShiftNeeded] = React.useState<boolean>(false);
     const itemsRef = React.useRef<ItemsRef>([]);
     const controls = useAnimation();
     const cityControls = useAnimation();
@@ -48,29 +48,24 @@ const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeader
                 const cityRefWidth = getWidth(current.city, "full");
                 const arrowRefWidth = getWidth(current.arrow, "full");
 
+                items[1].city.classList.remove("opacity-half");
+                startCallback(items[1].city.innerHTML);
+
                 controls.start({
                     left: `${-1.06*(cityRefWidth + arrowRefWidth)}px`,
                     transition: { duration: 0.9 }
                 }).then(() => {
-                    setShiftNeeded(true);
+                    items[1].city.classList.add("opacity-half");
+                    finishCallback(items[1].city.innerHTML);
+                    setList((prevList) => {
+                        const [first, ...rest] = prevList;
+                        return [...rest, first];
+                    });
                     controls.set({ left: null });
                 });
-
-                cycleCallback();
             }
         }
     }, [willUpdate, itemsRef]);
-
-    // Shift needed?
-    React.useEffect(() => {
-        if (shiftNeeded) {
-            const copy = [...list];
-            const oldLocation = copy.shift();
-            const newList = [...list.filter(a => a !== oldLocation), oldLocation];
-            setList(newList);
-            setShiftNeeded(false);
-        }
-    }, [shiftNeeded]);
 
     // itemsRef.current[`${idx}_city`] = cityRef
     // itemsRef.current[`${idx}_arrow`] = arrowRef
@@ -82,9 +77,17 @@ const SlideHeaderScroll = ({ locations, willUpdate, cycleCallback }: SlideHeader
         >
             {loaded && list.map((location, idx) => (
                 <React.Fragment key={idx}>
-                    <motion.span animate={cityControls} ref={cityRef => itemsRef.current[idx].city = cityRef} id="city" className={`uppercase inline-block${idx !== 0 ? " opacity-half" : ""}`}>{location}</motion.span>
+                    <motion.span animate={cityControls} ref={(cityRef) => {
+                      if (itemsRef.current[idx]) {
+                        itemsRef.current[idx].city = cityRef
+                      };
+                    }} id="city" className={`uppercase inline-block${idx !== 0 ? " opacity-half" : ""}`}>{location}</motion.span>
                     {idx !== (list.length - 1) &&
-                        <motion.span ref={arrowRef => itemsRef.current[idx].arrow = arrowRef} id="divider-arrow" className="opacity-half text-divider-arrow inline-block transform scale-x-1 scale-y-105 translate-x-0 -translate-y-2.5 origin-left-center font-bold pl-[7px] pr-[7px] font-zemestro-std">&lt;</motion.span>
+                        <motion.span ref={(arrowRef) => {
+                          if (itemsRef.current[idx]) {
+                            itemsRef.current[idx].arrow = arrowRef
+                          };
+                        }} id="divider-arrow" className="opacity-half text-divider-arrow inline-block transform scale-x-1 scale-y-105 translate-x-0 -translate-y-2.5 origin-left-center font-bold pl-[7px] pr-[7px] font-zemestro-std">&lt;</motion.span>
                     }
                 </React.Fragment>
             ))}

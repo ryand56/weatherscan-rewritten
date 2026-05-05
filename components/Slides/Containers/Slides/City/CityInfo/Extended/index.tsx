@@ -1,5 +1,8 @@
 import * as React from "react";
 import type { ExtraInfo } from "../../../../../../../hooks/useWeather";
+
+import SlideContainerHeader from "../../../../Headers/SlideContainerHeader";
+
 const Header = React.lazy(() => import(
     "./Header" /* webpackChunkName: "cSlideExtendedHeader" */
 ));
@@ -17,6 +20,7 @@ interface ExtendedProps {
 // Extended forecasts
 const Extended = ({ info }: ExtendedProps) => (
     <>
+        <SlideContainerHeader>Extended Forecast</SlideContainerHeader>
         <Header days={[
             "Mon",
             "Tue",

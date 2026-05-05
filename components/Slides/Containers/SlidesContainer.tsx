@@ -1,7 +1,6 @@
 import * as React from "react";
 import type { Location, ExtraInfo } from "../../../hooks/useWeather";
 import SlideHeader from "./Headers/SlideHeader";
-import { AudioPlayerProvider } from "react-use-audio-player";
 import { VocalFemale } from "../../../components/VocalAudio";
 import VocalAudio from "../../../components/VocalAudio";
 
@@ -174,9 +173,7 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
                 finishCallback={HeaderFinishCallback}
             />
             <div id="info-slide-container" className="absolute top-infoslide-container-t h-infoslide-container w-infoslide-container">
-                <AudioPlayerProvider>
-                    <VocalAudio vocal={vocal} setMainVol={setMainVol} />
-                </AudioPlayerProvider>
+                <VocalAudio vocal={vocal} setMainVol={setMainVol} />
                 <React.Suspense fallback={<div>Loading...</div>}>
                     {currentSlide}
                 </React.Suspense>

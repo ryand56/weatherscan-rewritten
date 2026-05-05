@@ -2,7 +2,6 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { TemperatureUnit } from "../hooks/useWeather";
 
-import { AudioPlayerProvider } from "react-use-audio-player";
 import MusicAudio from "../components/MusicAudio";
 
 import Intro from "../components/Intro";
@@ -61,9 +60,7 @@ const Index = () => {
 
     return (
         <div onClick={HandleFirstClick} style={{ display: 'contents' }}>
-            <AudioPlayerProvider>
-                <MusicAudio vol={musicVol} />
-            </AudioPlayerProvider>
+            <MusicAudio vol={musicVol} />
             <Intro winSize={[innerWidth, innerHeight]} callback={IntroCallback} />
             <Display
                 isReady={introDone}

@@ -313,6 +313,12 @@
   }
 }
 
+@utility bg-* {
+  background-size: --value(--background-size-*);
+  background-position: --value(--background-position-*);
+  background-image: --value(--background-image-*);
+}
+
 @utility marquee-top-text {
   color: var(--color-marquee-top);
   font-size: var(--text-marquee-top);

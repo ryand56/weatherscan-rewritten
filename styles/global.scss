@@ -157,24 +157,6 @@
     font-style: normal;
 }
 
-/* html,
-body {
-    padding: 0;
-    margin: 0;
-    font-family: Interstate, sans-serif;
-    background: #000;
-    overscroll-behavior-y: none;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-* {
-    box-sizing: border-box;
-} */
-
 a, body, h1, html, p {
     margin: 0;
     padding: 0;
@@ -184,10 +166,10 @@ a, body, h1, html, p {
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-html * {
+/* html * {
     box-sizing: border-box;
     font-size: 100%;
-}
+} */
 
 html, body, #__next {
     height: 100%;

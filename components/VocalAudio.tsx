@@ -1,4 +1,5 @@
 import * as React from "react";
+import VocalEngine from "./VocalEngine";
 import { useFirstClick } from "./MusicAudio";
 
 export const enum VocalFemale {
@@ -13,54 +14,14 @@ interface VocalProps {
   setMainVol: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const globalAudio = typeof window !== "undefined" ? new Audio() : null;
-
-// Create a persistent volume reset mechanism
-let globalSetMainVol: ((v: number) => void) | null = null;
-
-if (globalAudio) {
-  globalAudio.addEventListener("ended", () => {
-    if (globalSetMainVol) globalSetMainVol(1);
-  });
-  globalAudio.addEventListener("error", () => {
-    if (globalSetMainVol) globalSetMainVol(1);
-  });
-}
+const engine = new VocalEngine();
 
 const VocalAudio = ({ vocal, setMainVol }: VocalProps) => {
   const firstClick = useFirstClick();
-  const lastVocalRef = React.useRef<string | undefined>(undefined);
-
-  // Keep the global setter in sync with the current setMainVol prop
-  React.useEffect(() => {
-    globalSetMainVol = setMainVol;
-  }, [setMainVol]);
 
   React.useEffect(() => {
-    if (!globalAudio || !firstClick) return;
-
-    if (!vocal) {
-      if (globalAudio.paused || globalAudio.ended) {
-        setMainVol(1);
-      }
-      lastVocalRef.current = undefined;
-      return;
-    }
-
-    if (vocal === lastVocalRef.current) return;
-
-    const audio = globalAudio;
-
-    setMainVol(0.25);
-    
-    lastVocalRef.current = vocal;
-    audio.src = vocal;
-    audio.play().catch((err) => {
-      console.warn("Playback interrupted:", err);
-      setMainVol(1);
-    });
-
-    return () => { };
+    if (!firstClick || !vocal) return;
+    engine.play(vocal, setMainVol);
   }, [vocal, firstClick, setMainVol]);
 
   return null;

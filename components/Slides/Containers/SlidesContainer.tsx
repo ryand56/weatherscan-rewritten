@@ -87,43 +87,6 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
 
     const SlideCallback = React.useCallback(() => setHeaderUpdate(true), [slideState.index]);
 
-    const HeaderStartCallback = (toSelect: string) => {
-        //const introNeeded = locInfo.city === toSelect;
-        //console.log(introNeeded);
-        //setIntroNeeded(introNeeded);
-    };
-
-    const HeaderFinishCallback = (selected: string) => {
-        if (debug) {
-            console.log("Header cycle complete");
-            console.log(selected);
-        }
-        setHeaderUpdate(false);
-
-        const selectedInfo = cityInfo.get(selected);
-        if (selectedInfo !== undefined) {
-            setCurrentCity(selected);
-            setCurrentInfo(selectedInfo);
-            slideDispatch({ type: ActionType.SET, payload: 0, payloadCity: true });
-            return;
-        }
-
-        // Check for slide currently selected
-        const found = Object.entries(Slides).find(([key, value]) => key === selected.toUpperCase());
-        if (found) {
-            const [slideKey, slideIdx] = found;
-            slideDispatch({
-                type: ActionType.SET,
-                payload: slideIdx as number,
-                payloadCity: false
-            });
-            return;
-        }
-
-        slideDispatch({ type: ActionType.SET_CITY, payloadCity: false });
-        slideDispatch({ type: ActionType.INCREASE, payload: 1 });
-    };
-
     const currentSlide = React.useMemo(() => {
         if (currentCity && currentInfo) {
             if (debug) console.log("Rendering new slide");
@@ -154,24 +117,62 @@ const SlidesContainer = ({ debug, setMainVol, locInfo, mainCityInfo, extraCityIn
         return null;
     }, [slideState.index, SlideCallback, currentCity, currentInfo]);
 
+
+
+    const locationList = React.useMemo(() => {
+        if (!cityInfo || header.length === 0 || random === "") return [];
+        return [
+            locInfo.city,
+            "Health",
+            "Travel",
+            random,
+            ...header,
+            "Airports",
+            "International",
+            ...header.slice().reverse(),
+            "Travel"
+        ];
+    }, [header, random, locInfo.city, cityInfo]);
+
+    const HeaderStartCallback = (toSelect: string) => {
+        if (debug) console.log("Header moving to:", toSelect);
+
+        const selectedInfo = cityInfo.get(toSelect);
+        if (selectedInfo !== undefined) {
+            setCurrentCity(toSelect);
+            setCurrentInfo(selectedInfo);
+            slideDispatch({ type: ActionType.SET, payload: 0, payloadCity: true });
+            return;
+        }
+
+        const found = Object.entries(Slides).find(
+            ([key]) => key === toSelect.toUpperCase()
+        );
+
+        if (found) {
+            const [_, slideIdx] = found;
+            slideDispatch({
+                type: ActionType.SET,
+                payload: slideIdx as number,
+                payloadCity: false
+            });
+        } else {
+            slideDispatch({ type: ActionType.INCREASE, payload: 1 });
+        }
+    };
+
+    const HeaderFinishCallback = (selected: string) => {
+        setHeaderUpdate(false);
+    };
+
     return (
         <div id="info-slides-container" className="flex flex-col absolute right-infoslides-container-r top-infoslides-container-t w-infoslides-container h-infoslides-container max-h-infoslides-container z-[1] p-slides">
-            {(cityInfo && header.length > 0 && random !== "") && <SlideHeader
-                locations={[
-                    locInfo.city,
-                    "Health",
-                    "Travel",
-                    random,
-                    ...header,
-                    "Airports",
-                    "International",
-                    ...header.slice().reverse(),
-                    "Travel"
-                ]}
+            <SlideHeader
+                locations={locationList}
                 willUpdate={headerWillUpdate}
                 startCallback={HeaderStartCallback}
                 finishCallback={HeaderFinishCallback}
-            />}
+            />
             <div id="info-slide-container" className="absolute top-infoslide-container-t h-infoslide-container w-infoslide-container">
                 <AudioPlayerProvider>
                     <VocalAudio vocal={vocal} setMainVol={setMainVol} />

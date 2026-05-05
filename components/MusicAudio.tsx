@@ -29,7 +29,7 @@ const MusicAudio = ({ vol }: MusicAudioProps) => {
   const firstClick = useFirstClick();
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
-  const [fileIdx, setFileIdx] = React.useState(() => randNum(1, 33));
+  const [fileIdx, setFileIdx] = React.useState(randNum(1, 33));
   const [loop, setLoop] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
 

@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import "tailwindcss";
-
 @theme {
   /* =========================================
      FONTS
@@ -313,4 +311,9 @@
       transform: translate(4.5%, 8%);
     }
   }
+}
+
+@utility marquee-top-text {
+  color: var(--color-marquee-top);
+  font-size: var(--text-marquee-top);
 }

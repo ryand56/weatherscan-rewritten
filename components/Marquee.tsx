@@ -56,7 +56,7 @@ const InfoMarquee = ({ top, ticker }: InfoMarqueeProps) => (
         <Marquee play={true} gradient={false} duration={top.duration ?? 5} pauseOnHover={true}>
             <div id="marquee-loc">
                 {top.locations.map(v => (
-                    <span key={v.city} className="text-marquee-top text-shadow-sm origin-left pr-[3vw]">
+                    <span key={v.city} className="marquee-top-text text-shadow-sm origin-left pr-[3vw]">
                         {`${v.city}: ${v.observations?.temp} ${v.observations?.phrase}`}
                     </span>
                 ))}
